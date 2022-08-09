@@ -12,11 +12,16 @@ from .views import (
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
-    ManufacturerDeleteView,
+    ManufacturerDeleteView, DriverCreateView, DriverLicenseUpdateView, DriverDeleteView, manipulation_with_car,
 )
 
 urlpatterns = [
     path("", index, name="index"),
+
+    path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
+    path("drivers/<int:pk>/license_number/", DriverLicenseUpdateView.as_view(), name="license-number-update"),
+    path("drivers/<int:pk>/delete/", DriverDeleteView.as_view(), name="driver-delete"),
+    path("drivers/<int:pk>/change_car/", manipulation_with_car, name="manipulation_with_car"),
 
     path("manufacturers/", ManufacturerListView.as_view(), name="manufacturer-list"),
     path(
