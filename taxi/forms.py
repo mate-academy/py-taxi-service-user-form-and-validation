@@ -42,5 +42,5 @@ def check_license_number(number):
     if not number[:3].isupper():
         raise ValidationError("First 3 characters must be upper letters.")
     if not number[3:].isdigit():
-        raise ValidationError("Last 5 characters must be numbers.")
+        raise ValidationError("Last 5 characters must be digits.")
     return number
