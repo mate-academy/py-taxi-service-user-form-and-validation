@@ -7,12 +7,12 @@
     <h3>Drivers:
     {% if user in car.drivers.all %}
         <button style=" float: right" class="btn btn-danger" type="submit"
-                onclick="location.href='{% url 'taxi:car-remove-driver' car.pk %}'">
+                onclick="location.href='{% url 'taxi:car_assign_or_delete_driver' car.pk %}'">
             Delete me from this car
         </button>
     {% else %}
         <button style=" float: right" class="btn btn-success" type="submit"
-                onclick="location.href='{% url 'taxi:car-assign-driver'  car.pk %}'">
+                onclick="location.href='{% url 'taxi:car_assign_or_delete_driver'  car.pk %}'">
             Assign me to this car
         </button>
 
