@@ -38,9 +38,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 def check_license_number(number):
     if len(number) != 8:
-        raise ValidationError("License must have 8 digits.")
+        raise ValidationError("License must have 8 characters.")
     if not number[:3].isupper():
         raise ValidationError("First 3 characters must be upper letters.")
     if not number[3:].isdigit():
-        raise ValidationError("Last 5 characters must be numbers.")
+        raise ValidationError("Last 5 characters must be digits.")
     return number
