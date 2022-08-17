@@ -23,7 +23,10 @@ class Driver(AbstractUser):
         unique=True,
         validators=[
             MinLengthValidator(MIN_LENGTH),
-            RegexValidator("^[A-Z]{3}\d{5}$")
+            RegexValidator(
+                regex="^[A-Z]{3}\d{5}$",
+                message='The license number must be in the format: "ABC12345" '
+            )
         ]
     )
 
