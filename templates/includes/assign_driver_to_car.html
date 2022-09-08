@@ -1,0 +1,19 @@
+{% if user in car.drivers.all %}
+
+  <form action="/cars/{{ car.id }}/del_driver/" method="post" novalidate>
+    {% csrf_token %}
+    <button class="btn btn-danger">
+      Delete me from this car
+    </button>
+  </form>
+
+{% else %}
+
+  <form action="/cars/{{ car.id }}/add_driver/" method="post" novalidate>
+    {% csrf_token %}
+    <button class="btn btn-success">
+      Assign me to this car
+    </button>
+  </form>
+
+{% endif %}

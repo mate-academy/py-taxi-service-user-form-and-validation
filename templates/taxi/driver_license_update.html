@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>Update driver's license</h1>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <ul style="font-size: small; color: gray">
+      <li>Must consist only of 8 characters</li>
+      <li>First 3 characters must be uppercase letters</li>
+      <li>Last 5 characters must be digits</li>
+    </ul>
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+  </form>
+{% endblock %}
