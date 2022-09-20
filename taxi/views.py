@@ -108,12 +108,14 @@ class DriverUpdateLicenseView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
+@login_required
 def delete_driver_from_car(request, pk):
     car = Car.objects.get(id=pk)
     car.drivers.remove(request.user.id)
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=(pk,)))
 
 
+@login_required
 def assign_driver_to_car(request, pk):
     car = Car.objects.get(id=pk)
     car.drivers.add(request.user.id)
