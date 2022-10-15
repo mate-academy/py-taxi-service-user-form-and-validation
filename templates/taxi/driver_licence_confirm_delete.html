@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete licence number?</h1>
+  <p>Are you really want to delete this licence number??</p>
+  <p> Careful, you will also delete the user {{ driver }}</p>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+
+    <input type="submit" value="Yes" class="btn btn-danger">
+    <a class="btn btn-secondary" href="{% url 'taxi:driver-list' %}">No, thanks</a>
+  </form>
+{% endblock %}
