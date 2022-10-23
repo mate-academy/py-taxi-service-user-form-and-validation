@@ -23,15 +23,19 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        LEN_LICENSE_NUMBER = 8
+        len_license_number = 8
         license_number = self.cleaned_data["license_number"]
-        if not len(license_number) == LEN_LICENSE_NUMBER:
+        if not len(license_number) == len_license_number:
             raise ValidationError(
-                f"license number must be {LEN_LICENSE_NUMBER} characters long")
-        if not (license_number[0:3].isupper() and license_number[0:3].isalpha()):
-            raise ValidationError(f"First 3 characters must be capital letters")
+                f"license number must be {len_license_number} "
+                f"characters long")
+        if not (license_number[0:3].isupper()
+                and license_number[0:3].isalpha()):
+            raise ValidationError(
+                "First 3 characters must be capital letters")
         if not license_number[-5:].isdigit():
-            raise ValidationError("The last five characters must be digits")
+            raise ValidationError(
+                "The last five characters must be digits")
         return license_number
 
 
@@ -44,5 +48,5 @@ class CarForm(forms.ModelForm):
 
     class Meta:
         model = Car
-        fields = ('model', 'manufacturer', )
-        label = 'drivers'
+        fields = ("model", "manufacturer", )
+        label = "drivers"
