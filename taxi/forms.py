@@ -23,11 +23,11 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        len_license_number = 8
+        LEN_LICENSE_NUMBER = 8
         license_number = self.cleaned_data["license_number"]
-        if not len(license_number) == len_license_number:
+        if not len(license_number) == LEN_LICENSE_NUMBER:
             raise ValidationError(
-                f"license number must be {len_license_number} "
+                f"license number must be {LEN_LICENSE_NUMBER} "
                 f"characters long")
         if not (license_number[0:3].isupper()
                 and license_number[0:3].isalpha()):
