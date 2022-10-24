@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from config import constant
+from taxi import constant
 from taxi.models import Driver, Car
 
 
