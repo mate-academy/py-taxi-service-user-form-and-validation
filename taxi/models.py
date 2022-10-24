@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -15,7 +16,16 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(
+        max_length=255,
+        unique=True,
+        validators=[
+            RegexValidator(
+                "^[A-Z]{3}[0-9]{5}$",
+                message="Wrong license number format, example: 'ABC12345'"
+            )
+        ]
+    )
 
     class Meta:
         verbose_name = "driver"
@@ -25,7 +35,7 @@ class Driver(AbstractUser):
         return f"{self.username} ({self.first_name} {self.last_name})"
 
     def get_absolute_url(self):
-        return reverse("taxi:driver-detail", kwargs={'pk': self.pk})
+        return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
 
 
 class Car(models.Model):
