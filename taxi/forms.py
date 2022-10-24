@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-
+from config import constant
 from taxi.models import Driver, Car
 
 
@@ -23,11 +23,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        LEN_LICENSE_NUMBER = 8
         license_number = self.cleaned_data["license_number"]
-        if not len(license_number) == LEN_LICENSE_NUMBER:
+        if not len(license_number) == constant.LEN_LICENSE_NUMBER:
             raise ValidationError(
-                f"license number must be {LEN_LICENSE_NUMBER} "
+                f"license number must be {constant.LEN_LICENSE_NUMBER} "
                 f"characters long")
         if not (license_number[0:3].isupper()
                 and license_number[0:3].isalpha()):
