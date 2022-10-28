@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
@@ -108,16 +108,16 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def assign_cars_to_drivers(request, pk):
+def assign_car_to_driver(request, pk):
     driver = Driver.objects.get(id=request.user.id)
     driver.cars.add(pk)
 
-    return HttpResponse(reverse_lazy("taxi:driver-list"))
+    return HttpResponseRedirect(reverse_lazy("taxi:driver-list"))
 
 
 @login_required()
-def delete_cars_from_drivers(request, pk):
+def delete_car_from_driver(request, pk):
     driver = Driver.objects.get(id=request.user.id)
     driver.cars.remove(pk)
 
-    return HttpResponse(reverse_lazy("taxi:driver-list"))
+    return HttpResponseRedirect(reverse_lazy("taxi:driver-list"))
