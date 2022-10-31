@@ -2,7 +2,13 @@
 
 {% block content %}
   <h1>{{ object|yesno:"Update,Create" }} car</h1>
-  {% block confirmation %}
-    {% include "includes/confiramation.html" %}
-  {% endblock %}
+  {% load crispy_forms_filters %}
+  <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {{ form|crispy }}
+
+      <input type="submit" value="Submit" class="btn btn-primary">
+      <a href="{% url 'taxi:car-list' %}" class="btn btn-danger" role="button">Cancel</a>
+  </form>
+
 {% endblock %}
