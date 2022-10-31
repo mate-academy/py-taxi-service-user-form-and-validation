@@ -23,11 +23,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         model = Driver
         fields = ("license_number",)
 
-    @staticmethod
-    def check_last_digits(license_num):
-
-        return True
-
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
