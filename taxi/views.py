@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreationForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,13 +65,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -82,8 +83,40 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DriverListView(LoginRequiredMixin, generic.ListView):
     model = Driver
     paginate_by = 5
+    queryset = Driver.objects.prefetch_related("cars")
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    form_class = DriverCreationForm
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    form_class = DriverCreationForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def add_driver_to_car(request, pk: int, driver_id: int):
+    car = Car.objects.get(pk=pk)
+    car.drivers.add(driver_id)
+    return redirect(request.GET.get("next"))
+
+
+@login_required
+def remove_driver_from_car(request, pk: int, driver_id: int):
+    car = Car.objects.get(pk=pk)
+    car.drivers.remove(driver_id)
+    return redirect(request.GET.get("next"))
