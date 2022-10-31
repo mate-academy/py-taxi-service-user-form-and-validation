@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from taxi.models import Car
 
 
-class LicenseValidationMixin:
+class LicenseNumberValidationMixin:
     UPPERCASE_CHARS_NUM = 3
     DIGIT_CHARS_NUM = 5
     LICENSE_NUMBER_LENGTH = UPPERCASE_CHARS_NUM + DIGIT_CHARS_NUM
@@ -37,7 +37,7 @@ class LicenseValidationMixin:
         return license_number
 
 
-class DriverCreationForm(LicenseValidationMixin, UserCreationForm):
+class DriverCreationForm(LicenseNumberValidationMixin, UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = UserCreationForm.Meta.fields + (
@@ -47,7 +47,7 @@ class DriverCreationForm(LicenseValidationMixin, UserCreationForm):
         )
 
 
-class DriverLicenseUpdateForm(LicenseValidationMixin, forms.ModelForm):
+class DriverLicenseUpdateForm(LicenseNumberValidationMixin, forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ("license_number",)
