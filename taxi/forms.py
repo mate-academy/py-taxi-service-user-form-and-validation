@@ -17,9 +17,9 @@ class DriverFormMixin(forms.ModelForm):
             RegexValidator(
                 rf"^[A-Z]{{{LICENSE_LETTER_COUNT}}}"
                 rf"[0-9]{{{LICENSE_DIGIT_COUNT}}}$",
-                message=f"License number should contain {LICENSE_LETTER_COUNT} "
-                f"uppercase letters followed by {LICENSE_DIGIT_COUNT} "
-                "digits",
+                message="License number should contain "
+                        f"{LICENSE_LETTER_COUNT} uppercase letters "
+                        f"followed by {LICENSE_DIGIT_COUNT} digits",
             )
         ],
     )
