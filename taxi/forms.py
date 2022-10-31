@@ -6,22 +6,27 @@ from django.core.validators import RegexValidator
 from taxi.models import Car
 
 
-class DriverCreationForm(UserCreationForm):
+# This might actually be a bad idea.
+class DriverFormMixin(forms.ModelForm):
     LICENSE_LETTER_COUNT = 3
     LICENSE_DIGIT_COUNT = 5
 
     license_number = forms.CharField(
         required=True,
-        validators=[RegexValidator(
-            rf"^[A-Z]{{{LICENSE_LETTER_COUNT}}}"
-            rf"[0-9]{{{LICENSE_DIGIT_COUNT}}}$",
-            message=f"License number should contain {LICENSE_LETTER_COUNT} "
-                    f"uppercase letters followed by {LICENSE_DIGIT_COUNT} "
-                    "digits",
-        )],
+        validators=[
+            RegexValidator(
+                rf"^[A-Z]{{{LICENSE_LETTER_COUNT}}}"
+                rf"[0-9]{{{LICENSE_DIGIT_COUNT}}}$",
+                message=f"License number should contain {LICENSE_LETTER_COUNT} "
+                f"uppercase letters followed by {LICENSE_DIGIT_COUNT} "
+                "digits",
+            )
+        ],
     )
 
-    class Meta(UserCreationForm.Meta):
+
+class DriverCreationForm(DriverFormMixin, UserCreationForm):
+    class Meta:
         model = get_user_model()
         fields = UserCreationForm.Meta.fields + (
             "license_number",
@@ -30,10 +35,16 @@ class DriverCreationForm(UserCreationForm):
         )
 
 
+class DriverLicenseUpdateForm(DriverFormMixin, forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ("license_number",)
+
+
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple,
     )
 
     class Meta:
