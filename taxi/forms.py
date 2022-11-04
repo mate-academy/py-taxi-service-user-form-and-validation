@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 
 from taxi.models import Driver, Car
 
+LICENSE_NUMBER_LENGTH = 8
+
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
@@ -25,33 +27,37 @@ class DriverCreationForm(UserCreationForm):
             "first_name", "last_name", "license_number"
         )
 
+    def clean_license_number(self):
+        return validate_license_number(self.cleaned_data["license_number"])
+
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    LICENSE_NUMBER_LENGTH = 8
-
     class Meta(UserCreationForm.Meta):
         model = Driver
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-        series = license_number[:3]
-        number = license_number[3:]
+        return validate_license_number(self.cleaned_data["license_number"])
 
-        if len(license_number) != self.LICENSE_NUMBER_LENGTH:
-            raise ValidationError(
-                "License number should contain "
-                f"{self.LICENSE_NUMBER_LENGTH} characters"
-            )
 
-        if not series.isalpha() or not series.isupper():
-            raise ValidationError(
-                "First 3 characters should contain only letters in uppercase"
-            )
+def validate_license_number(license_number):
+    series = license_number[:3]
+    number = license_number[3:]
 
-        if not number.isnumeric():
-            raise ValidationError(
-                "Last 5 characters should contain only numeric values"
-            )
+    if len(license_number) != LICENSE_NUMBER_LENGTH:
+        raise ValidationError(
+            "License number should contain "
+            f"{LICENSE_NUMBER_LENGTH} characters"
+        )
 
-        return license_number
+    if not series.isalpha() or not series.isupper():
+        raise ValidationError(
+            "First 3 characters should contain only letters in uppercase"
+        )
+
+    if not number.isnumeric():
+        raise ValidationError(
+            "Last 5 characters should contain only numeric values"
+        )
+
+    return license_number
