@@ -118,6 +118,4 @@ def manage_driver(request, pk):
     else:
         car.drivers.add(user)
 
-    car.save()
-
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
