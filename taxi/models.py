@@ -35,9 +35,3 @@ class Car(models.Model):
 
     def __str__(self):
         return self.model
-
-    def add_driver(self, driver_id: int) -> None:
-        self.drivers.add(driver_id)
-
-    def remove_driver(self, driver_id: int) -> None:
-        self.drivers.remove(driver_id)
