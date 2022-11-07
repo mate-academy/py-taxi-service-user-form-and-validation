@@ -29,13 +29,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise ValidationError(
                 "License number must be only 8 characters"
             )
-        for i in list(license_number)[:3]:
-            if i != i.upper():
+        for letter in list(license_number)[:3]:
+            if letter != letter.upper():
                 raise ValidationError(
                     "First 3 characters must be uppercase"
                 )
-        for i in list(license_number)[3:8]:
-            if i.isdigit() is False:
+        for letter in list(license_number)[3:8]:
+            if letter.isdigit() is False:
                 raise ValidationError(
                     "Last 5 characters must be digits"
                 )
