@@ -38,7 +38,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     )
 
 
-class CarUpdateForm(forms.ModelForm):
+class CarCreateForm(forms.ModelForm):
 
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
