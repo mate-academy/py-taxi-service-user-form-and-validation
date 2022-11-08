@@ -2,8 +2,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverLicenseUpdateForm, DriverCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -87,3 +89,29 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("")
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def driver_assign_to_car(request, pk):
+    driver = Driver.objects.get(id=pk)
+    if Car.objects.get(id=pk) in driver.cars.all():
+        driver.cars.remove(Car.objects.get(id=pk))
+    else:
+        driver.cars.add(Car.objects.get(id=pk))
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
