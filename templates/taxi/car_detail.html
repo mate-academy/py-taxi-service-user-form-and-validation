@@ -24,10 +24,10 @@
     <strong>Licence number:</strong> {{ driver.license_number }}
     <hr>
   {% endfor %}
-  <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-    Delete
-  </a>
-  <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
+  <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">
     Update
+  </a>
+  <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">
+    Delete
   </a>
 {% endblock %}
