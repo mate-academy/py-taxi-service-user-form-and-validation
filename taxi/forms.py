@@ -27,7 +27,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         license_number = self.cleaned_data["license_number"]
 
         if len(license_number) != self.LENGTH_OF_LICENSE:
-            raise ValidationError(f"Length of license number field must be equal {self.LENGTH_OF_LICENSE}")
+            raise ValidationError(
+                f"Length of license number field must be equal {self.LENGTH_OF_LICENSE}"
+            )
 
         if not license_number[:3].isalpha():
             raise ValidationError("First 3 characters must be letters")
