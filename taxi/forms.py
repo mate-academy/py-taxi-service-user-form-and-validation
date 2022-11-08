@@ -38,19 +38,19 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 f"and last {self.NUMBER_OF_LAST_DIGITS} are digits."
             )
 
-        for letter in license_number[:self.NUMBER_OF_FIRST_UPPERCASE_LETTERS]:
-            if letter.isdecimal() or letter.islower():
-                raise ValidationError(
-                    f"First {self.NUMBER_OF_FIRST_UPPERCASE_LETTERS} "
-                    "characters should be uppercase letters!"
-                )
+        letters = license_number[:self.NUMBER_OF_FIRST_UPPERCASE_LETTERS]
+        if not letters.isaplha() or letters.islower():
+            raise ValidationError(
+                f"First {self.NUMBER_OF_FIRST_UPPERCASE_LETTERS} "
+                "characters should be uppercase letters!"
+            )
 
-        for digit in license_number[self.NUMBER_OF_FIRST_UPPERCASE_LETTERS:]:
-            if not digit.isdigit():
-                raise ValidationError(
-                    f"Last {self.NUMBER_OF_LAST_DIGITS} "
-                    "characters should be digits!"
-                )
+        digits = license_number[self.NUMBER_OF_FIRST_UPPERCASE_LETTERS:]
+        if not digits.isdecimal():
+            raise ValidationError(
+                f"Last {self.NUMBER_OF_LAST_DIGITS} "
+                "characters should be digits!"
+            )
 
         return license_number
 
