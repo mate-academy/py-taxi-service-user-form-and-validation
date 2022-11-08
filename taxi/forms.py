@@ -28,7 +28,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
         if len(license_number) != self.LENGTH_OF_LICENSE:
             raise ValidationError(
-                f"Length of license number field must be equal {self.LENGTH_OF_LICENSE}"
+                f"Length of license number "
+                f"field must be equal "
+                f"{self.LENGTH_OF_LICENSE}"
             )
 
         if not license_number[:3].isalpha():
