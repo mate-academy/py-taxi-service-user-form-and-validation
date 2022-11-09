@@ -72,7 +72,7 @@ urlpatterns = [
     path(
         "drivers/<int:pk>/delete_driver/",
         delete_driver_from_car,
-        name="-delete-driver-from-car"
+        name="delete-driver-from-car"
     )
 ]
 
