@@ -33,7 +33,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 f"{DriverLicenseUpdateForm.LENGTH} symbols"
             )
         if license_number[:3].upper() != license_number[:3] or not license_number[:3].isalpha():
-            raise ValidationError("First 3 characters should be upper")
+            raise ValidationError("First 3 characters must be in uppercase")
         if not license_number[3:].isdigit():
             raise ValidationError("Last 5 characters must be digits")
 
