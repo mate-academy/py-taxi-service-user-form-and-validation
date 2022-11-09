@@ -1,14 +1,14 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 from taxi.models import Driver, Car
 
 
-class LicenceValidateMixin:
+class LicenseValidateMixin:
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]  # noqa
+        license_number = self.cleaned_data["license_number"]
 
         if not (
             len(license_number) == 8
@@ -24,13 +24,13 @@ class LicenceValidateMixin:
         return license_number
 
 
-class DriverLicenseUpdateForm(LicenceValidateMixin, forms.ModelForm):
+class DriverLicenseUpdateForm(LicenseValidateMixin, forms.ModelForm):
     class Meta:
         model = Driver
         fields = ("license_number",)
 
 
-class DriverCreationForm(LicenceValidateMixin, UserCreationForm):
+class DriverCreationForm(LicenseValidateMixin, UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
         fields = UserCreationForm.Meta.fields + (
