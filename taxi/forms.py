@@ -1,35 +1,36 @@
-from django.contrib.auth import get_user_model
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from taxi.models import Car
+from taxi.models import Car, Driver
 
 
 class DriverLicenseValidator:
-    COUNT_LETTERS = 3
-    COUNT_NUMBERS = 5
-    LICENSE_NUMBER_LENGTH = COUNT_LETTERS + COUNT_NUMBERS
+    AMOUNT_LETTERS = 3
+    AMOUNT_NUMBERS = 5
+    LICENSE_NUMBER_SYMBOLS_AMOUNT = AMOUNT_LETTERS + AMOUNT_NUMBERS
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
-        if not len(license_number) == self.LICENSE_NUMBER_LENGTH:
+        if not len(license_number) == self.LICENSE_NUMBER_SYMBOLS_AMOUNT:
             raise ValidationError(
-                f"Length license number should be {self.LICENSE_NUMBER_LENGTH}"
+                f"Length license number should be "
+                f"{self.LICENSE_NUMBER_SYMBOLS_AMOUNT}"
             )
 
         if (
-                not license_number[:self.COUNT_LETTERS].isupper()
-                or not license_number[:self.COUNT_LETTERS].isalpha()
+                not license_number[:self.AMOUNT_LETTERS].isupper()
+                or not license_number[:self.AMOUNT_LETTERS].isalpha()
         ):
             raise ValidationError(
-                f"First {self.COUNT_LETTERS} symbols should be upper letters!"
+                f"First {self.AMOUNT_LETTERS} symbols should be "
+                f"uppercase letters!"
             )
 
-        if not license_number[self.COUNT_LETTERS:].isdigit():
+        if not license_number[self.AMOUNT_LETTERS:].isdigit():
             raise ValidationError(
-                f"Last {self.COUNT_LETTERS} symbols should be digits!"
+                f"Last {self.AMOUNT_LETTERS} symbols should be digits!"
             )
         return license_number
 
@@ -39,7 +40,7 @@ class DriverCreationForm(
     UserCreationForm
 ):
     class Meta:
-        model = get_user_model()
+        model = Driver
         fields = UserCreationForm.Meta.fields + (
             "first_name",
             "last_name",
@@ -49,13 +50,13 @@ class DriverCreationForm(
 
 class DriverLicenseUpdateForm(DriverLicenseValidator, forms.ModelForm):
     class Meta:
-        model = get_user_model()
+        model = Driver
         fields = ("license_number",)
 
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
+        queryset=Driver.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False
     )
