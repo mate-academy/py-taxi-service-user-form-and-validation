@@ -12,8 +12,8 @@ class LicenceValidateMixin:
 
         if not (
             len(license_number) == 8
-            and license_number[0:2].isupper()
-            and license_number[0:2].isalpha()
+            and license_number[0:3].isupper()
+            and license_number[0:3].isalpha()
             and license_number[3:].isnumeric()
         ):
             raise ValidationError(
