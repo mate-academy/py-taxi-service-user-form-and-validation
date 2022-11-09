@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+  <p>
+    Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})
+    {% if user not in car.drivers.all %}
+      <a href="{% url 'taxi:assign-me' pk=car.id %}" class="btn btn-primary">
+        Assign me to the car
+      </a>
+      {% else %}
+      <a href="{% url 'taxi:remove-me' pk=car.id %}" class="btn btn-primary">
+        Remove me from the car
+      </a>
+    {% endif %}
+  </p>
+
   <h1>Drivers</h1>
   <hr>
   <ul>
