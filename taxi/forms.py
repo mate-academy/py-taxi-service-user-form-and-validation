@@ -6,15 +6,15 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-def clear_license_number(self) -> str:
-    license_number = self.cleaned_data["license_number"]
+def clear_license_number(obj) -> str:
+    license_number = obj.cleaned_data["license_number"]
     if len(license_number) != 8:
         raise ValidationError("Length license number must be 8")
 
     if not license_number[:3].isupper() or not license_number[:3].isalpha():
         raise ValidationError("First 3 characters must be upper")
 
-    if not license_number[3:].isnumeric():
+    if not license_number[3:].isdecimal():
         raise ValidationError("Last 5 characters must be digits")
 
     return license_number
