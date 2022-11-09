@@ -4,6 +4,7 @@
     <li class="list-group-item"><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
   {% else %}
     <li class="list-group-item"><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
+    <li class="list-group-item"><a href="{% url 'login'%}?next={{request.path}}">Registration</a></li>
   {% endif %}
 
   <br>
