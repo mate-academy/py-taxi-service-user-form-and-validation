@@ -19,12 +19,12 @@ def driver_license_number_validate(value):
     error = ""
     if len(value) != 8:
         error += "Driver license number should consist only of 8 characters"
-    if not value[0:3].isalpha() or value[0:3] != value[0:3].upper():
-        error += "; " if error else ""
+    if not value[0:3].isalpha() or not value[0:3].isupper():
+        error += "; \n" if error else ""
         error += "First 3 characters of driver license number " \
                  "should be uppercase letters"
     if not value[-5:].isdigit():
-        error += "; " if error else ""
+        error += "; \n" if error else ""
         error += "Last 5 characters of driver license number " \
                  "should be are digits"
 
