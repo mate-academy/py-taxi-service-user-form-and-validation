@@ -29,12 +29,10 @@ class DriverUpdateLicenseForm(forms.ModelForm):
                 f" {DriverUpdateLicenseForm.LICENSE_NUMBER}!"
             )
 
-        elif not license_number[:3].isupper() \
-                or not license_number[:3].isalpha():
-            raise ValidationError("First 3 letter must be upper case!")
-
-        elif not license_number[4:].isdigit():
-            raise ValidationError("Last 5 symbol must be numbers!")
+        elif not license_number[:3].isupper() or not license_number[:3].isalpha():
+            raise ValidationError("First 3 characters should be uppercase letters")
+        elif not license_number[3:].isdigit():
+            raise ValidationError("Last 5 characters should be digits")
 
         return license_number
 
