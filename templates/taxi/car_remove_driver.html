@@ -8,7 +8,6 @@
     <form action="" method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
-
     <input type="submit" value="Submit" class="btn btn-danger">
   </form>
 {% endblock %}
