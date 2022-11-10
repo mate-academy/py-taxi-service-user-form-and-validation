@@ -69,11 +69,12 @@ def car_detail(request, pk):
 
     if request.method == "GET":
         return render(request, "taxi/car_detail.html", context=context)
-    if request.user in car.drivers.all():
-        car.drivers.remove(request.user)
+    if request.method == "POST":
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
+            return render(request, "taxi/car_detail.html", context=context)
+        car.drivers.add(request.user)
         return render(request, "taxi/car_detail.html", context=context)
-    car.drivers.add(request.user)
-    return render(request, "taxi/car_detail.html", context=context)
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
