@@ -108,7 +108,6 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 @login_required
 def add_or_delete(request, pk):
-    pass
     car = Car.objects.get(pk=pk)
     user = request.user
     if user in car.drivers.all():
