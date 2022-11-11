@@ -18,7 +18,8 @@ class DriverForm(forms.ModelForm):
                 "License number must consists only of 8 characters!"
             )
 
-        if not license_number[0:3].isupper():
+        if not license_number[0:3].isupper() and \
+                not license_number[0:3].isalpha():
             raise ValidationError(
                 "First 3 of the license number characters "
                 "must be uppercase letters!"
