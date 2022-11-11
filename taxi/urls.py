@@ -65,7 +65,7 @@ urlpatterns = [
         DriverDeleteView.as_view(),
         name="driver-delete"
     ),
-    path("drivers/<int:pk>/toggle", driver_toggle, name="driver-toggle")
+    path("drivers/<int:pk>/toggle/", driver_toggle, name="driver-toggle")
 ]
 
 app_name = "taxi"

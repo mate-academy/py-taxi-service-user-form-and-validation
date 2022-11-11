@@ -10,10 +10,11 @@ def licence_validation(license_num):
     licence_num_len = 8
     # decided to to all-in-one check so a user will see all the requirements in
     # case of any validation error
-    if (
-            len(license_num) != licence_num_len
-            or not (license_num[:3].isupper() and license_num[:3].isalpha())
-            or not license_num[4:].isdigit()
+    if not (
+            len(license_num) == licence_num_len
+            and license_num[:3].isupper()
+            and license_num[:3].isalpha()
+            and license_num[4:].isdigit()
     ):
         raise ValidationError(
             f"Licence number length must contain {licence_num_len} "
