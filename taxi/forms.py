@@ -14,7 +14,7 @@ def licence_validation(license_num):
             len(license_num) == licence_num_len
             and license_num[:3].isupper()
             and license_num[:3].isalpha()
-            and license_num[4:].isdigit()
+            and license_num[3:].isdigit()
     ):
         raise ValidationError(
             f"Licence number length must contain {licence_num_len} "
