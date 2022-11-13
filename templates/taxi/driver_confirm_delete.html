@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete manufacturer?</h1>
+
+ <h1>Delete driver</h1>
+
+  <p>Are you sure to delete driver: {{ driver }}?</p>
+
   <form action="" method="post">
     {% csrf_token %}
-
-    <input type="submit" value="Yes" class="btn btn-outline-danger">
+    <input type="submit" value="Yes" class="btn btn-outline-danger"/>
     <button onclick="window.history.back();" class="btn btn-outline-success">No</button>
   </form>
 {% endblock %}
