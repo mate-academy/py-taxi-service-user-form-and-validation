@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete car?</h1>
-  <p>Are you really want to delete {{ car }}?</p>
+  <h1>Delete driver?</h1>
+  <p>Are you really want to delete a {{ driver }} </p>
   <form action="" method="post">
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
-    <a class="btn btn-secondary" href="{% url 'taxi:car-list' %}">No, thanks</a>
+    <a class="btn btn-secondary" href="{% url 'taxi:driver-list' %}">No, thanks</a>
   </form>
 {% endblock %}
