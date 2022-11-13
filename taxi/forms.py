@@ -20,7 +20,7 @@ def clear_license_number(obj) -> str:
     return license_number
 
 
-class DriverLicenseForm(forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
         fields = ("license_number",)
