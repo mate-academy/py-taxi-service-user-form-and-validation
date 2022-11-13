@@ -63,7 +63,7 @@ urlpatterns = [
         name="driver-update-license",
     ),
     path(
-        "delete_driver/<int:pk>",
+        "delete_driver/<int:pk>/",
         delete_driver_from_car,
         name="delete-driver-from-car",
     ),
