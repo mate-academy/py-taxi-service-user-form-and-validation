@@ -109,7 +109,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def link_add(request, pk):
+def link_add_or_delete(request, pk):
     car = Car.objects.get(id=pk)
     user = get_user_model().objects.get(id=request.user.id)
     if user in car.drivers.all():
