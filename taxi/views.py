@@ -114,7 +114,6 @@ def assign_driver_to_car(
 ) -> HttpResponseRedirect:
     driver = Driver.objects.get(id=request.user.id)
     driver.cars.add(pk)
-    driver.save()
     return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
 
 
@@ -124,5 +123,4 @@ def remove_driver_from_car(
 ) -> HttpResponseRedirect:
     driver = Driver.objects.get(id=request.user.id)
     driver.cars.remove(pk)
-    driver.save()
     return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
