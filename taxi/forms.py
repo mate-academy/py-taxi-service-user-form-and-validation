@@ -17,7 +17,7 @@ class DriverCreationForm(UserCreationForm):
         )
 
 
-class DriverUpdateLicenseForm(forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     LEN_LICENSE_NUMBER = 8
 
     class Meta:
@@ -27,14 +27,14 @@ class DriverUpdateLicenseForm(forms.ModelForm):
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
-        if len(license_number) != DriverUpdateLicenseForm.LEN_LICENSE_NUMBER:
+        if len(license_number) != DriverLicenseUpdateForm.LEN_LICENSE_NUMBER:
             raise ValidationError(
                 f"Amount symbols must be"
-                f"{DriverUpdateLicenseForm.LEN_LICENSE_NUMBER}"
+                f"{DriverLicenseUpdateForm.LEN_LICENSE_NUMBER}"
             )
 
-        if (not license_number[:4].isupper()
-                or not license_number[:4].isalpha()):
+        if (not license_number[:3].isupper()
+                or not license_number[:3].isalpha()):
             raise ValidationError(
                 "First 3 characters must be uppercase letters"
             )
