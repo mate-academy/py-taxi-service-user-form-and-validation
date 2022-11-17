@@ -62,7 +62,7 @@ urlpatterns = [
         name="driver-delete"
     ),
     path(
-        "drivers/<int:pk>/add_delete",
+        "drivers/<int:pk>/add_delete/",
         add_delete_driver,
         name="add_delete_driver"
     )
