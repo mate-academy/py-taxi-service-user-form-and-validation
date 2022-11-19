@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverCreationForm, DriverUpdateForm, CarCreationForm
+from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -120,10 +120,10 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
 @login_required
 def update_license_number(request, pk):
     user = Driver.objects.get(id=pk)
-    form = DriverUpdateForm(instance=user)
+    form = DriverLicenseUpdateForm(instance=user)
 
     if request.method == "POST":
-        form = DriverUpdateForm(request.POST, instance=user)
+        form = DriverLicenseUpdateForm(request.POST, instance=user)
         if form.is_valid():
             Driver.objects.filter(id=user.id).update(**form.cleaned_data)
             form.save()
