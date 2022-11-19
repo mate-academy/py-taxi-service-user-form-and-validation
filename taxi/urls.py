@@ -45,12 +45,12 @@ urlpatterns = [
     path("cars/", CarListView.as_view(), name="car-list"),
     path("cars/<int:pk>/", CarDetailView.as_view(), name="car-detail"),
     path(
-        "cars/<int:pk>/add-car-to-driver",
+        "cars/<int:pk>/add-car-to-driver/",
         add_car_to_driver,
         name="add-car-to-driver"
     ),
     path(
-        "cars/<int:pk>/delete-car-from-driver",
+        "cars/<int:pk>/delete-car-from-driver/",
         delete_car_from_driver,
         name="delete-car-from-driver"
     ),
