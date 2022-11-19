@@ -65,7 +65,7 @@ urlpatterns = [
     path(
         "drivers/<int:pk>/update-license-number/",
         update_license_number,
-        name="driver-update-license-number"
+        name="driver-update"
     ),
     path(
         "drivers/<int:pk>/delete/",
