@@ -85,7 +85,6 @@ def delete_car_from_driver(request, pk):
     return redirect("taxi:car-detail", pk=pk)
 
 
-
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
     form_class = CarCreationForm
