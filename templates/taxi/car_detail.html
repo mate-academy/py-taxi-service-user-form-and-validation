@@ -7,17 +7,17 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
 
     {% if car in user.cars.all %}
-      <a href="{% url 'taxi:add_delete_driver' car.id %}" class="btn btn-danger link-to-page">
+      <a href="{% url 'taxi:add_delete_driver' car.id %}" class="float-right btn btn-danger link-to-page">
         Delete me from this car
 
       </a>
     {% else %}
-      <a href="{% url 'taxi:add_delete_driver' car.id %}" class="btn btn-success link-to-page">
+      <a href="{% url 'taxi:add_delete_driver' car.id %}" class="float-right btn btn-success link-to-page">
         Assign me to this car
       </a>
     {% endif %}
 
-  <ul>
+  <div>
     <h2>Drivers</h2>
 
     {% for driver in car.drivers.all %}
@@ -29,7 +29,7 @@
   <a href="{% url 'taxi:car-update' pk=car.id %}"
        class="btn btn-secondary link-to-left">
       Update
-    </a>
+    </div>
 
     <a href="{% url 'taxi:car-delete' pk=car.id %}"
        class="btn btn-danger link-to-left">
