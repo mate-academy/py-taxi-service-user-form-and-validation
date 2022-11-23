@@ -35,7 +35,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise ValidationError(
                 "First thee element must be in uppercase"
             )
-        if not license_number.isdigit():
+        if not license_number[3:].isdigit():
             raise ValidationError(
                 "last 5 elements must be only digits"
             )
