@@ -27,7 +27,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise ValidationError(
                 "must be only 8 characters"
             )
-        if not license_number[0:3].isalpha():
+        if not license_number[:3].isalpha():
             raise ValidationError(
                 "First 3 elements, must be only letters"
             )
