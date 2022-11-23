@@ -110,7 +110,7 @@ def update_me_to_car(request, pk):
     driver = Car.objects.get(pk=pk)
     if Driver.objects.get(id=request.user.id) in driver.drivers.all():
         driver.drivers.remove(request.user.id)
-        return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
     else:
         driver.drivers.add(request.user.id)
-        return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
+
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
