@@ -56,10 +56,3 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
-
-
-class DriverCreationForm(UserCreationForm):
-
-    class Meta(UserCreationForm.Meta):
-        model = Driver
-        fields = UserCreationForm.Meta.fields + ("license_number", )
