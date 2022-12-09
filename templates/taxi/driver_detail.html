@@ -3,6 +3,7 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
@@ -14,13 +15,21 @@
     <h4>Cars</h4>
 
     {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
+      <hr>
+      <p><strong>Model:</strong> {{ car.model }}</p>
+      <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
+      <p class="text-muted"><strong>Id:</strong> {{ car.id }}</p>
 
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
   </div>
+  <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary link-to-page">
+    Update driver license number
+  </a>
+
+  <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
+    Delete
+  </a>
+
 {% endblock %}
