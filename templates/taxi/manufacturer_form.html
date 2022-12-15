@@ -3,10 +3,12 @@
 
 {% block content %}
   <h1>{{ object|yesno:"Update,Create" }} manufacturer</h1>
+  {% load crispy_forms_filters %}
   <form action="" method="post" novalidate>
-    {% csrf_token %}
-    {{ form|crispy }}
+      {% csrf_token %}
+      {{ form|crispy }}
 
-    <input type="submit" value="Submit" class="btn btn-primary">
+      <input type="submit" value="Submit" class="btn btn-primary">
+      <a href="{% url 'taxi:manufacturer-list' %}" class="btn btn-danger" role="button">Cancel</a>
   </form>
 {% endblock %}
