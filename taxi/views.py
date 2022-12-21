@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Driver, Car, Manufacturer
+from taxi.forms import CarCreateForm, DriverCreateForm, DriverLicenseUpdateForm
+from taxi.models import Driver, Car, Manufacturer
 
 
 @login_required
@@ -61,10 +63,21 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        car = get_object_or_404(Car, pk=self.kwargs["pk"])
+
+        user_as_driver = \
+            (car.drivers.filter(id=self.request.user.id).count() > 0)
+
+        context["user_as_driver"] = user_as_driver
+
+        return context
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreateForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +100,41 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required()
+def reset_driver_view(request, pk, **kwargs):
+    car_id = pk
+    context = {
+        "pk": pk
+    }
+    url = reverse("taxi:car-detail", kwargs=context)
+    user_as_driver = kwargs["user_as_driver"]
+
+    if request.method == "GET":
+        if car_id is not None and user_as_driver is not None:
+            car = get_object_or_404(Car, pk=car_id)
+
+            if user_as_driver:
+                car.drivers.remove(request.user.id)
+            else:
+                car.drivers.add(request.user.id)
+
+    return HttpResponseRedirect(url)

@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>{{ car.model }}</h1>
-  <p>Delete car?</p>
+  <h1>Username: {{ driver.username }}</h1>
+  <br>
+  <h4>Delete driver?</h4>
   <form action="" method="post">
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
-    <a class="btn btn-secondary" href="{% url 'taxi:car-detail' pk=car.id %}">No</a>
+    <a class="btn btn-secondary" href="{% url 'taxi:driver-detail' pk=driver.id %}">No</a>
 </form>
 {% endblock %}
