@@ -93,7 +93,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
-    fields = ('first_name', 'last_name', 'license_number',)
+    fields = ("first_name", "last_name", "license_number",)
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
