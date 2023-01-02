@@ -9,6 +9,7 @@ class Manufacturer(models.Model):
 
     class Meta:
         ordering = ["name"]
+        verbose_name = "taxi_manufacturer"
 
     def __str__(self):
         return f"{self.name} {self.country}"
@@ -18,7 +19,7 @@ class Driver(AbstractUser):
     license_number = models.CharField(max_length=255, unique=True)
 
     class Meta:
-        verbose_name = "driver"
+        verbose_name = "taxi_driver"
         verbose_name_plural = "drivers"
 
     def __str__(self):
