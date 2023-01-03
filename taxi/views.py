@@ -31,7 +31,7 @@ def index(request):
 
 
 @login_required
-def add_delete_driver(request, pk):
+def assign_driver(request, pk):
     driver = Car.objects.get(pk=pk)
     if Driver.objects.get(id=request.user.id) in driver.drivers.all():
         driver.drivers.remove(request.user.id)
