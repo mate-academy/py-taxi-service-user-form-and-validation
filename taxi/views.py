@@ -67,8 +67,9 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
         context = super().get_context_data(**kwargs)
         car = get_object_or_404(Car, pk=self.kwargs["pk"])
 
-        user_as_driver = \
-            (car.drivers.filter(id=self.request.user.id).count() > 0)
+        user_as_driver = (
+            car.drivers.filter(id=self.request.user.id).count() > 0
+        )
 
         context["user_as_driver"] = user_as_driver
 
