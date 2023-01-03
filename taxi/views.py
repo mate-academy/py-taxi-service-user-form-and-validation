@@ -109,9 +109,9 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def driver_to_car(request, car_id, param, user_id):
+def driver_to_car(request, car_id, param):
     car_obj = get_object_or_404(Car, id=car_id)
-    driver_obj = get_object_or_404(Driver, id=user_id)
+    driver_obj = get_object_or_404(Driver, id=request.user.id)
 
     if car_obj and driver_obj and param == "assign":
         driver_obj.cars.add(car_obj)

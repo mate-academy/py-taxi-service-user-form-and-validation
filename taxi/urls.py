@@ -52,7 +52,7 @@ urlpatterns = [
         name="driver-delete",
     ),
     path(
-        "cars/<int:car_id>/<slug:param>/<int:user_id>/",
+        "cars/<int:car_id>/<slug:param>/",
         driver_to_car,
         name="assign-delete-driver"
     ),

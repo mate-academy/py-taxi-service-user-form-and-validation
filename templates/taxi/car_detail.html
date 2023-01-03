@@ -20,11 +20,11 @@
     {% endfor %}
   </ul>
   {% if user in car.drivers.all %}
-    <a href="{% url 'taxi:assign-delete-driver' car_id=car.id param='delete' user_id=user.id %}" class="btn btn-danger link-to-page">
+    <a href="{% url 'taxi:assign-delete-driver' car_id=car.id param='delete' %}" class="btn btn-danger link-to-page">
       Delete me from this car
     </a>
   {% else %}
-    <a href="{% url 'taxi:assign-delete-driver' car_id=car.id param='assign' user_id=user.id %}" class="btn btn-success link-to-page">
+    <a href="{% url 'taxi:assign-delete-driver' car_id=car.id param='assign' %}" class="btn btn-success link-to-page">
       Assign me to this car
     </a>
   {% endif %}
