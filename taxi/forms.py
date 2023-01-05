@@ -15,15 +15,6 @@ class AuthorCreationForm(UserCreationForm):
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    license_number = forms.CharField(
-        validators=[RegexValidator(
-            regex=r"[A-Z][A-Z][A-Z]\d\d\d\d\d$",
-            message="license number should consist only of 8 characters. "
-                    "First 3 characters are uppercase letters. "
-                    "Last 5 characters are digits"
-        )
-        ]
-    )
 
     class Meta:
         model = Driver

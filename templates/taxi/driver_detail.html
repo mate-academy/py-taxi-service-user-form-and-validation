@@ -6,7 +6,7 @@
     <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
       Delete
     </a>
-    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary link-to-page">
+    <a href="{% url 'taxi:driver-full-update' pk=driver.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
   </h1>
@@ -15,7 +15,7 @@
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p>
     <strong>License number:</strong> {{ driver.license_number }}
-    <a href="{% url 'taxi:driver-license-update' pk=driver.id %}" class="btn btn-secondary">
+    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary">
       Update
     </a>
   </p>
