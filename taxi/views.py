@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -82,18 +83,16 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = CarForm
     template_name = "taxi/car_form.html"
 
-    def form_valid(self, form):
-        car = form.save()
-        return redirect("taxi:car-detail", pk=car.pk)
+    def get_success_url(self):
+        return reverse("taxi:car-detail", kwargs={"pk": self.object.pk})
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
     form_class = CarForm
 
-    def form_valid(self, form):
-        car = form.save()
-        return redirect("taxi:car-detail", pk=car.pk)
+    def get_success_url(self):
+        return reverse("taxi:car-detail", kwargs={"pk": self.object.pk})
 
 
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
