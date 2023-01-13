@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -63,8 +64,8 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
+    template_name = "taxi/car_form.html"
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +88,36 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    template_name = "taxi/driver_create.html"
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    template_name = "taxi/driver_delete.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_update_license_number.html"
+
+
+def delete_or_assign_driver(request, pk):
+    drivers = Car.objects.get(pk=pk).drivers
+    actual_car = Car.objects.get(pk=pk)
+    if request.method == "POST":
+        if drivers.filter(username=request.user.username):
+            actual_car.drivers.remove(request.user.pk)
+            actual_car.save()
+        else:
+            actual_car.drivers.add(request.user.pk)
+            actual_car.save()
+        return render(request, "taxi/car_detail.html", {"car": actual_car})
