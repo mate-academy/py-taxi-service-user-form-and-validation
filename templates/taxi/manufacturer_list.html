@@ -1,50 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Manufacturer List
-    <a href="{% url 'taxi:manufacturer-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
-  </h1>
+  <h1>Manufacturer List </h1>
+  <a class="text-warning link" href="{% url 'taxi:manufacturer-create' %}">Add new manufacturer</a>
 
   {% if manufacturer_list %}
     <table class="table">
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Country</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
-
       {% for manufacturer in manufacturer_list %}
         <tr>
           <td>
-              {{ manufacturer.id }}
+            {{ manufacturer.id }}
           </td>
           <td>
-              {{ manufacturer.name }}
+            {{ manufacturer }}
           </td>
           <td>
-              {{ manufacturer.country }}
+            <a class="text-warning link" href="{% url 'taxi:manufacturer-update' pk=manufacturer.id %}">Update</a>
           </td>
           <td>
-              <a href="{% url 'taxi:manufacturer-update' pk=manufacturer.id %}">
-                Update
-              </a>
-            </td>
-            <td>
-              <a style="color: red"
-                href="{% url 'taxi:manufacturer-delete' pk=manufacturer.id %}">
-                Delete
-              </a>
-            </td>
+            <a class="text-warning link" href="{% url 'taxi:manufacturer-delete' pk=manufacturer.id %}">Delete</a>
+          </td>
         </tr>
       {% endfor %}
-    </table>
 
+    </table>
   {% else %}
-      <p>There are no manufacturers in the service.</p>
+      <p>There are no literary formats here</p>
+      <a class="text-warning link" href="{% url 'taxi:manufacturer-create' %}">Add new manufacturer</a>
   {% endif %}
+  </ul>
 {% endblock %}
