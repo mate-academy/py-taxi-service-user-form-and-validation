@@ -12,7 +12,7 @@
         {% for car in driver_list %}
           <hr>
           <li>
-            {{ car }} (<a class="text-warning link" href="{% url 'taxi:car-detail' pk=car.id %}">ID: {{ car.id }}</a>)
+            <a class="text-warning link" href="{% url 'taxi:car-detail' pk=car.id %}">{{ car }} (ID: {{ car.id }})</a>
           </li>
         {% endfor %}
       </ul>
