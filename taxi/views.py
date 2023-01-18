@@ -2,11 +2,11 @@ from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import DriverForm, DriverLicenseUpdateForm, CarForm, AddRemoveMe
+from .forms import DriverForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -48,15 +48,6 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
     form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
-    #
-    # def get_form(self, form_class=None):
-    #     form = super(CarCreateView, self).get_form(form_class)
-    #     form.fields["drivers"] = forms.ModelMultipleChoiceField(
-    #         queryset=Driver.objects.all(),
-    #         widget=forms.CheckboxSelectMultiple,
-    #         required=False
-    #     )
-    #     return form
 
 
 class CarListView(LoginRequiredMixin, generic.ListView):
