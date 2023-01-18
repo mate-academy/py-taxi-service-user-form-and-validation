@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h1>Login</h1>
   {% if form.errors %}
     <p style="color:red">Invalid credential</p>
   {% endif %}
-  <form method="POST" action="{% url 'login' %}">
+  <form method="POST" action="{% url 'login' %}" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
+    {{ form|crispy }}
+    <input class="btn btn-outline-warning" type="submit" value="Login">
     <input type="hidden" name="next" value="{{ next }}">
   </form>
 {% endblock %}

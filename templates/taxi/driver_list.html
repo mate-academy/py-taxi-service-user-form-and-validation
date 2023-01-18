@@ -1,15 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Driver List</h1>
-  <ul class="driver-list">
-    {% for driver in driver_list %}
-      <hr>
-      <li>
-        {{ driver.first_name }} {{ driver.last_name }} {% if user.id == driver.id %}<span class="me">(Me)</span>{% endif %}
-        <p>Username: <a class="text-warning link" href="{% url 'taxi:driver-detail' pk=driver.id %}">
-                    {{ driver.username }}</a></p>
-      </li>
-    {% endfor %}
-  </ul>
+  <h1>
+    Driver List
+    <a type="button" class="btn btn-sm btn-outline-warning float-right" href="{% url 'taxi:driver-create' %}">
+      Create
+    </a>
+  </h1>
+  <div class="one-pag">
+    {% if driver_list %}
+      <table class="table">
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Licence number</th>
+        </tr>
+        {% for driver in driver_list %}
+          <tr>
+            <td>
+              {{ driver.id }}
+            </td>
+            <td>
+              <a class="text-warning link" href="{% url 'taxi:driver-detail' pk=driver.id %}">
+                {{ driver.username }} {% if user.id == driver.id %}<span class="me">(Me)</span>{% endif %}
+              </a>
+            </td>
+            <td>
+              {{ driver.first_name }}
+            </td>
+            <td>
+              {{ driver.last_name }}
+            </td>
+            <td>
+              {{ driver.license_number }}
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <p>There are no drivers in the srvice</p>
+{#      <a class="text-warning link" href="{% url 'taxi:driver-create' %}">Add new driver</a>#}
+    {% endif %}
+  </div>
 {% endblock %}
