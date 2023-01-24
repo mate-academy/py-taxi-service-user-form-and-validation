@@ -1,8 +1,15 @@
 body {
     margin-top: 20px;
+    background-color: gainsboro;
+
 }
 
 .link-to-page {
     float: right;
     margin: 0 2px 0 2px;
+}
+
+
+.list-group-item{
+    background-color: gainsboro;
 }
