@@ -8,7 +8,7 @@ from .forms import DriverLicenseUpdateForm, CarForm, DriverCreationForm
 from .models import Driver, Car, Manufacturer
 
 
-class Index(LoginRequiredMixin, generic.TemplateView):
+class IndexView(LoginRequiredMixin, generic.TemplateView):
     template_name = "taxi/index.html"
 
     def get_context_data(self, **kwargs):
