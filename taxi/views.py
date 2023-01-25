@@ -54,7 +54,11 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
-    queryset = Car.objects.select_related("manufacturer").prefetch_related("drivers")
+    queryset = Car.objects.select_related(
+        "manufacturer"
+    ).prefetch_related(
+        "drivers"
+    )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
