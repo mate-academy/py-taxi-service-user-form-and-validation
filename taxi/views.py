@@ -27,7 +27,6 @@ class IndexView(LoginRequiredMixin, generic.TemplateView):
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
     context_object_name = "manufacturer_list"
-    # template_name = "taxi/manufacturer_list.html"
     paginate_by = 5
 
 
