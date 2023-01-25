@@ -6,7 +6,7 @@ from django import forms
 from taxi.models import Driver, Car
 
 
-class DriverForm(UserCreationForm):
+class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
         fields = UserCreationForm.Meta.fields + ("license_number",)

@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverLicenseUpdateForm, CarForm, DriverForm
+from .forms import DriverLicenseUpdateForm, CarForm, DriverCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -27,7 +27,7 @@ class Index(LoginRequiredMixin, generic.TemplateView):
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
     context_object_name = "manufacturer_list"
-    template_name = "taxi/manufacturer_list.html"
+    # template_name = "taxi/manufacturer_list.html"
     paginate_by = 5
 
 
@@ -49,13 +49,12 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class CarListView(LoginRequiredMixin, generic.ListView):
-    model = Car
     paginate_by = 5
     queryset = Car.objects.select_related("manufacturer")
 
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Car
+    queryset = Car.objects.select_related("manufacturer").prefetch_related("drivers")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -86,13 +85,12 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = Driver.objects.prefetch_related("cars__manufacturer")
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
-    form_class = DriverForm
+    form_class = DriverCreationForm
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
