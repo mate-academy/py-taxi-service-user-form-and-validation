@@ -19,33 +19,6 @@ class CarForm(forms.ModelForm):
         fields = "__all__"
 
 
-class DriverLicenseUpdateForm(forms.ModelForm):
-    LICENSE_LENGTH = 8
-
-    class Meta(UserCreationForm.Meta):
-        model = Driver
-        fields = UserCreationForm.Meta.fields + ("license_number",)
-
-    def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-
-        if len(license_number) != self.LICENSE_LENGTH:
-            raise ValidationError(
-                f"License number length have to be equal {self.LICENSE_LENGTH}"
-            )
-
-        if license_number[:3].isdigit() or not license_number[:3].isupper():
-            raise ValidationError(
-                "First three elements have to be letters and uppercase"
-            )
-
-        if not license_number[4:].isdigit():
-            raise ValidationError(
-                "After third element all elements have to be digits"
-            )
-        return license_number
-
-
 class DriverForm(UserCreationForm):
     LICENSE_LENGTH = 8
     MESSAGE = "License number have first 3 uppercase letters than 5 numbers!"
@@ -70,3 +43,30 @@ class DriverForm(UserCreationForm):
             "last_name",
             "license_number"
         )
+
+
+class DriverLicenseUpdateForm(forms.ModelForm):
+    LICENSE_LENGTH = 8
+
+    class Meta(UserCreationForm.Meta):
+        model = Driver
+        fields = ("license_number",)
+
+    def clean_license_number(self):
+        license_number = self.cleaned_data["license_number"]
+
+        if len(license_number) != self.LICENSE_LENGTH:
+            raise ValidationError(
+                f"License number length have to be equal {self.LICENSE_LENGTH}"
+            )
+
+        if not all([letter.isupper() for letter in license_number[:3]]):
+            raise ValidationError(
+                "First three elements have to be letters and uppercase"
+            )
+
+        if not all([number.isdigit() for number in license_number[3:]]):
+            raise ValidationError(
+                "After third element all elements have to be digits"
+            )
+        return license_number
