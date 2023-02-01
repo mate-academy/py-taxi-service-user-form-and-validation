@@ -9,12 +9,14 @@ from django.core.validators import (
 
 from taxi.models import Driver, Car
 
+MESSAGE = "License number should consist of first 3 " \
+          " letters and after 5 digits"
+REGEX = "[A-Z]{3}[0-9]{5}"
+LEN_OF_LICENSE_NUMBER = 8
+
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    MESSAGE = "License number should consist of" \
-              " first 3 uppercase letters and after 5 digits"
-    REGEX = "[A-Z]{3}[0-9]{5}"
-    LEN_OF_LICENSE_NUMBER = 8
+
     license_number = forms.CharField(
         required=True,
         validators=[
@@ -30,10 +32,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 
 class DriverCreationForm(UserCreationForm):
-    MESSAGE = "License number should consist of" \
-              " first 3 uppercase letters and after 5 digits"
-    REGEX = "[A-Z]{3}[0-9]{5}"
-    LEN_OF_LICENSE_NUMBER = 8
+
     first_name = forms.CharField(max_length=255, required=True)
     last_name = forms.CharField(max_length=255, required=True)
     license_number = forms.CharField(
