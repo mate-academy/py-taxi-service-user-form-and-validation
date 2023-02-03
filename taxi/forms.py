@@ -16,7 +16,6 @@ LEN_OF_LICENSE_NUMBER = 8
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-
     license_number = forms.CharField(
         required=True,
         validators=[
@@ -32,7 +31,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 
 class DriverCreationForm(UserCreationForm):
-
     first_name = forms.CharField(max_length=255, required=True)
     last_name = forms.CharField(max_length=255, required=True)
     license_number = forms.CharField(
