@@ -51,7 +51,7 @@ urlpatterns = [
         name="car-detail"
     ),
     path(
-        "cars/<int:pk>/",
+        "cars/<int:pk>/user/",
         assign_delete_car,
         name="car-assign-delete"
     ),

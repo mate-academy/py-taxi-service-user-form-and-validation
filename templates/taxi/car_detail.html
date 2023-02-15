@@ -14,27 +14,15 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>
     Drivers
-{#    {% if car in user.cars.all %}#}
-      <form action="{% url 'taxi:car-assign-delete' pk=car.id %}" method="POST">
-      {% csrf_token %}
-        {% if car in user.cars.all %}
-          <button type="submit" class="btn btn-danger link-to-page">
-            Delete me from this car
-          </button>
-        {% else %}
-          <button type="submit" class="btn btn-success link-to-page">
-            Assign me to this car
-          </button>
-        {% endif %}
-      </form>
-{#      <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">#}
-{#        Delete me from this car#}
-{#      </a>#}
-{#    {% else %}#}
-{#      <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-success link-to-page">#}
-{#      Assign me to this car#}
-{#      </a>#}
-{#    {% endif %}#}
+    {% if car in user.cars.all %}
+      <a href="{% url 'taxi:car-assign-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+        Delete me from this car
+      </a>
+    {% else %}
+      <a href="{% url 'taxi:car-assign-delete' pk=car.id %}" class="btn btn-success link-to-page">
+        Assign me to this car
+      </a>
+    {% endif %}
   </h1>
   <hr>
   <ul>
