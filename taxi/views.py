@@ -115,4 +115,4 @@ def cars_add_delete_driver(request, pk):
     else:
         car.drivers.add(request.user)
 
-    return HttpResponseRedirect(reverse("taxi:car-detail",  args=(pk,)))
+    return HttpResponseRedirect(reverse("taxi:car-detail", args=(pk,)))

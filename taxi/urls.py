@@ -52,10 +52,20 @@ urlpatterns = [
     ),
     path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
     path(
-        "drivers/<int:pk>/update", DriverLicenseUpdate.as_view(), name="driver-update"
+        "drivers/<int:pk>/update",
+        DriverLicenseUpdate.as_view(),
+        name="driver-update"
     ),
-    path("drivers/<int:pk>/delete/", DriverDeleteView.as_view(), name="driver-delete"),
-    path("cars/<int:pk>/add-delete-driver", cars_add_delete_driver, name="add-delete-driver"),
+    path(
+        "drivers/<int:pk>/delete/",
+        DriverDeleteView.as_view(),
+        name="driver-delete"
+    ),
+    path(
+        "cars/<int:pk>/add-delete-driver",
+        cars_add_delete_driver,
+        name="add-delete-driver"
+    ),
 ]
 
 app_name = "taxi"
