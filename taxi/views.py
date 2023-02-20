@@ -108,6 +108,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     queryset = Driver.objects.all()
 
 
+@login_required
 def driver_assign_delete(request, pk):
     car = Car.objects.get(id=pk)
     if request.user in car.drivers.all():
