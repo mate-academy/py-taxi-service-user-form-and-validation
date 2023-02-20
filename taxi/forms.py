@@ -8,13 +8,9 @@ from django.core.validators import RegexValidator
 from taxi.models import Driver, Car
 
 
-def get_license_validator() -> object:
-    return RegexValidator(regex=re.compile("^[A-Z]{3}[0-9]{5}$"))
-
-
 class DriverForm(UserCreationForm):
     license_number = forms.CharField(
-        validators=[get_license_validator()]
+        validators=[RegexValidator(regex=re.compile("^[A-Z]{3}[0-9]{5}$"))]
     )
 
     class Meta:
@@ -25,7 +21,7 @@ class DriverForm(UserCreationForm):
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     license_number = forms.CharField(
-        validators=[get_license_validator()]
+        validators=[RegexValidator(regex=re.compile("^[A-Z]{3}[0-9]{5}$"))]
     )
 
     class Meta:
