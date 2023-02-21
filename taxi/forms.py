@@ -37,7 +37,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         for num_ in num:
             if str(num_) in license_number_triad:
                 is_num = True
-        
+
         if is_lower or not is_str or is_num:
             raise ValidationError(
                 "Ensure that your letters are uppercase!"
