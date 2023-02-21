@@ -29,12 +29,23 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 f"is < than {DriverLicenseUpdateForm.MAX_LEN}!"
             )
 
-        if license_number[:2].islower():
+        license_number_triad = license_number[:3]
+        is_lower = license_number_triad.islower()
+        is_str = isinstance(license_number_triad, str)
+        is_num = False
+        num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        for num_ in num:
+            if str(num_) in license_number_triad:
+                is_num = True
+        
+        if is_lower or not is_str or is_num:
             raise ValidationError(
                 "Ensure that your letters are uppercase!"
             )
 
-        if not isinstance(int(license_number[3:8]), int):
+        try:
+            isinstance(int(license_number[3:8]), int)
+        except ValueError:
             raise ValidationError(
                 "Your last 5 characters must be digits!"
             )
