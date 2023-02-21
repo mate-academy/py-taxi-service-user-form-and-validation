@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
@@ -26,7 +28,7 @@ class DriverCreationForm(UserCreationForm):
             "last_name",
         )
 
-    def clean_license_number(self):
+    def clean_license_number(self) -> Optional[str]:
         return validate_license_number(self.cleaned_data["license_number"])
 
 
@@ -35,13 +37,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         model = Driver
         fields = ["license_number"]
 
-    def clean_license_number(self):
+    def clean_license_number(self) -> Optional[str]:
         return validate_license_number(self.cleaned_data["license_number"])
 
 
 def validate_license_number(
-    license_number,
-):
+    license_number: str,
+) -> Optional[str]:
     if len(license_number) != 8:
         raise ValidationError("License number should consist of 8 characters")
     elif not license_number[:3].isupper() or not license_number[:3].isalpha():
