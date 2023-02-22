@@ -7,7 +7,8 @@ from .views import (
     CarCreateView,
     CarUpdateView,
     CarDeleteView,
-    cars_add_delete_driver,
+    # cars_add_delete_driver,
+    CarAddDriverView,
     DriverListView,
     DriverDetailView,
     DriverCreateView,
@@ -63,7 +64,8 @@ urlpatterns = [
     ),
     path(
         "cars/<int:pk>/add-delete-driver",
-        cars_add_delete_driver,
+        # cars_add_delete_driver,
+        CarAddDriverView.as_view(),
         name="add-delete-driver"
     ),
 ]
