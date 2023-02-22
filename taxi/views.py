@@ -57,7 +57,7 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
 class CarListView(LoginRequiredMixin, generic.ListView):
     model = Car
     paginate_by = 5
-    queryset = Car.objects.all().select_related("manufacturer")
+    queryset = Car.objects.select_related("manufacturer")
 
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
@@ -88,7 +88,7 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = Driver.objects.prefetch_related("cars__manufacturer")
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
@@ -109,7 +109,7 @@ class DriversLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def assign_delete_car(request, pk) -> HttpResponseRedirect:
+def assign_delete_car(request, pk: int) -> HttpResponseRedirect:
     car = get_object_or_404(Car, pk=pk)
     driver = get_object_or_404(Driver, pk=request.user.pk)
     if car in driver.cars.all():
