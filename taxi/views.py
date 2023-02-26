@@ -60,10 +60,6 @@ class CarListView(LoginRequiredMixin, generic.ListView):
     queryset = Car.objects.all().select_related("manufacturer")
 
 
-# class CarDetailView(LoginRequiredMixin, generic.DetailView):
-#     model = Car
-
-
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
     form_class = CarCreateForm
