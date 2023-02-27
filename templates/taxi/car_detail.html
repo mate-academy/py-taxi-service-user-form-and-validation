@@ -7,7 +7,7 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers
     <a href="{% url 'taxi:car-update-drivers' pk=car.id %}">
-      {% if is_driver %}
+      {% if user in car.drivers.all %}
         <button type="submit" class="btn btn-danger link-to-page">Delete me from this car</button>
       {% else %}
         <button type="submit" class="btn btn-success link-to-page">Assign me to this car</button>

@@ -60,6 +60,10 @@ class CarListView(LoginRequiredMixin, generic.ListView):
     queryset = Car.objects.all().select_related("manufacturer")
 
 
+class CarDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Car
+
+
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
     form_class = CarCreateForm
@@ -104,19 +108,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def car_detail_view(request, pk):
-    driver = Driver.objects.get(id=request.session["_auth_user_id"])
-    car = Car.objects.get(pk=pk)
-    is_driver = driver in car.drivers.all()
-    context = {
-        "car": car,
-        "is_driver": is_driver
-    }
-    return render(request, "taxi/car_detail.html", context=context)
-
-
-@login_required
-def car_update_drivers(request, pk):
+def car_delete_assign_driver(request, pk):
     driver = Driver.objects.get(id=request.session["_auth_user_id"])
     car = Car.objects.get(pk=pk)
     is_driver = driver in car.drivers.all()
