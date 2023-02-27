@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete Car</h1>
-  <p>Are you sure you want to delete the Car: {{ car }}?</p>
+  <h1>Delete Driver</h1>
+  <p>Are you sure you want to delete the Driver: {{ driver }}?</p>
   <form action="" method="POST">
     {% csrf_token %}
     <input type="submit" value="Yes, delete" class="btn btn-outline-warning btn-lg submit delete">
