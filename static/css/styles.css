@@ -6,3 +6,6 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+.grey {
+    background-color: darkgray;
+}
