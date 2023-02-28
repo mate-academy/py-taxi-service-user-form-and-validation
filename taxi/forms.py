@@ -17,7 +17,7 @@ class CarForm(forms.ModelForm):
         fields = "__all__"
 
 
-class CreateUpdateDriverForm(forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Driver
