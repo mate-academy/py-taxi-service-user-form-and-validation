@@ -21,12 +21,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Driver
-        fields = (
-            "username",
-            "first_name",
-            "last_name",
-            "license_number",
-        )
+        fields = ("license_number",)
 
     def clean_license_number(self,):
         license_number = self.cleaned_data["license_number"]
@@ -52,3 +47,15 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 "License number must has Last 5 characters are digits"
             )
         return license_number
+
+
+class CreateDriverFormView(forms.ModelForm):
+
+    class Meta:
+        model = Driver
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "license_number",
+        )
