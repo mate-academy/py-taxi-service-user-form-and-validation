@@ -110,7 +110,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required
 def assign_delete_car_user(request, pk: int) -> HttpResponseRedirect:
-    car = get_object_or_404(klass=Car, Zpk=pk)
+    car = get_object_or_404(klass=Car, pk=pk)
 
     if request.user in car.drivers.all():
         car.drivers.remove(request.user)
