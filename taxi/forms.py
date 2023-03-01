@@ -25,7 +25,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         model = Driver
         fields = ("license_number",)
 
-    def clean_license_number(self):
+    def clean_license_number(self) -> str:
         license_number = self.cleaned_data["license_number"]
 
         if len(license_number) != DriverLicenseUpdateForm.PASSWORD_LEN:
