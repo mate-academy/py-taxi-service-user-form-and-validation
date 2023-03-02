@@ -1,3 +1,5 @@
+from typing import Optional, Dict, Any
+
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
@@ -18,19 +20,19 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         model = Driver
         fields = ("license_number",)
 
-    def clean_license_number(self):
+    def clean_license_number(self) -> Optional[Dict[str, Any]]:
         license_number = self.cleaned_data["license_number"]
 
         if len(license_number) != self.MAX_LEN:
             raise ValidationError(
                 f"License number must consist {self.MAX_LEN} characters"
             )
-        if ((license_number[:3].isalpha() is False)
+        if ((not license_number[:3].isalpha())
                 or (license_number[:3] != license_number[:3].upper())):
             raise ValidationError(
                 "First 3 characters must be uppercase letters"
             )
-        if license_number[3:].isdigit() is False:
+        if not license_number[3:].isdigit():
             raise ValidationError(
                 "Last 5 characters must be digits"
             )

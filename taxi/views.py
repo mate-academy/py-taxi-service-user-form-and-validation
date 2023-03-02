@@ -2,7 +2,7 @@ from typing import Any
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -78,9 +78,9 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:car-list")
 
 
-def delete_assign_driver(request, pk):
-    driver = Driver.objects.get(pk=request.user.id)
-    car = Car.objects.get(pk=pk)
+def delete_assign_driver(request, pk) -> HttpResponseRedirect:
+    driver = get_object_or_404(Driver, pk=request.user.id)
+    car = get_object_or_404(Car, pk=pk)
 
     if driver in car.drivers.all():
         car.drivers.remove(driver)
