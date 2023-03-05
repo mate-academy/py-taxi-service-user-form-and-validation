@@ -12,7 +12,10 @@ def license_validator(license_number) -> ValidationError | str:
             "Make sure that the license number is 8 characters long"
         )
 
-    if not license_number[:3].isalpha() or license_number[:3].upper() != license_number[:3]:
+    if (
+        not license_number[:3].isalpha()
+        or license_number[:3].upper() != license_number[:3]
+    ):
         raise ValidationError("The first 3 letters must be uppercase")
 
     if not license_number[3:].isdigit():
