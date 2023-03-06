@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -9,14 +9,14 @@ from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
-@login_required
-def assign_driver(request, pk: int):
-    car = get_object_or_404(Car, id=pk)
-    if request.user in car.drivers.all():
-        car.drivers.remove(request.user)
-    else:
-        car.drivers.add(request.user)
-    return HttpResponseRedirect(f"/cars/{pk}/")
+class AssignDriverView(LoginRequiredMixin, generic.ListView):
+    def post(self, request, pk: int):
+        car = get_object_or_404(Car, id=pk)
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
+        else:
+            car.drivers.add(request.user)
+        return HttpResponseRedirect(reverse("taxi:car-detail", args=[pk]))
 
 
 @login_required

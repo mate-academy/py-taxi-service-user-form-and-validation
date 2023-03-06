@@ -16,11 +16,11 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    assign_driver,
+    AssignDriverView,
 )
 
 urlpatterns = [
-    path("cars/<int:pk>/assign_driver/", assign_driver, name="assign-driver"),
+    path("cars/<int:pk>/assign_driver/", AssignDriverView.as_view(), name="assign-driver"),
     path("", index, name="index"),
     path(
         "manufacturers/",
