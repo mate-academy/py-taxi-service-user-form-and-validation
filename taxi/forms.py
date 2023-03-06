@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-def license_validator(license_number) -> ValidationError | str:
+def license_validator(license_number: str) -> ValidationError | str:
     if len(license_number) != 8:
         raise ValidationError(
             "Make sure that the license number is 8 characters long"
@@ -33,7 +33,7 @@ class DriverCreationForm(UserCreationForm):
             "license_number",
         )
 
-    def clean_license_number(self):
+    def clean_license_number(self) -> str:
         return license_validator(self.cleaned_data["license_number"])
 
 
@@ -42,7 +42,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         model = Driver
         fields = ("license_number",)
 
-    def clean_license_number(self):
+    def clean_license_number(self) -> str:
         return license_validator(self.cleaned_data["license_number"])
 
 

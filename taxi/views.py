@@ -10,7 +10,7 @@ from .models import Driver, Car, Manufacturer
 
 
 @login_required
-def assign_driver(request, pk):
+def assign_driver(request, pk: int):
     car = get_object_or_404(Car, id=pk)
     if request.user in car.drivers.all():
         car.drivers.remove(request.user)
