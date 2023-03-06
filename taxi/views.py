@@ -101,10 +101,10 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
 
 
-class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
-    success_url = reverse_lazy("taxi:driver-detail")
+    success_url = reverse_lazy("taxi:driver-list")
 
 
 @login_required
@@ -117,4 +117,5 @@ def add_delete_user_to_car(request, pk) -> render:
 
     car.drivers.add(user)
 
-    return HttpResponseRedirect(redirect_to=reverse_lazy("taxi:car_detail", kwargs={"pk": pk}))
+    return HttpResponseRedirect(
+        redirect_to=reverse_lazy("taxi:car_detail", kwargs={"pk": pk}))
