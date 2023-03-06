@@ -20,7 +20,11 @@ from .views import (
 )
 
 urlpatterns = [
-    path("cars/<int:pk>/assign_driver/", AssignDriverView.as_view(), name="assign-driver"),
+    path(
+        "cars/<int:pk>/assign_driver/",
+        AssignDriverView.as_view(),
+        name="assign-driver",
+    ),
     path("", index, name="index"),
     path(
         "manufacturers/",

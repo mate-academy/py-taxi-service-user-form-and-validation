@@ -16,7 +16,9 @@ class AssignDriverView(LoginRequiredMixin, generic.ListView):
             car.drivers.remove(request.user)
         else:
             car.drivers.add(request.user)
-        return HttpResponseRedirect(reverse("taxi:car-detail", args=[pk]))
+        return HttpResponseRedirect(
+            reverse("taxi:car-detail", args=[pk])
+        )
 
 
 @login_required
