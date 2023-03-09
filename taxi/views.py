@@ -42,8 +42,8 @@ def change_drivers(
 
     if user in car.drivers.all():
         car.drivers.remove(user)
-
-    car.drivers.add(user)
+    else:
+        car.drivers.add(user)
 
     return HttpResponseRedirect(
         redirect_to=reverse_lazy(
