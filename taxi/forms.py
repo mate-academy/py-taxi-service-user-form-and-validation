@@ -22,6 +22,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
+        start_length = license_number[:3]
 
         if len(license_number) != DriverLicenseUpdateForm.LENGTH_LICENSE:
             raise ValidationError(
@@ -29,10 +30,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 f" {DriverLicenseUpdateForm.LENGTH_LICENSE}"
             )
 
-        if (
-                not license_number[:3].isalpha()
-                or (
-                license_number[:3] != license_number[:3].upper()
+        if (not start_length.isalpha() or (
+                    start_length != start_length.upper()
                 )
         ):
             raise ValidationError(
