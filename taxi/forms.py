@@ -30,9 +30,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 f" {DriverLicenseUpdateForm.LENGTH_LICENSE}"
             )
 
-        if (not start_length.isalpha() or (
-                    start_length != start_length.upper()
-                )
+        if (
+                not start_length.isalpha()
+                or start_length != start_length.upper()
         ):
             raise ValidationError(
                 "First 3 characters have to be uppercase letters"
