@@ -14,7 +14,7 @@ class DriverCreateForm(UserCreationForm):
         )
 
 
-class DriverUpdateForm(forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     min_license_number_length = 8
 
     class Meta:
@@ -23,10 +23,10 @@ class DriverUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        if len(license_number) != DriverUpdateForm.min_license_number_length:
+        if len(license_number) != DriverLicenseUpdateForm.min_license_number_length:
             raise ValidationError(
                 "License number should have at least "
-                f"{DriverUpdateForm.min_license_number_length} letters"
+                f"{DriverLicenseUpdateForm.min_license_number_length} letters"
             )
 
         if (
