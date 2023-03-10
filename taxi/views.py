@@ -115,7 +115,9 @@ def add_delete_user_to_car(request, pk) -> render:
 
     if user in car.drivers.all():
         car.drivers.remove(user)
+    else:
+        car.drivers.add(user)
 
-    car.drivers.add(user)
-
-    return HttpResponseRedirect(redirect_to=reverse_lazy("taxi:car-list"))
+    return HttpResponseRedirect(
+        redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
+    )
