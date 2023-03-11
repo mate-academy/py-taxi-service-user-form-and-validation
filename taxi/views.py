@@ -10,7 +10,7 @@ from .models import Driver, Car, Manufacturer
 
 
 @login_required
-def index(request):
+def index(request) -> render:
     """View function for the home page of the site."""
 
     num_drivers = Driver.objects.count()
@@ -108,16 +108,16 @@ class DriverLicenseUpdate(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-@login_required
-def add_delete_user_to_car(request, pk) -> render:
-    car = Car.objects.get(pk=pk)
-    user = Driver.objects.get(pk=request.user.id)
+class AssignDriverView(LoginRequiredMixin, generic.View):
+    def add_delete_user_to_car(self, request, pk: int) -> HttpResponseRedirect:
+        car = Car.objects.get(pk=pk)
+        user = Driver.objects.get(pk=request.user.id)
 
-    if user in car.drivers.all():
-        car.drivers.remove(user)
-    else:
-        car.drivers.add(user)
+        if request.user in car.drivers.all():
+            car.drivers.remove(user)
+        else:
+            car.drivers.add(user)
 
-    return HttpResponseRedirect(
-        redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
-    )
+        return HttpResponseRedirect(
+            redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
+        )
