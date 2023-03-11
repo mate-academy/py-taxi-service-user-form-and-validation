@@ -111,12 +111,11 @@ class DriverLicenseUpdate(LoginRequiredMixin, generic.UpdateView):
 class AssignDriverView(LoginRequiredMixin, generic.View):
     def add_delete_user_to_car(self, request, pk: int) -> HttpResponseRedirect:
         car = Car.objects.get(pk=pk)
-        user = Driver.objects.get(pk=request.user.id)
 
         if request.user in car.drivers.all():
-            car.drivers.remove(user)
+            car.drivers.remove(request.user)
         else:
-            car.drivers.add(user)
+            car.drivers.add(request.user)
 
         return HttpResponseRedirect(
             redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
