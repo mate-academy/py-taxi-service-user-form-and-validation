@@ -1,6 +1,8 @@
+from typing import Any
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -108,8 +110,8 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-def delete_assign_car(request, pk) -> HttpResponseRedirect:
-    car = Car.objects.get(id=pk)
+def delete_assign_car(request: Any, pk: int) -> HttpResponseRedirect:
+    car = get_object_or_404(Car, pk=pk)
     if request.user in car.drivers.all():
         car.drivers.remove(request.user)
     else:
