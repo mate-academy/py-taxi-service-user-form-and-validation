@@ -14,7 +14,7 @@ from taxi.models import Driver, Car
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    MAX_LEN = 8
+    LICENSE_NUMBER_MAX_LEN = 8
 
     class Meta:
         model = Driver
@@ -23,9 +23,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     def clean_license_number(self) -> Optional[Dict[str, Any]]:
         license_number = self.cleaned_data["license_number"]
 
-        if len(license_number) != self.MAX_LEN:
+        if len(license_number) != self.LICENSE_NUMBER_MAX_LEN:
             raise ValidationError(
-                f"License number must consist {self.MAX_LEN} characters"
+                f"License number must consist "
+                f"{self.LICENSE_NUMBER_MAX_LEN} characters"
             )
         if ((not license_number[:3].isalpha())
                 or (license_number[:3] != license_number[:3].upper())):
@@ -40,21 +41,21 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 
 class DriverCreationForm(UserCreationForm):
-    LENGTH = 8
-    MESSAGE = (
+    LICENSE_NUMBER_LENGTH = 8
+    WRONG_CREATION_MESSAGE = (
         "License number must have 8 characters"
         " and first 3 uppercase letters than 5 numbers ;)"
     )
-    REGEX = "[A-Z]{3}[0-9]{5}"
+    REQUIRED_EXPRESSION = "[A-Z]{3}[0-9]{5}"
 
     license_number = forms.CharField(
         required=True,
         validators=[
-            MinLengthValidator(LENGTH),
-            MaxLengthValidator(LENGTH),
+            MinLengthValidator(LICENSE_NUMBER_LENGTH),
+            MaxLengthValidator(LICENSE_NUMBER_LENGTH),
             RegexValidator(
-                message=MESSAGE,
-                regex=REGEX
+                message=WRONG_CREATION_MESSAGE,
+                regex=REQUIRED_EXPRESSION
             )
         ]
     )
