@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -107,6 +107,11 @@ class AssignRemoveDriverView(generic.View):
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
         car = get_object_or_404(klass=Car, pk=pk)
+        return render(request, "taxi/car_detail.html", context={"car": car})
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        car = get_object_or_404(klass=Car, pk=pk)
 
         if request.user not in car.drivers.all():
             car.drivers.add(request.user)
@@ -114,14 +119,4 @@ class AssignRemoveDriverView(generic.View):
             car.drivers.remove(request.user)
 
         car.save()
-        return render(request, "taxi/car_detail.html", context={"car": car})
-
-    def delete(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        car = get_object_or_404(klass=Car, pk=pk)
-
-        if request.user in car.drivers.all():
-            car.drivers.remove(request.user)
-            car.save()
-
-        return render(request, "taxi/car_detail.html", context={"car": car})
+        return redirect("car-detail", pk=pk)
