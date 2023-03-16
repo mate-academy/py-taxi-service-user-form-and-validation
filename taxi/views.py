@@ -105,7 +105,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class AssignRemoveDriverView(generic.View):
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get('pk')
+        pk = kwargs.get("pk")
         car = get_object_or_404(klass=Car, pk=pk)
 
         if request.user not in car.drivers.all():
@@ -117,7 +117,7 @@ class AssignRemoveDriverView(generic.View):
         return render(request, "taxi/car_detail.html", context={"car": car})
 
     def delete(self, request, *args, **kwargs):
-        pk = kwargs.get('pk')
+        pk = kwargs.get("pk")
         car = get_object_or_404(klass=Car, pk=pk)
 
         if request.user in car.drivers.all():
