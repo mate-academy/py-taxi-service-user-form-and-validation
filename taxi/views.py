@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
@@ -103,13 +103,36 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-def assign_or_delete_driver(request, pk):
-    car = Car.objects.get(id=pk)
-    if request.user in car.drivers.all():
-        car.drivers.filter(id=request.user.id).delete()
+class AssignRemoveDriverView(generic.View):
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        car = get_object_or_404(klass=Car, pk=pk)
+
+        if request.user not in car.drivers.all():
+            car.drivers.add(request.user)
+        else:
+            car.drivers.remove(request.user)
+
         car.save()
-    else:
-        car.drivers.add(request.user)
-        car.save()
-    return HttpResponseRedirect(reverse("taxi:car-detail",
-                                        kwargs={"pk": car.pk}))
+        return render(request, "taxi/car_detail.html", context={"car": car})
+
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        car = get_object_or_404(klass=Car, pk=pk)
+
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
+            car.save()
+
+        return render(request, "taxi/car_detail.html", context={"car": car})
+
+# def assign_or_delete_driver(request, pk):
+#     car = get_object_or_404(klass=Car, pk=pk)
+#
+#     if request.user not in car.drivers.all():
+#         car.drivers.add(request.user)
+#     else:
+#         car.drivers.remove(request.user)
+#
+#     car.save()
+#     return render(request, "taxi/car_detail.html", context={"car": car})
