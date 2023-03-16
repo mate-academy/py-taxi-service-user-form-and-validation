@@ -125,14 +125,3 @@ class AssignRemoveDriverView(generic.View):
             car.save()
 
         return render(request, "taxi/car_detail.html", context={"car": car})
-
-# def assign_or_delete_driver(request, pk):
-#     car = get_object_or_404(klass=Car, pk=pk)
-#
-#     if request.user not in car.drivers.all():
-#         car.drivers.add(request.user)
-#     else:
-#         car.drivers.remove(request.user)
-#
-#     car.save()
-#     return render(request, "taxi/car_detail.html", context={"car": car})
