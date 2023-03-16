@@ -109,7 +109,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def assign_delete_driver(request, pk) -> render:
+def assign_delete_driver(request, pk: int) -> HttpResponseRedirect:
     user = Driver.objects.get(pk=request.user.id)
     car = Car.objects.get(pk=pk)
 

@@ -16,7 +16,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             "license_number",
         )
 
-    def clean_license_number(self):
+    def clean_license_number(self) -> object:
         license_number = self.cleaned_data["license_number"]
         if len(license_number) < DriverLicenseUpdateForm.MIN_LENGTH:
             raise ValidationError(
