@@ -119,4 +119,4 @@ class AssignRemoveDriverView(generic.View):
             car.drivers.remove(request.user)
 
         car.save()
-        return redirect("car-detail", pk=pk)
+        return redirect("car_detail", pk=pk)
