@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -62,16 +63,6 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
-    def post(self, request, **kwargs):
-        self.object = self.get_object()
-
-        if request.POST.get("button") == "assign":
-            self.object.drivers.add(self.request.user.id)
-            return redirect("taxi:car-detail", pk=self.object.pk)
-        else:
-            self.object.drivers.remove(self.request.user.id)
-            return redirect("taxi:car-detail", pk=self.object.pk)
-
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
@@ -112,3 +103,18 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+@login_required
+def add_delete_user_to_car(request, pk) -> render:
+    user = Driver.objects.get(pk=request.user.id)
+    car = Car.objects.get(pk=pk)
+
+    if user in car.drivers.all():
+        car.drivers.remove(user)
+    else:
+        car.drivers.add(user)
+
+    return HttpResponseRedirect(
+        redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
+    )
