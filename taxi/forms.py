@@ -7,7 +7,7 @@ from taxi.models import Driver, Car
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    MIN_LENGTH = 8
+    REQUIRED_LENGTH = 8
 
     class Meta:
         model = Driver
@@ -15,9 +15,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        if len(license_number) != self.MIN_LENGTH:
+        if len(license_number) != self.REQUIRED_LENGTH:
             raise ValidationError(
-                f"License number should be min {self.MIN_LENGTH}"
+                f"License number should be {self.REQUIRED_LENGTH}"
             )
 
         elif (
