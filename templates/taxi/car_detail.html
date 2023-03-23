@@ -12,7 +12,14 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <p>
+    <h1>Drivers</h1>
+    {% if car in user.cars.all %}
+      <a href="{% url 'taxi:assign-car' pk=car.id %}" class="float-right btn btn-danger">Delete me from this car</a>
+    {% else %}
+      <a href="{% url 'taxi:assign-car' pk=car.id %}" class="float-right btn btn-primary">Assign me to this car</a>
+    {% endif %}
+  </p>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
