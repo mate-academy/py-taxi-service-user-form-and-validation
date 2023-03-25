@@ -114,5 +114,6 @@ def assign_delete_car(request, pk):
         car.drivers.remove(request.user)
     else:
         car.drivers.add(request.user)
-    return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": car.pk}))
-
+    return HttpResponseRedirect(reverse(
+        "taxi:car-detail", kwargs={"pk": car.pk})
+    )
