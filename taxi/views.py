@@ -118,4 +118,3 @@ def assign_or_delete_driver(request: HttpResponse, pk: int) -> HttpResponse:
     else:
         car.drivers.add(driver)
     return redirect("taxi:car-detail", pk=pk)
-
