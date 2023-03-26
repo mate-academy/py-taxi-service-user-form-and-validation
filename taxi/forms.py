@@ -13,7 +13,9 @@ class DriverForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = UserCreationForm.Meta.fields + ("license_number",)
+        fields = UserCreationForm.Meta.fields + (
+            "first_name", "last_name", "license_number",
+        )
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
