@@ -2,6 +2,9 @@
 
 {% block content %}
     <h1>Driver List
+    <a style="float: right" href="{% url "taxi:driver-create" %}" class="btn btn-primary link-to-page">
+      Add new
+    </a>
     </h1>
 
     {% if driver_list %}
