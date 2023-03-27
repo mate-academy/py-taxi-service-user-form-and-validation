@@ -117,4 +117,5 @@ def add_remove_driver_car(request: HttpRequest, pk) -> HttpResponse:
         car.drivers.remove(request.user.id)
     else:
         car.drivers.add(request.user.id)
-    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
+    driver.save()
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", kwargs={"pk": car.pk}))
