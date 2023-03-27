@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete manufacturer?</h1>
+  <h3>
+      Are you sure you want to delete driver:
+      <a href=" {{ driver.get_absolute_url }}">{{ driver.username }}</a>?
+  </h3>
   <form action="" method="post">
     {% csrf_token %}
 
