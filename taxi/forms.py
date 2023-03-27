@@ -17,30 +17,17 @@ class DriverForm(UserCreationForm):
             "first_name", "last_name", "license_number",
         )
 
+    def clean_license_number(self):
+        return validate_license_number(self.cleaned_data.get("license_number"))
+
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    MIN_MAX_LEN = 8
-
     class Meta:
         model = get_user_model()
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data.get("license_number")
-        if (
-            len(license_number) != self.MIN_MAX_LEN
-            or len(
-                [
-                    symbol
-                    for symbol in license_number[:3]
-                    if symbol in ascii_uppercase
-                ]
-            )
-            != len(license_number[:3].upper())
-            or not license_number[-1:-6:-1].isdigit()
-        ):
-            raise forms.ValidationError("Provide proper license number")
-        return license_number
+        return validate_license_number(self.cleaned_data.get("license_number"))
 
 
 class CarCreateForm(forms.ModelForm):
@@ -52,3 +39,14 @@ class CarCreateForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
+
+
+def validate_license_number(license_number):
+    if (
+            len(license_number) != 8
+            or not license_number[:3].isupper()
+            or not license_number[:3].isalpha()
+            or not license_number[3:].isdigit()
+    ):
+        raise forms.ValidationError("Provide proper license number")
+    return license_number
