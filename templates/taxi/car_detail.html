@@ -21,16 +21,6 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
-{#variant 1 - function based#}
-{#  {% if user in car.drivers.all %}#}
-{#      <a href="{% url 'taxi:add-delete-driver' pk=car.id %}" class="btn btn-danger link-to-page">#}
-{#        Delete me from this car#}
-{#      </a>#}
-{#    {% else %}#}
-{#      <a href="{% url 'taxi:add-delete-driver' pk=car.id %}" class="btn btn-primary link-to-page">#}
-{#        Assign me to this car#}
-{#      </a>#}
-{#  {% endif %}#}
 
   <form method="POST" action="">
     {% csrf_token %}
