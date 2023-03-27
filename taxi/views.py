@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy, reverse
-from django.views import generic
+from django.urls import reverse_lazy
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.detail import SingleObjectMixin
 
 from .forms import DriverUserCreationForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
@@ -108,13 +108,23 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-@login_required
-def assign_remove_driver(request, pk):
-    car = get_object_or_404(Car, pk=pk)
+class AssignRemoveDriverView(LoginRequiredMixin, SingleObjectMixin, View):
+    model = Car
+    fields = []  # Fields that will be used to create the form
 
-    if request.user in car.drivers.all():
-        car.drivers.remove(request.user)
-    else:
-        car.drivers.add(request.user)
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)  # Run the post method to handle the logic
 
-    return HttpResponseRedirect(reverse("taxi:car-detail", args=[pk]))
+    def post(self, request, *args, **kwargs):
+        car = self.get_object()
+
+        if car is not None:
+            if request.user in car.drivers.all():
+                car.drivers.remove(request.user)
+            else:
+                car.drivers.add(request.user)
+
+        return render(request, "taxi/car_detail.html", context={"car": car})
+
+    def get_success_url(self):
+        return reverse_lazy("taxi:car-detail", args=[self.object.pk])
