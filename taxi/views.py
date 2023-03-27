@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -63,6 +63,15 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def post(self, request, **kwargs):
+        driver_list = self.get_object()
+        if request.POST.get("button") == "out_of_list":
+            driver_list.drivers.add(self.request.user.id)
+            return redirect("taxi:car-detail", pk=self.request.user.id)
+        else:
+            driver_list.drivers.remove(self.request.user.id)
+            return redirect("taxi:car-detail", pk=self.request.user.id)
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
@@ -106,17 +115,17 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
 
-
-@login_required
-def add_delete_user_to_car(request, pk) -> render:
-    user = Driver.objects.get(pk=request.user.id)
-    car = Car.objects.get(pk=pk)
-
-    if user in car.drivers.all():
-        car.drivers.remove(user)
-    else:
-        car.drivers.add(user)
-
-    return HttpResponseRedirect(
-        redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
-    )
+# variant 1 - function based
+# @login_required
+# def add_delete_user_to_car(request, pk) -> render:
+#     user = Driver.objects.get(pk=request.user.id)
+#     car = Car.objects.get(pk=pk)
+#
+#     if user in car.drivers.all():
+#         car.drivers.remove(user)
+#     else:
+#         car.drivers.add(user)
+#
+#     return HttpResponseRedirect(
+#         redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
+#     )

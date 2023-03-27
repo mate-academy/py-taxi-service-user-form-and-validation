@@ -62,3 +62,10 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
+
+
+class AddDeleteUserForm(forms.Form):
+    action = forms.CharField(
+        max_length=25,
+        required=False
+    )
