@@ -110,10 +110,10 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class AssignRemoveDriverView(LoginRequiredMixin, SingleObjectMixin, View):
     model = Car
-    fields = []  # Fields that will be used to create the form
+    fields = []
 
     def get(self, request, *args, **kwargs):
-        return self.post(request, *args, **kwargs)  # Run the post method to handle the logic
+        return self.post(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         car = self.get_object()
