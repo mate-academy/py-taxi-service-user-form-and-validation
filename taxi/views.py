@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from django.shortcuts import render
@@ -111,7 +112,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 def add_remove_driver_car(request: HttpRequest, pk) -> HttpResponse:
     car = Car.objects.get(id=pk)
-    driver = Driver.objects.get(id=request.user.id)
+    driver = get_user_model().objects.get(id=request.user.id)
     if driver in car.drivers.all():
         car.drivers.remove(request.user.id)
     else:
