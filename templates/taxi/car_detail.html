@@ -11,6 +11,21 @@
       Update
     </a>
   </h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      {% if user in car.drivers.all %}
+      <button class="btn btn-danger link-to-page" type="submit">
+        Delete me from this car
+      </button>
+      {% else %}
+      <button class="btn btn-secondary link-to-page" type="submit">
+        Assign me to this car
+      </button>
+      {% endif %}
+    </div>
+      <!-- <input type="submit" value="Delete me from this car"> -->
+  </form>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
   <hr>
