@@ -13,7 +13,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         num = self.cleaned_data["license_number"]
-        if len(num) != 8 or not num[:3].isupper() or not num[3:].isdigit():
+        if (len(num) != 8
+                or not num[:3].isupper()
+                or not num[3:].isdigit()
+                or not num[:3].isalpha()):
             raise ValidationError(
                 "License Number must consist only of 8 chars,"
                 " first 3 chars must be in uppercase,"
