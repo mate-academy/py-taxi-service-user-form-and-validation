@@ -24,7 +24,8 @@ class DriverCreationForm(UserCreationForm):
                 "Ensure that length license_number is 8"
             )
 
-        elif not license_number[:3].isalpha() or not license_number[:3].isupper():
+        elif (not license_number[:3].isalpha()
+              or not license_number[:3].isupper()):
             raise ValidationError("Ensure that first 3 letters "
                                   "in license_number are in uppercase")
 
