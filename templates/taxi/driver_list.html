@@ -28,3 +28,11 @@
       <p>There are no drivers in the service.</p>
     {% endif %}
 {% endblock %}
+
+
+{% block create %}
+<a href="{% url 'taxi:driver-create' %}" class="btn btn-primary">
+  Create
+</a>
+{% endblock create %}
+  
