@@ -23,4 +23,7 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+    <button class="btn btn-success" type="button" onclick="location.href='{% url 'taxi:driver-update' pk=driver.pk %}'">Update</button>
+    <button class="btn btn-danger" type="button" onclick="location.href='{% url 'taxi:driver-delete' pk=driver.pk %}'">Delete</button>
+{#    <a class="btn btn-danger" href="{% url 'taxi:driver-delete' pk=driver.pk %}">Delete</a>#}
 {% endblock %}
