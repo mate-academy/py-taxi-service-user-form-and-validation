@@ -114,14 +114,14 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 class ToggleDriverView(LoginRequiredMixin, generic.View):
     def post(self, request, pk):
         car = Car.objects.get(pk=pk)
-        driver_id = request.POST.get('driver_id', request.user.id)
-        action = request.POST.get('action')
+        driver_id = request.POST.get("driver_id", request.user.id)
+        action = request.POST.get("action")
 
-        if action == 'remove':
+        if action == "remove":
             car.drivers.remove(driver_id)
-        elif action == 'add':
+        elif action == "add":
             car.drivers.add(driver_id)
         else:
-            return JsonResponse({'success': False})
+            return JsonResponse({"success": False})
 
-        return redirect('taxi:car-detail', pk=car.pk)
+        return redirect("taxi:car-detail", pk=car.pk)
