@@ -4,27 +4,27 @@
   <h1>
   {{ car.model }}
   {% if request.user in drivers %}
-    <a href="{% url 'taxi:remove_driver' pk=car.pk %}" class="btn btn-danger link-to-page"
-   onclick="event.preventDefault(); document.getElementById('remove-driver-form').submit();">
+    <a href="{% url 'taxi:toggle_driver' pk=car.pk %}" class="btn btn-danger link-to-page"
+   onclick="event.preventDefault(); document.getElementById('toggle-driver-form').submit();">
     Delete me from this car
-</a>
+    </a>
 
-<form id="remove-driver-form" action="{% url 'taxi:remove_driver' pk=car.pk %}" method="POST" style="display:none;">
-    {% csrf_token %}
-    <input type="hidden" name="driver_id" value="{{ request.user.id }}">
-</form>
+    <form id="toggle-driver-form" action="{% url 'taxi:toggle_driver' pk=car.pk %}" method="POST" style="display:none;">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="remove">
+    </form>
 
   {% else %}
-    <a href="{% url 'taxi:add_driver' pk=car.pk %}" class="btn btn-success link-to-page"
-   onclick="event.preventDefault(); document.getElementById('add-driver-to').submit();">
+    <a href="{% url 'taxi:toggle_driver' pk=car.pk %}" class="btn btn-success link-to-page"
+   onclick="event.preventDefault(); document.getElementById('toggle-driver-form').submit();">
     Assign me to this car
     </a>
 
-    <form id="add-driver-to" action="{% url 'taxi:add_driver' pk=car.pk %}" method="POST" style="display:none;">
-    {% csrf_token %}
-    <input type="hidden" name="driver_id" value="{{ request.user.id }}">
-</form>
-  {% endif %}
+    <form id="toggle-driver-form" action="{% url 'taxi:toggle_driver' pk=car.pk %}" method="POST" style="display:none;">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add">
+    </form>
+{% endif %}
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>

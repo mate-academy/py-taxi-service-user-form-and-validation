@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -110,39 +111,17 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class AddDriverToCarView(LoginRequiredMixin, generic.View):
+class ToggleDriverView(LoginRequiredMixin, generic.View):
     def post(self, request, pk):
         car = Car.objects.get(pk=pk)
-        driver_id = request.POST.get("driver_id")
-        if driver_id:
-            car.drivers.add(driver_id)
-            return redirect(
-                reverse_lazy(
-                    "taxi:car-detail",
-                    kwargs={"pk": car.pk}
-                )
-            )
-        return redirect(
-            reverse_lazy(
-                "taxi:car-detail",
-                kwargs={"pk": car.pk}
-            )
-        )
+        driver_id = request.POST.get('driver_id', request.user.id)
+        action = request.POST.get('action')
 
-
-class RemoveDriverFromCarView(LoginRequiredMixin, generic.View):
-    def post(self, request, pk):
-        car = Car.objects.get(pk=pk)
-        driver_id = request.POST.get("driver_id")
-        if driver_id:
+        if action == 'remove':
             car.drivers.remove(driver_id)
-            return redirect(
-                reverse_lazy(
-                    "taxi:car-detail",
-                    kwargs={"pk": car.pk}
-                )
-            )
-        return redirect(
-            reverse_lazy(
-                "taxi:car-detail",
-                kwargs={"pk": car.pk}))
+        elif action == 'add':
+            car.drivers.add(driver_id)
+        else:
+            return JsonResponse({'success': False})
+
+        return redirect('taxi:car-detail', pk=car.pk)
