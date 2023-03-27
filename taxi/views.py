@@ -122,13 +122,12 @@ class AddDriverToCarView(LoginRequiredMixin, generic.View):
                     kwargs={"pk": car.pk}
                 )
             )
-        else:
-            return redirect(
-                reverse_lazy(
-                    "taxi:car-detail",
-                    kwargs={"pk": car.pk}
-                )
+        return redirect(
+            reverse_lazy(
+                "taxi:car-detail",
+                kwargs={"pk": car.pk}
             )
+        )
 
 
 class RemoveDriverFromCarView(LoginRequiredMixin, generic.View):
@@ -143,8 +142,7 @@ class RemoveDriverFromCarView(LoginRequiredMixin, generic.View):
                     kwargs={"pk": car.pk}
                 )
             )
-        else:
-            return redirect(
-                reverse_lazy(
-                    "taxi:car-detail",
-                    kwargs={"pk": car.pk}))
+        return redirect(
+            reverse_lazy(
+                "taxi:car-detail",
+                kwargs={"pk": car.pk}))
