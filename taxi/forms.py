@@ -1,10 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ValidationError
-from django.urls import reverse_lazy
-from django.views import generic
 
 from taxi.models import Driver, Car
 
@@ -24,21 +21,24 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
 
-        LEN_LICENSE_NUMBER = 8
-        NUM_UPPER_LETTERS = 3
-        NUM_DIGITS = LEN_LICENSE_NUMBER - NUM_UPPER_LETTERS
+        len_license_number = 8
+        num_upper_letter = 3
+        num_digits = len_license_number - num_upper_letter
         license_number = self.cleaned_data["license_number"]
 
-        if len(license_number) != LEN_LICENSE_NUMBER:
-            raise ValidationError(f"Lenght of licence number should be {LEN_LICENSE_NUMBER} symbols")
+        if len(license_number) != len_license_number:
+            raise ValidationError(f"Length of licence number "
+                                  f"should be {len_license_number} symbols")
 
-        if not (license_number[:NUM_UPPER_LETTERS].isupper() and license_number[:NUM_UPPER_LETTERS].isalpha()):
-            raise ValidationError(f"First {NUM_UPPER_LETTERS} symbols should be"
+        if not (license_number[:num_upper_letter].isupper()
+                and license_number[:num_upper_letter].isalpha()):
+            raise ValidationError(f"First {num_upper_letter} symbols should be"
                                   f" letters in upper case")
-        if license_number[NUM_UPPER_LETTERS:].isdigit() is False:
+        if license_number[num_upper_letter:].isdigit() is False:
             raise ValidationError(
-                f"Check your licence number: first {NUM_UPPER_LETTERS} symbols should be"
-                f" letters in upper case, another symbols should be digits"
+                f"Check your licence number: first {num_digits} "
+                f"symbols should be letters in upper case, "
+                f"another symbols should be digits"
             )
         return license_number
 
