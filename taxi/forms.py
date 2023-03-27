@@ -21,7 +21,9 @@ class DriverLicenseUpdateView(UserCreationForm):
         if len(license_number) < 8:
             raise ValidationError("There are less than 8 characters!")
         if not license_number[:3].isupper():
-            raise ValidationError("First three characters should be in upper register!")
+            raise ValidationError(
+                "First three characters should be in upper register!"
+            )
         if not license_number[:3].isalpha():
             raise ValidationError("First three characters should be letters!")
         if not license_number[-5:].isdigit():
