@@ -57,7 +57,7 @@ urlpatterns = [
     path("drivers/<int:pk>/update/",
          DriverUpdateView.as_view(), name="driver-update"),
     path("cars/<int:pk>/remove_add_driver_to_car/",
-         remove_add_driver_to_car, name="remove_add_driver_to_car"),
+         remove_add_driver_to_car, name="remove-add-driver-to-car"),
 
 ]
 
