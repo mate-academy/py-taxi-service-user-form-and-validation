@@ -43,11 +43,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
-    "crispy_forms",
-    "taxi",
     "crispy_bootstrap4",
     "crispy_forms",
+    "taxi",
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -77,8 +78,6 @@ TEMPLATES = [
         },
     },
 ]
-
-CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 WSGI_APPLICATION = "taxi_service.wsgi.application"
 
@@ -145,5 +144,3 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-CRISPY_TEMPLATE_PACK = "bootstrap4"

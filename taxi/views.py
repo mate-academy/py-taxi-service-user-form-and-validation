@@ -4,8 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from .migrations.forms import DriverLicenseUpdateForm, DriverForm
+from taxi.forms import CarForm, DriverForm, DriverLicenseUpdateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -66,7 +65,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -93,7 +92,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
-    form = DriverForm
+    form_class = DriverForm
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -104,7 +103,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    form = DriverLicenseUpdateForm
+    form_class = DriverLicenseUpdateForm
 
 
 def remove_add_driver_to_car(request, pk):
