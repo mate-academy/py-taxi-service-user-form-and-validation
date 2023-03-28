@@ -1,15 +1,69 @@
-<ul class="sidebar-nav list-group">
-  {% if user.is_authenticated %}
-    <li class="list-group-item">User: <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
-    <li class="list-group-item"><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-  {% else %}
-    <li class="list-group-item"><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-  {% endif %}
-
-  <br>
-
-  <li class="list-group-item"><a href="{% url 'taxi:index' %}">Home</a></li>
-  <li class="list-group-item"><a href="{% url 'taxi:driver-list' %}">All drivers</a></li>
-  <li class="list-group-item"><a href="{% url 'taxi:car-list' %}">All cars</a></li>
-  <li class="list-group-item"><a href="{% url 'taxi:manufacturer-list' %}">All manufacturers</a></li>
-</ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{% url 'taxi:index' %}">Taxi Service</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<li class="nav-item">
+					<div class="dropdown">
+						<button class=" nav-link active btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+										data-bs-toggle="dropdown" aria-expanded="false">
+							<a class="navbar-text" href="{% url 'taxi:manufacturer-list' %}">Manufacturers</a>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							<li><a class="dropdown-item" href="{% url 'taxi:manufacturer-list' %}">Test link 1</a></li>
+							<li><a class="dropdown-item" href="{% url 'taxi:manufacturer-list' %}">Test link 2</a></li>
+						</ul>
+						</a>
+					</div>
+				</li>
+				<li class="nav-item">
+					<div class="dropdown">
+						<button class=" nav-link active btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+										data-bs-toggle="dropdown" aria-expanded="false">
+							<a class="navbar-text" href="{% url 'taxi:car-list' %}">Cars</a>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							<li><a class="dropdown-item" href="{% url 'taxi:car-list' %}">Test link 1</a></li>
+							<li><a class="dropdown-item" href="{% url 'taxi:car-list' %}">Test link 2</a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="nav-item">
+					<div class="dropdown">
+						<button class=" nav-link active btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+										data-bs-toggle="dropdown" aria-expanded="false">
+							<a class="navbar-text" href="{% url 'taxi:driver-list' %}">Drivers</a>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							<li><a class="dropdown-item" href="{% url 'taxi:driver-list' %}">Test link 1</a></li>
+							<li><a class="dropdown-item" href="{% url 'taxi:driver-list' %}">Test link 2</a></li>
+						</ul>
+					</div>
+				</li>
+				<li class="nav-item">
+					{% if user.is_authenticated %}
+						<div class="dropdown">
+							<button class=" nav-link active btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+											data-bs-toggle="dropdown" aria-expanded="false">
+								<a class="navbar-text" href="{% url "taxi:driver-detail" pk=user.id %}">User: {{ user.username }}</a>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+								<li><a class="dropdown-item" href="{% url "logout" %}">Log out</a></li>
+							</ul>
+						</div>
+					{% else %}
+						<div class="dropdown">
+							<button class=" nav-link active btn dropdown-toggle" type="button" id="dropdownMenuButton1"
+											data-bs-toggle="dropdown" aria-expanded="false">
+								<a class="navbar-text" href="{% url "login" %}">You're not log in</a>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+								<li><a class="dropdown-item" href="{% url "login" %}">Log in</a></li>
+							</ul>
+						</div>
+					{% endif %}
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
