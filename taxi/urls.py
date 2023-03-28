@@ -52,7 +52,7 @@ urlpatterns = [
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
     ),
     path(
-        "drivers/create",
+        "drivers/create/",
         DriverCreateView.as_view(),
         name="driver-create",
     ),
@@ -73,7 +73,7 @@ urlpatterns = [
         name="car-add",
     ),
     path(
-        "cars/<int:pk>/car-remove",
+        "cars/<int:pk>/car-remove/",
         car_remove,
         name="car-remove",
     )

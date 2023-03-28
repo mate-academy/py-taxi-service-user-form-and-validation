@@ -5,22 +5,8 @@ from django import forms
 from taxi.models import Driver, Car
 
 
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = Driver
-        fields = UserCreationForm.Meta.fields + (
-            "license_number",
-            "first_name",
-            "last_name"
-        )
-
-
-class DriverLicenseUpdateForm(forms.ModelForm):
+class CleanLicenseNumberMixin:
     LEN_LICENSE_NUMBER = 8
-
-    class Meta:
-        model = Driver
-        fields = ("license_number",)
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
@@ -43,6 +29,23 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             )
 
         return license_number
+
+
+class CustomUserCreationForm(UserCreationForm, CleanLicenseNumberMixin):
+    class Meta(UserCreationForm.Meta):
+        model = Driver
+        fields = UserCreationForm.Meta.fields + (
+            "license_number",
+            "first_name",
+            "last_name"
+        )
+
+
+class DriverLicenseUpdateForm(forms.ModelForm, CleanLicenseNumberMixin):
+
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
 
 
 class CarForm(forms.ModelForm):
