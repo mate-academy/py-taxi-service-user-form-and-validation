@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
@@ -116,17 +116,18 @@ class DriverLicenseDeleteView(LoginRequiredMixin, generic.DeleteView):
         return reverse_lazy("taxi:driver-detail", kwargs={"pk": license_id})
 
 
-def change_driver_car(request, pk):
-    user = Driver.objects.get(pk=request.user.id)
-    car = Car.objects.get(pk=pk)
+class ChangeDriverCarView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        car_pk = self.kwargs["pk"]
 
-    if user in car.drivers.all():
-        car.drivers.remove(user)
+        user = Driver.objects.get(pk=request.user.id)
+        car = Car.objects.get(pk=car_pk)
+
+        if user in car.drivers.all():
+            car.drivers.remove(user)
+        else:
+            car.drivers.add(user)
+
         return HttpResponseRedirect(
-            redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
-        )
-    else:
-        car.drivers.add(user)
-        return HttpResponseRedirect(
-            redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
+            redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": car_pk})
         )
