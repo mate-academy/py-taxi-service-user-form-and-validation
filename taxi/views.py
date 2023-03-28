@@ -92,7 +92,6 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    # fields = "__all__"
     model = Driver
     form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:driver-list")
@@ -100,19 +99,12 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    fields = "__all__"
+    form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
-    success_url = reverse_lazy("taxi:driver-list")
-
-
-class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
-    form_class = DriverLicenseUpdateForm
-    template_name = "taxi/driver_license_number.html"
     success_url = reverse_lazy("taxi:driver-list")
 
 
@@ -126,4 +118,4 @@ def register_driver_to_car(request, pk):
     else:
         driver.cars.add(car)
 
-    return reverse_lazy("taxi:car-detail", args=[pk])
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))

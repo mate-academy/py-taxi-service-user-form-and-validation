@@ -15,12 +15,12 @@
   <h1>
     Drivers
       {% if car in user.cars.all %}
-         <a href="{% url 'taxi:register_driver_to_car' pk=car.id %}" class="btn btn-success ml-auto">
-           Assign me to this car
+         <a href="{% url 'taxi:register_driver_to_car' pk=car.id %}" class="btn btn-danger ml-auto">
+          Delete me from this car
          </a>
         {% else %}
-        <a href="{% url 'taxi:register_driver_to_car' pk=car.id %}" class="btn btn-danger ml-auto">
-          Delete me from this car
+        <a href="{% url 'taxi:register_driver_to_car' pk=car.id %}" class="btn btn-success ml-auto">
+          Assign me to this car
         </a>
     {% endif %}
   </h1>
