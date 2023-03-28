@@ -116,19 +116,17 @@ class DriverLicenseDeleteView(LoginRequiredMixin, generic.DeleteView):
         return reverse_lazy("taxi:driver-detail", kwargs={"pk": license_id})
 
 
-class ChangeDriverView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
-    # context_object_name = "change-driver"
+def change_driver_car(request, pk):
+    user = Driver.objects.get(pk=request.user.id)
+    car = Car.objects.get(pk=pk)
 
-    @staticmethod
-    def change_driver_car(request, pk):
-        driver = Driver.objects.get(pk=request.user.id)
-        car = Car.objects.get(pk=pk)
-
-        if driver in car.drivers.all():
-            car.drivers.remove(driver)
-        else:
-            car.drivers.add(driver)
-            return HttpResponseRedirect(
-                redirect_to=reverse_lazy("taxi:car-detail", kwargs={pk: pk})
-            )
+    if user in car.drivers.all():
+        car.drivers.remove(user)
+        return HttpResponseRedirect(
+            redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
+        )
+    else:
+        car.drivers.add(user)
+        return HttpResponseRedirect(
+            redirect_to=reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
+        )

@@ -6,15 +6,6 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-class DriverCreationForm(UserCreationForm):
-
-    class Meta(UserCreationForm.Meta):
-        model = Driver
-        fields = UserCreationForm.Meta.fields + (
-            "first_name", "last_name", "email", "license_number",
-        )
-
-
 class DriverLicenseUpdateForm(forms.ModelForm):
     CHARACTERS_NUMBER = 8
 
@@ -31,7 +22,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 f"{DriverLicenseUpdateForm.CHARACTERS_NUMBER} characters"
             )
 
-        if not (license_number[:2].isalpha() and license_number[:2].isupper()):
+        if not (license_number[:3].isalpha() and license_number[:3].isupper()):
             raise ValidationError(
                 "Ensure that the first 3 characters are uppercase letters"
             )
@@ -42,6 +33,15 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             )
 
         return license_number
+
+
+class DriverCreationForm(UserCreationForm, DriverLicenseUpdateForm):
+
+    class Meta(UserCreationForm.Meta):
+        model = Driver
+        fields = UserCreationForm.Meta.fields + (
+            "first_name", "last_name", "email", "license_number",
+        )
 
 
 class CarForm(forms.ModelForm):
