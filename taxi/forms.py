@@ -9,7 +9,11 @@ from taxi.models import Driver, Car
 class DriverForm(UserCreationForm):
     class Meta(UserCreationForm):
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number",)
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "license_number",
+        )
 
     def clean_license_number(self) -> str:
         license_num = self.cleaned_data["license_number"]
