@@ -21,7 +21,7 @@ class DriverCreationForm(UserCreationForm):
     license_number = LicenseNumberField(max_length=8)
 
     class Meta(UserCreationForm.Meta):
-        model = Driver
+        model = get_user_model()
         fields = UserCreationForm.Meta.fields + (
             "first_name", "last_name", "license_number",
         )
