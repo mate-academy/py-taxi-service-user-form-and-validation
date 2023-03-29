@@ -109,7 +109,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 @login_required
-def assign_delete_car(request, pk):
+def assign_or_delete_me_from_car(request, pk):
     driver = request.user
     car = get_object_or_404(Car, pk=pk)
 

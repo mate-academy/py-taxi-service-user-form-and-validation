@@ -42,8 +42,7 @@ class DriverCreationForm(UserCreationForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        validate_license_number(license_number)
-        return license_number
+        return validate_license_number(license_number)
 
 
 class CarForm(forms.ModelForm):
