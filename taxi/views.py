@@ -117,6 +117,5 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    field = ["license_number"]
     form_class = DriverLicenseUpdateForm
     template_name = "taxi/license_form.html"
