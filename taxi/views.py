@@ -57,7 +57,7 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
 class CarListView(LoginRequiredMixin, generic.ListView):
     model = Car
     paginate_by = 20
-    queryset = Car.objects.all().select_related("manufacturer")
+    queryset = Car.objects.select_related("manufacturer")
 
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
@@ -88,7 +88,7 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = Driver.objects.prefetch_related("cars__manufacturer")
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
@@ -101,6 +101,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     fields = "__all__"
     success_url = reverse_lazy("taxi:driver-list")
     template_name = "taxi/driver_confirm_delete.html"
+    # це template_name можно не вказувати
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
