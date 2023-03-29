@@ -52,7 +52,7 @@ urlpatterns = [
     path(
         "cars/<int:pk>/delete/car",
         delete_from_car_view,
-        name="car-assign-delete"
+        name="remove-car"
     ),
     path(
         "drivers/<int:pk>/",

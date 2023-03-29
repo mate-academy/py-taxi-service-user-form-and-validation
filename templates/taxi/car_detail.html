@@ -22,12 +22,12 @@
 	<br>
 	<div class= "d-flex justify-content-between">
 		{% if request.user in car.drivers.all %}
-			<a href="{% url 'taxi:car-assign-delete' pk=car.id %}"
-			   class="btn btn-danger btn-sm">Delete me from this car
-	   </a>
+			<a href="{% url 'taxi:remove-car' pk=car.id %}" lass="btn btn-danger btn-sm">
+				Delete me from this car
+			</a>
 	{% else %}
-    <a href="{% url 'taxi:car-assign' pk=car.id %}"
-       class="btn btn-primary btn-sm">Assign me to this car
+    <a href="{% url 'taxi:car-assign' pk=car.id %}" class="btn btn-primary btn-sm">
+	    Assign me to this car
     </a>
 	{% endif %}
 	</div>

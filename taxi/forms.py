@@ -17,6 +17,10 @@ class DriverCreationForm(UserCreationForm):
             "license_number",
         )
 
+    def clean_license_number(self) -> str:
+        license_number = self.cleaned_data["license_number"]
+        return validation_license_number(license_number)
+
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     LENGTH_LICENSE_NUMBER = 8
@@ -27,27 +31,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self) -> str:
         license_number = self.cleaned_data["license_number"]
-        if len(license_number) != DriverCreationForm.LENGTH_LICENSE_NUMBER:
-            raise ValidationError(
-                f"License number consist only "
-                f"{DriverCreationForm.LENGTH_LICENSE_NUMBER}"
-            )
-        for char in license_number[:3]:
-            if char != char.upper() or not char.isalpha():
-                raise ValidationError(
-                    "First 3 characters are uppercase letters"
-                )
-
-        for char in license_number[3:]:
-            if not char.isdigit():
-                raise ValidationError(
-                    "Last 5 characters are digits"
-                )
-
-        return license_number
+        return validation_license_number(license_number)
 
 
-class CarCreateForm(forms.ModelForm):
+class CarUpdateCreateForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
@@ -62,3 +49,24 @@ class CarCreateForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
+
+
+def validation_license_number(license_number: str) -> str:
+    if len(license_number) != DriverCreationForm.LENGTH_LICENSE_NUMBER:
+        raise ValidationError(
+            f"License number consist only "
+            f"{DriverCreationForm.LENGTH_LICENSE_NUMBER}"
+        )
+    for char in license_number[:3]:
+        if char != char.upper() or not char.isalpha():
+            raise ValidationError(
+                "First 3 characters are uppercase letters"
+            )
+
+    for char in license_number[3:]:
+        if not char.isdigit():
+            raise ValidationError(
+                "Last 5 characters are digits"
+            )
+
+    return license_number
