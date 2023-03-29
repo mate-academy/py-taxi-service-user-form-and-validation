@@ -17,6 +17,7 @@ def validate_license_number(license_number):
 
     if len(license_number) != 8:
         raise ValidationError("Length of license number should 8")
+    return license_number
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -26,8 +27,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        validate_license_number(license_number)
-        return license_number
+        return validate_license_number(license_number)
 
 
 class DriverCreationForm(UserCreationForm):
