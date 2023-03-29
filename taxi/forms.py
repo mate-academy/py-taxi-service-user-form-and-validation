@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.core.validators import MaxLengthValidator, RegexValidator
+from django.core.validators import MaxLengthValidator, RegexValidator, MinLengthValidator
 
 from taxi.models import Driver, Car
 
@@ -21,6 +21,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         required=True,
         validators=[
             MaxLengthValidator(8),
+            MinLengthValidator(8),
             RegexValidator(regex="^[A-Z]{3}?[0-9]+$")
         ]
     )
