@@ -101,7 +101,6 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     fields = "__all__"
     success_url = reverse_lazy("taxi:driver-list")
     template_name = "taxi/driver_confirm_delete.html"
-    # це template_name можно не вказувати
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
