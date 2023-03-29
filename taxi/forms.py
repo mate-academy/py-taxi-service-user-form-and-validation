@@ -9,14 +9,14 @@ from taxi.models import Driver, Car
 class DriverForm(UserCreationForm):
     class Meta:
         model = Driver
-        fields = (
-            "username",
-            # "password",
+        fields = UserCreationForm.Meta.fields + (
             "first_name",
             "last_name",
             "license_number",
-            "email"
         )
+
+    def clean_license_number(self):
+        return validate_license_number(self.cleaned_data["license_number"])
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -27,18 +27,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         )
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-
-        if (len(license_number) != 8
-                or not license_number[:3].isupper()
-                or not license_number[:3].isalpha()
-                or not license_number[3:].isdigit()):
-            raise ValidationError("Ensure that value: "
-                                  "сonsist only of 8 characters, "
-                                  "first 3 characters are uppercase letters, "
-                                  "last 5 characters are digits")
-
-        return license_number
+        return validate_license_number(self.cleaned_data["license_number"])
 
 
 class CarForm(forms.ModelForm):
@@ -50,3 +39,14 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
+
+
+def validate_license_number(license_number):
+    if len(license_number) != 8:
+        raise ValidationError("License number should consist of 8 characters")
+    elif not license_number[:3].isupper() or not license_number[:3].isalpha():
+        raise ValidationError("First 3 characters should be uppercase letters")
+    elif not license_number[3:].isdigit():
+        raise ValidationError("Last 5 characters should be digits")
+
+    return license_number

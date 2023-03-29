@@ -66,10 +66,6 @@ urlpatterns = [
         driver_assign,
         name="driver-assign"
     ),
-    # path(
-    #     "cars/<int:pk>/",
-    #     driver_not_assign,
-    #     name="driver-notassign"),
 ]
 
 app_name = "taxi"
