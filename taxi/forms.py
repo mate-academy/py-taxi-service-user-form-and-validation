@@ -7,7 +7,7 @@ from taxi.models import Driver, Car
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    CHARACTERS_NUMBER = 8
+    LICENSE_LENGTH = 8
 
     class Meta(UserCreationForm.Meta):
         model = Driver
@@ -16,10 +16,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
-        if len(license_number) != DriverLicenseUpdateForm.CHARACTERS_NUMBER:
+        if len(license_number) != DriverLicenseUpdateForm.LICENSE_LENGTH:
             raise ValidationError(
                 f"Ensure that the license number consist only of "
-                f"{DriverLicenseUpdateForm.CHARACTERS_NUMBER} characters"
+                f"{DriverLicenseUpdateForm.LICENSE_LENGTH} characters"
             )
 
         if not (license_number[:3].isalpha() and license_number[:3].isupper()):

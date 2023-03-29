@@ -117,7 +117,7 @@ class DriverLicenseDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class ChangeDriverCarView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         car_pk = self.kwargs["pk"]
 
         user = Driver.objects.get(pk=request.user.id)
