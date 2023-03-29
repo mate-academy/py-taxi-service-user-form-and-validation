@@ -1,7 +1,11 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.core.validators import MaxLengthValidator, RegexValidator, MinLengthValidator
+from django.core.validators import (
+    MaxLengthValidator,
+    RegexValidator,
+    MinLengthValidator
+)
 
 from taxi.models import Driver, Car
 
