@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <h4><li style="color: mediumblue" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li></h4>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
   <h1>
     Car list
-    <a href="{% url 'taxi:car-create' %}" class="btn btn-primary link-to-page">
-      Create
+    <a href="{% url 'taxi:car-create' %}" class="btn btn-primary">
+      + add new car
     </a>
   </h1>
   {% if car_list %}
@@ -19,4 +27,5 @@
   {% else %}
     <p>There are no cars in taxi</p>
   {% endif %}
+
 {% endblock %}
