@@ -17,7 +17,6 @@ class DriverCreationForm(UserCreationForm):
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    DRIVER_LICENSE_LENGTH = 8
 
     class Meta:
         model = Driver
@@ -25,12 +24,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        if len(license_number) != DriverLicenseUpdateForm.\
-                DRIVER_LICENSE_LENGTH:
+        if len(license_number) != 8:
             raise ValidationError(
-                "The license number must be "
-                f"{DriverLicenseUpdateForm.DRIVER_LICENSE_LENGTH}"
-                " characters long."
+                "The license number must be 8 characters long."
             )
         for word in license_number[:3]:
             if not word.isupper():

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -38,17 +38,15 @@ def index(request):
 
 
 @login_required
-def assign_to_car(request: HttpRequest, pk: int) -> HttpResponse:
-    car = Car.objects.get(pk=pk)
-    car.drivers.add(request.user)
-    return redirect("taxi:car-detail", pk=car.pk)
-
-
-@login_required
-def delete_from_car(request: HttpRequest, pk: int) -> HttpResponse:
-    car = Car.objects.get(id=pk)
-    car.drivers.remove(request.user)
-    return redirect("taxi:car-detail", pk=car.pk)
+def toggle_assign_to_car(request, pk):
+    driver = Driver.objects.get(id=request.user.id)
+    if (
+            Car.objects.get(id=pk) in driver.cars.all()
+    ):
+        driver.cars.remove(pk)
+    else:
+        driver.cars.add(pk)
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -127,4 +125,3 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
-    template_name = "taxi/driver_update.html"
