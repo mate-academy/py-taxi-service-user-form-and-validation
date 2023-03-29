@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -108,9 +108,10 @@ class DriverLicenseDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 def assign_unassign_to_car(request, *args, **kwargs):
     car_pk = kwargs["pk"]
-    cars = request.user.cars
-    if cars.filter(id=car_pk):
-        cars.remove(car_pk)
+    users_cars = request.user.cars
+    get_object_or_404(Car, id=car_pk)
+    if users_cars.filter(id=car_pk):
+        users_cars.remove(car_pk)
     else:
-        cars.add(car_pk)
+        users_cars.add(car_pk)
     return redirect("taxi:car-detail", pk=car_pk)
