@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.views import View
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -121,19 +121,16 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
         )
 
 
-def add_driver_to_car(request, pk):
-    if request.method == "POST":
+class UpdateDriverView(View):
+    @staticmethod
+    def post(request, pk):
         car = get_object_or_404(Car, pk=pk)
         driver = Driver.objects.get(username=request.user.username)
-        car.drivers.add(driver)
-        print(driver.cars.all())
-        return HttpResponseRedirect(reverse("taxi:car-detail", args=(car.id,)))
 
+        action = request.POST.get("action", None)
+        if action == "add":
+            car.drivers.add(driver)
+        elif action == "remove":
+            car.drivers.remove(driver)
 
-def delete_driver_from_car(request, pk):
-    if request.method == "POST":
-        car = get_object_or_404(Car, pk=pk)
-        driver = Driver.objects.get(username=request.user.username)
-        car.drivers.remove(driver)
-        print(driver.cars.all())
         return HttpResponseRedirect(reverse("taxi:car-detail", args=(car.id,)))
