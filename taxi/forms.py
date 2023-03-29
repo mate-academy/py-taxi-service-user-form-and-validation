@@ -11,13 +11,6 @@ class DriverForm(UserCreationForm):
         model = Driver
         fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number",)
 
-
-class DriverLicenseUpdateForm(forms.ModelForm):
-
-    class Meta:
-        model = Driver
-        fields = ("license_number",)
-
     def clean_license_number(self) -> str:
         license_num = self.cleaned_data["license_number"]
 
@@ -33,6 +26,15 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             )
 
         return license_num
+
+
+class DriverLicenseUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
+
+    def clean_license_number(self):
+        return DriverForm.clean_license_number(self)
 
 
 class CarForm(forms.ModelForm):
