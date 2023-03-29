@@ -47,7 +47,7 @@ urlpatterns = [
     path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
     path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
     path(
-        "cars/<int:pk>/assign-unassign/",
+        "cars/<int:pk>/assign-delete-relation/",
         assign_unassign_to_car,
         name="assign_or_unassign_to_car",
     ),

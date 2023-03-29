@@ -108,9 +108,9 @@ class DriverLicenseDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 def assign_unassign_to_car(request, *args, **kwargs):
     car_pk = kwargs["pk"]
-    user = request.user.cars
-    if user.filter(id=car_pk):
-        user.remove(car_pk)
+    cars = request.user.cars
+    if cars.filter(id=car_pk):
+        cars.remove(car_pk)
     else:
-        user.add(kwargs["pk"])
+        cars.add(car_pk)
     return redirect("taxi:car-detail", pk=car_pk)
