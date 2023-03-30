@@ -110,8 +110,8 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 @login_required
 def delete_assign_to_car(request, pk):
-    user = get_object_or_404(Driver, pk=pk)
-    if Car.objects.get(id=pk) in user.cars.all():
+    user = Driver.objects.get(id=request.user.id)
+    if get_object_or_404(Car, pk=pk) in user.cars.all():
         user.cars.remove(pk)
     else:
         user.cars.add(pk)
