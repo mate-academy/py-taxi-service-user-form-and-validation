@@ -120,7 +120,7 @@ class DriverLicenseUpdateView(generic.UpdateView):
 class CarAssignDriverView(LoginRequiredMixin, RedirectView):
     url = reverse_lazy("taxi:car-list")
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         car = get_object_or_404(Car, pk=self.kwargs["pk"])
         if request.user in car.drivers.all():
             car.drivers.remove(request.user)
@@ -132,4 +132,4 @@ class CarAssignDriverView(LoginRequiredMixin, RedirectView):
             messages.success(
                 request, f"You have been assigned to the car {car}"
             )
-        return super().get(request, *args, **kwargs)
+        return super().post(request, *args, **kwargs)
