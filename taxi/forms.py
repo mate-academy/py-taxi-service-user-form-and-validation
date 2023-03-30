@@ -40,14 +40,11 @@ class CustomUserCreationForm(UserCreationForm):
         return license_number
 
 
-class DriverLicenseUpdateForm(forms.ModelForm):
+class DriverLicenseUpdateForm(CustomUserCreationForm):
 
     class Meta:
         model = Driver
         fields = ("license_number", )
-
-    def clean_license_number(self):
-        return CustomUserCreationForm.clean_license_number(self)
 
 
 class CarForm(forms.ModelForm):
