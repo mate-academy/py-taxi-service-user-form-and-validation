@@ -49,7 +49,7 @@ class DriverLicenseUpdateForm(forms.ModelForm, LicenseNumberValidationMixin):
         fields = ("license_number",)
 
 
-class CarCreateForm(forms.ModelForm):
+class CarCreateUpdateForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,

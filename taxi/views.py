@@ -6,7 +6,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Driver, Car, Manufacturer
-from .forms import DriverLicenseUpdateForm, DriverCreateForm, CarCreateForm
+from .forms import DriverLicenseUpdateForm, DriverCreateForm, CarCreateUpdateForm
 
 
 @login_required
@@ -79,13 +79,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    form_class = CarCreateForm
+    form_class = CarCreateUpdateForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    form_class = CarCreateForm
+    form_class = CarCreateUpdateForm
     success_url = reverse_lazy("taxi:car-list")
 
 
