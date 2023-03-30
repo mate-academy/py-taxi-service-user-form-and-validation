@@ -122,10 +122,9 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 class UpdateDriverView(View):
-    @staticmethod
-    def post(request, pk):
+    def post(self, request, pk):
         car = get_object_or_404(Car, id=pk)
-        driver = Driver.objects.get(id=request.user.id)
+        driver = Driver.objects.get(id=self.request.user.id)
 
         if driver in car.drivers.all():
             car.drivers.remove(driver)
