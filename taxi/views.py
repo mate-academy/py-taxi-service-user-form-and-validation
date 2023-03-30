@@ -109,11 +109,9 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required
 def assign_or_delete_me_to_this_car(request, pk: int):
-    driver = Driver.objects.get(id=request.user.pk)
     car = Car.objects.get(id=pk)
-    if car in driver.cars.all():
-        driver.cars.remove(car)
+    if request.user in car.drivers.all():
+        car.drivers.remove(request.user)
     else:
-        driver.cars.add(car)
-    driver.save()
+        car.drivers.add(request.user)
     return redirect(reverse_lazy("taxi:car-detail", kwargs={"pk": pk}))
