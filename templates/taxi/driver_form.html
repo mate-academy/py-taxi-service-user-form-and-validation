@@ -2,7 +2,10 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  <h1>{{ object|yesno:"Update,Create" }} manufacturer</h1>
+  <h2>{{ object|yesno:"Update,Create" }} driver </h2>
+  <br>
+  <h4>{{ driver.username }}</h4>
+  <br>
   <form action="" method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
