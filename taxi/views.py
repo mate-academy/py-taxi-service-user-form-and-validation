@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -110,7 +110,7 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 @login_required
 def delete_assign_to_car(request, pk):
-    user = Driver.objects.get(id=request.user.id)
+    user = get_object_or_404(Driver, pk=pk)
     if Car.objects.get(id=pk) in user.cars.all():
         user.cars.remove(pk)
     else:
