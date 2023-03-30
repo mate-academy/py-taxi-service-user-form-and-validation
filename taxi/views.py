@@ -124,13 +124,12 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 class UpdateDriverView(View):
     @staticmethod
     def post(request, pk):
-        car = get_object_or_404(Car, pk=pk)
-        driver = Driver.objects.get(username=request.user.username)
+        car = get_object_or_404(Car, id=pk)
+        driver = Driver.objects.get(id=request.user.id)
 
-        action = request.POST.get("action", None)
-        if action == "add":
-            car.drivers.add(driver)
-        elif action == "remove":
+        if driver in car.drivers.all():
             car.drivers.remove(driver)
+        else:
+            car.drivers.add(driver)
 
         return HttpResponseRedirect(reverse("taxi:car-detail", args=(car.id,)))

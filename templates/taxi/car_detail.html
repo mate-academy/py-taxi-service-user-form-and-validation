@@ -6,13 +6,11 @@
     {% if current_driver not in car.drivers.all %}
       <form method="post" action="{% url 'taxi:driver-add' pk=car.pk %}">
         {% csrf_token %}
-        <input type="hidden" name="action" value="add">
         <button type="submit" class="link-to-page btn btn-success">Assign me to this car</button>
       </form>
       {% else %}
-        <form method="post" action="{% url 'taxi:driver-delete' pk=car.pk %}">
+        <form method="post" action="{% url 'taxi:driver-remove' pk=car.pk %}">
         {% csrf_token %}
-        <input type="hidden" name="action" value="remove">
         <button type="submit" class="link-to-page btn btn-danger">Delete me from this car</button>
       </form>
     {% endif %}
