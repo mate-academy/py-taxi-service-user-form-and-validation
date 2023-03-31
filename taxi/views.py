@@ -93,7 +93,6 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-# current work
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
     form_class = DriverCreationForm
@@ -111,7 +110,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 @login_required
 def toggle_assign_to_car(request, pk):
-    driver = Driver.objects.get(id=request.user.id)
+    driver = Driver.objects.get(id=request.user)
     if (
         Car.objects.get(id=pk) in driver.cars.all()
     ):
