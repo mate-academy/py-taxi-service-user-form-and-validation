@@ -64,6 +64,34 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
 
+class CarDriverAssignView(generic.UpdateView):
+    model = Car
+    fields = ("drivers",)
+
+    def post(self, request, *args, **kwargs):
+        car = Car.objects.get(id=kwargs["pk"])
+        car.drivers.add(Driver.objects.get(id=request.POST.get("driver_id")))
+
+        return HttpResponseRedirect(
+            reverse_lazy("taxi:car-detail", kwargs={"pk": kwargs["pk"]})
+        )
+
+
+class CarDriverRemoveView(generic.UpdateView):
+    model = Car
+    fields = ("drivers",)
+
+    def post(self, request, *args, **kwargs):
+        car = Car.objects.get(id=kwargs["pk"])
+        car.drivers.remove(Driver.objects.get(
+            id=request.POST.get("driver_id"))
+        )
+
+        return HttpResponseRedirect(
+            reverse_lazy("taxi:car-detail", kwargs={"pk": kwargs["pk"]})
+        )
+
+
 def car_driver_assign_or_delete(request, pk):
     if request.method == "POST":
         driver_id = request.POST["driver_id"]

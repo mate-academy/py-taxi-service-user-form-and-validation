@@ -6,20 +6,25 @@
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
 
-      <form method="post" action="{% url "taxi:car-driver-assign-or-delete" pk=car.id%}">
-        {% csrf_token %}
-        <input type="hidden" name="driver_id" value="{{ user.id }}">
-        <h1>
-          Drivers
-
-        {% if user in car.drivers.all %}
-          <input type="hidden" name="remove" value="1">
-          <input value="Delete me from this car" type="submit" class="btn btn-danger assign_btn">
-        {% else %}
-          <input value="Assign me to this car" type="submit" class="btn btn-success assign_btn">
-        {% endif %}
-        </h1>
-      </form>
+  {% if user in car.drivers.all %}
+    <form method="post" action="{% url "taxi:car-driver-remove" pk=car.id%}">
+      {% csrf_token %}
+      <input type="hidden" name="driver_id" value="{{ user.id }}">
+      <h1>
+        Drivers
+        <input value="Delete me from this car" type="submit" class="btn btn-danger assign_btn">
+      </h1>
+    </form>
+  {% else %}
+    <form method="post" action="{% url "taxi:car-driver-assign" pk=car.id%}">
+      {% csrf_token %}
+      <input type="hidden" name="driver_id" value="{{ user.id }}">
+      <h1>
+        Drivers
+        <input value="Assign me to this car" type="submit" class="btn btn-success assign_btn">
+      </h1>
+    </form>
+  {% endif %}
 
   <hr>
   <ul>
