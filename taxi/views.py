@@ -3,12 +3,14 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
 from .models import Driver, Car, Manufacturer
+from .forms import CarCreationForm, DriverLicenseUpdateForm, DriverCreationForm
 
 
 @login_required
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     """View function for the home page of the site."""
 
     num_drivers = Driver.objects.count()
@@ -26,6 +28,12 @@ def index(request):
     }
 
     return render(request, "taxi/index.html", context=context)
+
+
+class DriverLicenseView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_license_update.html"
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -64,13 +72,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +95,32 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def assing_car_to_user(request: HttpRequest, pk: int) -> HttpResponse:
+    car = Car.objects.get(id=pk)
+    cur_user = Driver.objects.get(id=request.user.id)
+    if car.drivers.filter(id=request.user.id).exists():
+        car.drivers.remove(cur_user)
+    else:
+        car.drivers.add(cur_user)
+    car.save()
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
