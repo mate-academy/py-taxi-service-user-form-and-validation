@@ -11,8 +11,6 @@ class DriverCreationForm(UserCreationForm):
         model = Driver
         fields = ["license_number"]
 
-    # def
-
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
