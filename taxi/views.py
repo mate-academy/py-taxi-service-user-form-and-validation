@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -64,7 +64,6 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
 
-# here CarForm
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
     form_class = CarForm
@@ -110,11 +109,12 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 @login_required
 def toggle_assign_to_car(request, pk):
-    driver = Driver.objects.get(id=request.user)
+    driver = request.user
+    car = get_object_or_404(Car, pk=pk)
     if (
-        Car.objects.get(id=pk) in driver.cars.all()
+        Car.objects.get(id=pk) in car.drivers.all()
     ):
-        driver.cars.remove(pk)
+        car.drivers.remove(driver)
     else:
-        driver.cars.add(pk)
+        car.drivers.add(driver)
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
