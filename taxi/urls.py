@@ -17,6 +17,7 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+    assing_car_to_user,
 )
 
 
@@ -66,6 +67,11 @@ urlpatterns = [
         "drivers/<int:pk>/update_license/",
         DriverLicenseView.as_view(),
         name="driver-update"
+    ),
+    path(
+        "cars/<int:pk>/assign-car/",
+        assing_car_to_user,
+        name="assign-car",
     ),
 ]
 

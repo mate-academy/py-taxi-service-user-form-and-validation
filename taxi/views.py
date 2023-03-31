@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 
 from .models import Driver, Car, Manufacturer
 from .forms import CarCreationForm, DriverLicenseUpdateForm, DriverCreationForm
@@ -69,21 +69,6 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
-    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        pk = kwargs.get("pk")
-
-        if request.method == "POST":
-            car = self.model.objects.get(id=pk)
-            cur_user_id = request.session.get("_auth_user_id")
-            cur_user = Driver.objects.get(id=cur_user_id)
-            if car.drivers.filter(id=cur_user_id).exists():
-                car.drivers.remove(cur_user)
-            else:
-                car.drivers.add(cur_user)
-            car.save()
-
-            return redirect("taxi:car-detail", pk=pk)
-
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
@@ -127,3 +112,15 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def assing_car_to_user(request: HttpRequest, pk: int) -> HttpResponse:
+    car = Car.objects.get(id=pk)
+    cur_user = Driver.objects.get(id=request.user.id)
+    if car.drivers.filter(id=request.user.id).exists():
+        car.drivers.remove(cur_user)
+    else:
+        car.drivers.add(cur_user)
+    car.save()
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
