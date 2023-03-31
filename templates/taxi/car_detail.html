@@ -12,20 +12,14 @@
     </a>
 
     {% if user.is_authenticated %}
-      {% if user in car.drivers.all %}
-        <form action="{% url 'taxi:car-remove-driver' pk=car.pk %}" method="POST" style="display: inline-block;">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-warning">
-            Remove me from this car
-          </button>
-        </form>
-      {% else %}
-        <form action="{% url 'taxi:car-assign-driver' pk=car.pk %}" method="POST" style="display: inline-block;">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-success">
-            Assign me to this car
-          </button>
-        </form>
+      {% if car in user.cars.all %}
+      <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}" class="btn btn-danger link-to-page">
+        Delete me from this car
+      </a>
+    {% else %}
+      <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}" class="btn btn-success link-to-page">
+        Assign me from this car
+      </a>
       {% endif %}
     {% endif %}
   </h1>

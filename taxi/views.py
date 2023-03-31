@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
@@ -123,25 +123,37 @@ def update_driver_license(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "taxi/update_driver_license.html", {"form": form})
 
 
-@login_required
-def assign_driver_to_car(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    print("car")
-    if request.method == "POST":
-        print("post")
-        car = get_object_or_404(Car, pk=car.pk)
-        car.drivers.add(request.user.id)
-        car.save()
-        return redirect("taxi:car-detail", pk=car.pk)
-    return render(request, "taxi/car_detail.html", {"car": car})
+# @login_required
+# def assign_driver_to_car(request, pk):
+#     car = get_object_or_404(Car, pk=pk)
+#     print("car")
+#     if request.method == "POST":
+#         print("post")
+#         car = get_object_or_404(Car, pk=car.pk)
+#         car.drivers.add(request.user.id)
+#         car.save()
+#         return redirect("taxi:car-detail", pk=car.pk)
+#     return render(request, "taxi/car_detail.html", {"car": car})
+#
+#
+# @login_required
+# def remove_driver_from_car(request, pk):
+#     car = get_object_or_404(Car, pk=pk)
+#     if request.method == "POST":
+#         car = get_object_or_404(Car, pk=car.pk)
+#         car.drivers.remove(request.user.id)
+#         car.save()
+#         return redirect("taxi:car-detail", pk=car.pk)
+#     return render(request, "taxi/car_detail.html", {"car": car})
 
 
 @login_required
-def remove_driver_from_car(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    if request.method == "POST":
-        car = get_object_or_404(Car, pk=car.pk)
-        car.drivers.remove(request.user.id)
-        car.save()
-        return redirect("taxi:car-detail", pk=car.pk)
-    return render(request, "taxi/car_detail.html", {"car": car})
+def toggle_assign_to_car(request, pk):
+    driver = Driver.objects.get(id=request.user.id)
+    if (
+        Car.objects.get(id=pk) in driver.cars.all()
+    ):
+        driver.cars.remove(pk)
+    else:
+        driver.cars.add(pk)
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
