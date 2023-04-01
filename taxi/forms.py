@@ -1,5 +1,4 @@
 from __future__ import annotations
-from string import ascii_uppercase
 
 from django import forms
 from django.contrib.auth import get_user_model
