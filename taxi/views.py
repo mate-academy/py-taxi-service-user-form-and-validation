@@ -112,8 +112,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class CarAssignmentView(LoginRequiredMixin, generic.View):
-    @staticmethod
-    def get(request, pk):
+    def post(self, request, pk):
         driver = request.user
         car = get_object_or_404(Car, pk=pk)
 
@@ -121,6 +120,5 @@ class CarAssignmentView(LoginRequiredMixin, generic.View):
             car.drivers.remove(driver)
         else:
             car.drivers.add(driver)
-        driver.save()
 
         return redirect(reverse_lazy("taxi:car-detail", kwargs={"pk": car.pk}))
