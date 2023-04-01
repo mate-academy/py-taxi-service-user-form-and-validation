@@ -39,13 +39,11 @@ def index(request):
 
 @login_required
 def toggle_assign_to_car(request, pk):
-    driver = Driver.objects.get(id=request.user.id)
-    if (
-            Car.objects.get(id=pk) in driver.cars.all()
-    ):
-        driver.cars.remove(pk)
+    user_cars = request.user.cars.all()
+    if Car.objects.get(id=pk) in user_cars:
+        request.user.cars.remove(pk)
     else:
-        driver.cars.add(pk)
+        request.user.cars.add(pk)
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
 
 
