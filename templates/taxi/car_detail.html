@@ -11,6 +11,8 @@
       Update
     </a>
   </h1>
+  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+  <h1>Drivers
   {% if car in user.cars.all %}
     <form action="{% url 'taxi:car-assignment' pk=car.id %}" method="post">
       {% csrf_token %}
@@ -18,7 +20,7 @@
     </form>
   {% else %}
     <form action="{% url 'taxi:car-assignment' pk=car.id %}" method="post">
-      {% csrf_token %}
+  {% csrf_token %}
       <button type="submit" class="float-right btn btn-success">Assign me to this car</button>
     </form>
   {% endif %}
