@@ -1,3 +1,5 @@
+from audioop import add
+
 from django.urls import path
 
 from .views import (
@@ -16,8 +18,8 @@ from .views import (
     DriverCreateView,
     DriverLicenseUpdateView,
     DriverDeleteView,
-    car_add,
-    car_remove,
+    add,
+    remove,
 )
 
 urlpatterns = [
@@ -68,13 +70,13 @@ urlpatterns = [
         name="driver-delete",
     ),
     path(
-        "cars/<int:pk>/car-add/",
-        car_add,
+        "cars/<int:pk>/add/",
+        add,
         name="car-add",
     ),
     path(
-        "cars/<int:pk>/car-remove/",
-        car_remove,
+        "cars/<int:pk>/remove/",
+        remove,
         name="car-remove",
     )
 ]
