@@ -44,9 +44,6 @@ class DriverForm(DriverLicenseUpdateForm, UserCreationForm):
             "last_name",
         )
 
-    def clean_license_number(self):
-        return super().clean_license_number()
-
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
