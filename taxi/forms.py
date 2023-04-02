@@ -6,13 +6,11 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-class DriverLicenseUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Driver
-        fields = ("license_number",)
-
+class CleanLicenseMixin:
     def clean_license_number(self):
+
         num = self.cleaned_data["license_number"]
+
         if (len(num) != 8
                 or not num[:3].isupper()
                 or not num[3:].isdigit()
@@ -24,7 +22,16 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         return num
 
 
-class DriverForm(UserCreationForm, DriverLicenseUpdateForm):
+class DriverLicenseUpdateForm(CleanLicenseMixin, forms.ModelForm):
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
+
+    def clean_license_number(self):
+        return super().clean_license_number()
+
+
+class DriverForm(CleanLicenseMixin, UserCreationForm):
     class Meta:
         model = Driver
         fields = ("username",

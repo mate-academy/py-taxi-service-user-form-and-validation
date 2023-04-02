@@ -76,7 +76,7 @@ urlpatterns = [
          LicenseUpdateView.as_view(),
          name="driver-update"),
 
-    path("cars/<int:pk>/assign-or-delete-to-car/",
+    path("cars/<int:pk>/update-drivers/",
          assign_or_delete_to_car,
          name="assign-or-delete-to-car"),
 
