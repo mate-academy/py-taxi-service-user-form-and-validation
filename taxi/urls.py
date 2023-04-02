@@ -1,5 +1,3 @@
-from audioop import add
-
 from django.urls import path
 
 from .views import (
