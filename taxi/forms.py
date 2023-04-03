@@ -1,10 +1,11 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-class DriverUpdateForm(forms.ModelForm):
+class DriverUpdateForm(UserCreationForm):
     class Meta:
         model = Driver
         fields = "__all__"
