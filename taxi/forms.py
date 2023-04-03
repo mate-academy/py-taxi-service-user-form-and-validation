@@ -22,7 +22,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ["license_number"]
 
     def clean_license_number(self):
-        return validate_lisense_number(self.cleaned_data["license_number"])
+        return validate_license_number(self.cleaned_data["license_number"])
 
 
 class CarForm(forms.ModelForm):
@@ -36,8 +36,11 @@ class CarForm(forms.ModelForm):
         fields = "__all__"
 
 
-def validate_lisense_number(license_number: str):
-    if len(license_number) != 8:
+LICENSE_NUMBER_LENGTH = 8
+
+
+def validate_license_number(license_number: str):
+    if len(license_number) != LICENSE_NUMBER_LENGTH:
         raise ValidationError("should be 8 chars")
     elif not license_number[:3].isupper() or not license_number[:3].isalpha():
         raise ValidationError("first 3 chars should be in upper case")
