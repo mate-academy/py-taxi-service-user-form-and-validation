@@ -111,6 +111,6 @@ def assign_or_delete_driver(request, pk) -> render:
 
     if driver in car.drivers.all():
         car.drivers.remove(driver)
-        return redirect("taxi:car-detail", pk=pk)
-    car.drivers.add(driver)
+    else:
+        car.drivers.add(driver)
     return redirect("taxi:car-detail", pk=pk)
