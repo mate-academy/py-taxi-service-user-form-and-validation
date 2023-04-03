@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-class DriverLicenseForm(forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     LENGTH = 8
 
     class Meta:
@@ -15,10 +15,10 @@ class DriverLicenseForm(forms.ModelForm):
     def clean_license_number(self) -> str:
         license_number = self.cleaned_data["license_number"]
 
-        if len(license_number) != DriverLicenseForm.LENGTH:
+        if len(license_number) != DriverLicenseUpdateForm.LENGTH:
             raise ValidationError(
                 f"License number should be "
-                f"{DriverLicenseForm.LENGTH} symbols"
+                f"{DriverLicenseUpdateForm.LENGTH} symbols"
             )
 
         if not license_number[:3].isupper():
