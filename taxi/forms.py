@@ -27,10 +27,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             return True
 
         if (length != 8
-                or first_license_character.upper() != first_license_character
+                or not first_license_character.isupper()
                 or not last_license_character.isdigit()
                 or contains_number(first_license_character)):
-            raise ValidationError("Ensure that value is valid")
+            raise ValidationError("Make sure that you've entered correct values")
 
         return license_number
 
