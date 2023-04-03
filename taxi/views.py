@@ -76,16 +76,12 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def car_add_driver(request, pk):
+def car_add_or_remove_driver(request, pk):
     driver = Driver.objects.get(id=request.user.pk)
-    driver.cars.add(pk)
-    return redirect(reverse_lazy("taxi:car-list"))
-
-
-@login_required
-def car_remove_driver(request, pk):
-    driver = Driver.objects.get(id=request.user.pk)
-    driver.cars.remove(pk)
+    if driver in Driver.objects.all():
+        driver.cars.remove(pk)
+    else:
+        driver.cars.add(pk)
     return redirect(reverse_lazy("taxi:car-list"))
 
 
