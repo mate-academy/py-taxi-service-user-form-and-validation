@@ -17,17 +17,19 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        first = license_number[:3]
-        last = license_number[-5:]
+        first_license_character = license_number[:3]
+        last_license_character = license_number[-5:]
         length = len(license_number)
 
         def contains_number(string):
-            return any(char.isdigit() for char in string)
+            if string.isalpha():
+                return False
+            return True
 
         if (length != 8
-                or first.upper() != first
-                or not last.isdigit()
-                or contains_number(first)):
+                or first_license_character.upper() != first_license_character
+                or not last_license_character.isdigit()
+                or contains_number(first_license_character)):
             raise ValidationError("Ensure that value is valid")
 
         return license_number
