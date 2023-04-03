@@ -109,7 +109,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 def assign_or_delete(request, pk):
     car = Car.objects.get(id=pk)
-    driver = Driver.objects.get(id=request.user.id)
+    driver = request.user
     if driver in car.drivers.all():
         driver.cars.remove(pk)
     else:
