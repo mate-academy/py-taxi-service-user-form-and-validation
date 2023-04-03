@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -87,7 +88,7 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = Driver.objects.prefetch_related("cars__manufacturer")
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
@@ -107,11 +108,11 @@ class DriverLicenseView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/license_update_form.html"
 
 
-def car_driver_add_delete(request, pk):
+def car_driver_toggle(request, pk):
     car = Car.objects.get(id=pk)
     driver = Driver.objects.get(id=request.user.id)
     if driver in car.drivers.all():
         driver.cars.remove(pk)
     else:
         driver.cars.add(pk)
-    return redirect("taxi:car-detail", pk=pk)
+    return HttpResponseRedirect(reverse("taxi:car-detail", args=[pk]))
