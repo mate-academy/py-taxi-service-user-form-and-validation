@@ -110,10 +110,10 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 def remove_add_driver_to_car(request, pk):
     car = Car.objects.get(id=pk)
-    driver = Driver.objects.get(id=request.user.id)
-    if driver in car.drivers.all():
-        driver.cars.remove(pk)
+    user = request.user
+    if user in car.drivers.all():
+        user.cars.remove(pk)
     else:
-        driver.cars.add(pk)
+        user.cars.add(pk)
 
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
