@@ -123,37 +123,12 @@ def update_driver_license(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "taxi/update_driver_license.html", {"form": form})
 
 
-# @login_required
-# def assign_driver_to_car(request, pk):
-#     car = get_object_or_404(Car, pk=pk)
-#     print("car")
-#     if request.method == "POST":
-#         print("post")
-#         car = get_object_or_404(Car, pk=car.pk)
-#         car.drivers.add(request.user.id)
-#         car.save()
-#         return redirect("taxi:car-detail", pk=car.pk)
-#     return render(request, "taxi/car_detail.html", {"car": car})
-#
-#
-# @login_required
-# def remove_driver_from_car(request, pk):
-#     car = get_object_or_404(Car, pk=pk)
-#     if request.method == "POST":
-#         car = get_object_or_404(Car, pk=car.pk)
-#         car.drivers.remove(request.user.id)
-#         car.save()
-#         return redirect("taxi:car-detail", pk=car.pk)
-#     return render(request, "taxi/car_detail.html", {"car": car})
-
-
 @login_required
 def toggle_assign_to_car(request, pk):
-    driver = Driver.objects.get(id=request.user.id)
-    if (
-        Car.objects.get(id=pk) in driver.cars.all()
-    ):
-        driver.cars.remove(pk)
+    car = get_object_or_404(Car, id=pk)
+    driver = request.user
+    if driver in car.drivers.all():
+        car.drivers.remove(driver)
     else:
-        driver.cars.add(pk)
+        car.drivers.add(driver)
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
