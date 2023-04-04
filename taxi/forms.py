@@ -1,14 +1,11 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.core.exceptions import ValidationError
-
+from taxi.logic import licence_number_validation
 from taxi.models import Driver, Car
 
 
-class DriverLicenseCreateForm(UserCreationForm):
-    LENGTH = 8
-
+class DriverCreateForm(UserCreationForm):
     class Meta:
         model = Driver
         fields = ("license_number",)
@@ -16,27 +13,10 @@ class DriverLicenseCreateForm(UserCreationForm):
     def clean_license_number(self) -> str:
         license_number = self.cleaned_data["license_number"]
 
-        if len(license_number) != DriverLicenseUpdateForm.LENGTH:
-            raise ValidationError(
-                f"License number should be "
-                f"{DriverLicenseUpdateForm.LENGTH} symbols"
-            )
-
-        if not license_number[:3].isupper():
-            raise ValidationError("First 3 characters should be capitalized")
-
-        if not license_number[:3].isalpha():
-            raise ValidationError("First 3 characters should be letters")
-
-        if not license_number[-5:len(license_number):1].isdigit():
-            raise ValidationError("Last 5 characters should be digits")
-
-        return license_number
+        return licence_number_validation(license_number)
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    LENGTH = 8
-
     class Meta:
         model = Driver
         fields = ("license_number",)
@@ -44,22 +24,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     def clean_license_number(self) -> str:
         license_number = self.cleaned_data["license_number"]
 
-        if len(license_number) != DriverLicenseUpdateForm.LENGTH:
-            raise ValidationError(
-                f"License number should be "
-                f"{DriverLicenseUpdateForm.LENGTH} symbols"
-            )
-
-        if not license_number[:3].isupper():
-            raise ValidationError("First 3 characters should be capitalized")
-
-        if not license_number[:3].isalpha():
-            raise ValidationError("First 3 characters should be letters")
-
-        if not license_number[-5:len(license_number):1].isdigit():
-            raise ValidationError("Last 5 characters should be digits")
-
-        return license_number
+        return licence_number_validation(license_number)
 
 
 class CarForm(forms.ModelForm):
