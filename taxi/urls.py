@@ -16,7 +16,6 @@ from taxi.views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    # DriverLicenseUpdateView,
     register_driver_to_car,
 )
 
