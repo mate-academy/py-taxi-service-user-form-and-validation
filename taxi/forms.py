@@ -50,7 +50,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         return license_number
 
 
-class CreateDriverFormView(UserCreationForm):
+class CreateDriverForm(UserCreationForm):
 
     class Meta:
         model = Driver
