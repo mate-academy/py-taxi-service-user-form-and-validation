@@ -24,6 +24,9 @@
     {% endfor %}
 
     </table>
+    <div class="d-flex justify-content-end mb-3">
+      <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary">Create New Driver</a>
+    </div>
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}

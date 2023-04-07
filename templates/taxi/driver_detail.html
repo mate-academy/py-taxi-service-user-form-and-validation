@@ -22,5 +22,14 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+    <div class="d-flex justify-content-start">
+      <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
+        Delete
+      </a>
+      <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-success link-to-page">
+        Update
+      </a>
+      <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Cancel</a>
+    </div>
   </div>
 {% endblock %}
