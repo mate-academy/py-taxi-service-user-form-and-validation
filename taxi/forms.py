@@ -13,7 +13,7 @@ class LicenseNumberMixin:
         if len(license_number) != 8:
             raise ValidationError("License number must have 8 characters.")
 
-        if not license_number[:3].isupper():
+        if not (license_number[:3].isupper() and license_number[:3].isalpha()):
             raise ValidationError(
                 "First 3 letters of license number must be uppercase."
             )
@@ -33,6 +33,12 @@ class DriverForm(UserCreationForm, LicenseNumberMixin):
         fields = UserCreationForm.Meta.fields + (
             "license_number", "first_name", "last_name"
         )
+
+
+class DriverLicenseUpdateForm(forms.ModelForm, LicenseNumberMixin):
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
 
 
 class CarForm(forms.ModelForm):
