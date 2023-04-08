@@ -7,8 +7,7 @@ from .views import (
     CarCreateView,
     CarUpdateView,
     CarDeleteView,
-    car_add_driver,
-    car_delete_driver,
+    CarAddDeleteView,
     DriverListView,
     DriverDetailView,
     DriverCreateView,
@@ -48,14 +47,9 @@ urlpatterns = [
     path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
     path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
     path(
-        "cars/add-driver/<int:pk>",
-        car_add_driver,
-        name="car-add-driver"
-    ),
-    path(
-        "cars/delete-driver/<int:pk>",
-        car_delete_driver,
-        name="car-delete-driver"
+        "cars/add-delete-driver/<int:pk>/",
+        CarAddDeleteView.as_view(),
+        name="car-add-delete-driver"
     ),
     path("drivers/", DriverListView.as_view(), name="driver-list"),
     path(
@@ -63,12 +57,12 @@ urlpatterns = [
     ),
     path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
     path(
-        "drivers/delete/<int:pk>",
+        "drivers/delete/<int:pk>/",
         DriverDeleteView.as_view(),
         name="driver-delete"
     ),
     path(
-        "drivers/license_update/<int:pk>",
+        "drivers/license_update/<int:pk>/",
         DriverLicenseUpdateView.as_view(),
         name="driver-update"),
 ]
