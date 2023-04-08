@@ -70,7 +70,7 @@ urlpatterns = [
     path(
         "drivers/license_update/<int:pk>",
         DriverLicenseUpdateView.as_view(),
-        name="driver-license-update"),
+        name="driver-update"),
 ]
 
 app_name = "taxi"
