@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
@@ -85,7 +84,7 @@ class CarAssignOrDeleteDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
     def get(self, request, *args, **kwargs):
-        user = self.request.user
+        user = request.user
         pk = kwargs.get("pk")
         car = get_object_or_404(Car, id=pk)
 
