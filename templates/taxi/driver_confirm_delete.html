@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %}
+  <title>Driver Deletion</title>
+{% endblock %}
+
+{% block content %}
+  <h1>
+    Deleting driver {{ driver.first_name }} {{ driver.last_name }}
+    ({{ driver.username }})
+  </h1>
+  <h3>Are you sure you want to delete this driver?</h3>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <br>
+    <a href="{% url 'taxi:driver-detail' pk=driver.id %}" class="btn btn-primary">
+      No, go back
+    </a>
+    <input type="submit" value="Yes, delete" class="btn btn-danger">
+  </form>
+{% endblock %}
