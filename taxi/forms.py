@@ -38,11 +38,13 @@ class CarCreationForm(forms.ModelForm):
 
 
 def clean_license_number_func(license_number: str) -> str:
-    if len(license_number) == 8:
-        if license_number[3:].isdigit():
-            if license_number[:3].isalpha():
-                if license_number[:3].isupper():
-                    return license_number
+    if (
+            (len(license_number) == 8)
+            and (license_number[3:].isdigit())
+            and (license_number[:3].isalpha())
+            and (license_number[:3].isupper())
+    ):
+        return license_number
 
     raise ValidationError(
         "License Number mist be 8 characters long: first 3 are "
