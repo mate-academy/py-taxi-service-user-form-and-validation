@@ -3,6 +3,15 @@ body {
 }
 
 .link-to-page {
-    float: right;
+    float: left;
     margin: 0 2px 0 2px;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+        padding-inline-start: 0;
+
 }
