@@ -120,7 +120,6 @@ class CarDriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     fields = []
 
     def post(self, request, *args, **kwargs):
-        print(request)
         pk = kwargs.get("pk")
         car = Car.objects.get(id=pk)
         if request.user in car.drivers.all():
