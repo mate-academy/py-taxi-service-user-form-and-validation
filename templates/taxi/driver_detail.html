@@ -3,6 +3,12 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
+      Delete
+    </a>
+    <a href="{% url 'taxi:license-update' pk=driver.id %}" class="btn btn-primary link-to-page">
+      Update License number
+    </a>
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
@@ -22,5 +28,6 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+
   </div>
 {% endblock %}
