@@ -20,11 +20,11 @@ class DriverCreationForm(UserCreationForm):
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
         is_valid_len = len(license_number) == self.COUNT_CHARACTERS_LICENSE
-        is_last_5_int = (
+        is_last_digits = (
             license_number[self.COUNT_CHARACTERS_LICENSE
                            - self.COUNT_LAST_DIGITS:].isdigit()
         )
-        is_letter_uppercase = (
+        is_first_letters = (
             license_number[:self.COUNT_FIRST_LETTERS].isalpha()
         )
 
@@ -34,17 +34,17 @@ class DriverCreationForm(UserCreationForm):
             errors += (
                 f"Consist only of {self.COUNT_CHARACTERS_LICENSE} characters. "
             )
-        if is_letter_uppercase:
-            is_letter_uppercase = (
+        if is_first_letters:
+            is_first_letters = (
                 license_number[:self.COUNT_FIRST_LETTERS]
                 == license_number[:self.COUNT_FIRST_LETTERS].upper()
             )
-        if not is_letter_uppercase:
+        if not is_first_letters:
             errors += (
                 f"First {self.COUNT_FIRST_LETTERS} "
                 "characters are uppercase letters. "
             )
-        if not is_last_5_int:
+        if not is_last_digits:
             errors += f"Last {self.COUNT_LAST_DIGITS} characters are digits. "
         if errors:
             raise ValidationError(errors)
