@@ -49,3 +49,9 @@ class DriverCreationForm(UserCreationForm, DriverLicenseUpdateForm):
 class CarForm(UserCreationForm.Meta):
     model = Car
     fields = "__all__"
+
+
+# class AssignRemoveForm(forms.ModelForm):
+#     class Meta:
+#         model = Car
+#         fields = ()

@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -62,15 +62,18 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
-    def post(self, request, **kwargs):
-        driver_list = self.get_object()
 
-        if request.POST.get("button") == "out_of_list":
-            driver_list.drivers.add(self.request.user.id)
-            return redirect("taxi:car-detail", pk=self.request.user.id)
+class AssignRemoveDriverView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    fields = []
+
+    def post(self, request, **kwargs):
+        car = get_object_or_404(Car, id=kwargs.get("pk"))
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
         else:
-            driver_list.drivers.remove(self.request.user.id)
-            return redirect("taxi:car-detail", pk=self.request.user.id)
+            car.drivers.add(request.user)
+        return redirect("taxi:car-detail", kwargs.get("pk"))
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):

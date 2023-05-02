@@ -26,11 +26,20 @@
   <form action="" method="POST">
     {% csrf_token %}
     {% if user not in car.drivers.all %}
-      <button type="submit" class="btn btn-secondary link-to-page" value="out_of_list" name="button">Assign me to this car</button>
+      <a
+          href="{% url 'taxi:driver-assign-remove' pk=car.id %}"
+          class="btn btn-success link-to-page mr-5"
+          style="float: right" value="out_of_list">
+        Assign me to this car
+      </a>
     {% else %}
-      <button type="submit" class="btn btn-danger link-to-page" value="in_list" name="button">Delete me from this car</button>
+      <a
+          href="{% url 'taxi:driver-assign-remove' pk=car.id %}"
+          class="btn btn-danger link-to-page mr-5"
+          style="float: right">
+        Delete me from this car
+      </a>
     {% endif %}
-
   </form>
 
 {% endblock %}
