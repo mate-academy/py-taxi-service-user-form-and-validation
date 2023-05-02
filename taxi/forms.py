@@ -27,7 +27,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise ValidationError(
                 "first 3 character should be uppercase letters"
             )
-
         return license_number
 
 
@@ -49,9 +48,3 @@ class DriverCreationForm(UserCreationForm, DriverLicenseUpdateForm):
 class CarForm(UserCreationForm.Meta):
     model = Car
     fields = "__all__"
-
-
-# class AssignRemoveForm(forms.ModelForm):
-#     class Meta:
-#         model = Car
-#         fields = ()
