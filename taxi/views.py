@@ -8,7 +8,6 @@ from .forms import (
     DriverLicenseUpdateForm,
     DriverCreationForm,
     CarForm,
-    CarAssignOrDeleteForm
 )
 from .models import Driver, Car, Manufacturer
 
@@ -67,6 +66,17 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        pk = kwargs.get("pk")
+        car = get_object_or_404(Car, id=pk)
+
+        if user in car.drivers.all():
+            car.drivers.remove(user)
+        else:
+            car.drivers.add(user)
+        return redirect("taxi:car-detail", pk)
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
@@ -110,19 +120,3 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
-
-
-class CarAssignOrDeleteUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Car
-    form_class = CarAssignOrDeleteForm
-
-    def post(self, request, *args, **kwargs):
-        user = request.user
-        pk = kwargs.get("pk")
-        car = get_object_or_404(Car, id=pk)
-
-        if user in car.drivers.all():
-            car.drivers.remove(user)
-        else:
-            car.drivers.add(user)
-        return redirect("taxi:car-detail", pk)

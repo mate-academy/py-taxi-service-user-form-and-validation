@@ -59,9 +59,3 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
-
-
-class CarAssignOrDeleteForm(forms.ModelForm):
-    class Meta:
-        model = Car
-        fields = []
