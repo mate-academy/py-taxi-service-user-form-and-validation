@@ -2,9 +2,11 @@
 
 {% block content %}
   <h1>Delete car?</h1>
+  <h4>car: <a>{{ car.model }}</a></h4>
   <form action="" method="post">
     {% csrf_token %}
-
+    <br>
     <input type="submit" value="Yes" class="btn btn-danger">
+    <button type="button" class="btn btn-success" onclick="window.location.href='/cars/';">No</button>
   </form>
 {% endblock %}
