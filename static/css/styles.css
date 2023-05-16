@@ -3,6 +3,45 @@ body {
 }
 
 .link-to-page {
-    float: right;
+    float: left;
     margin: 0 2px 0 2px;
+}
+a:hover {
+    text-decoration: none;
+}
+.btn-create{
+    display: inline-flex;
+    width: 220px;
+    background-color: gray;
+    color: indianred;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0 20px;
+}
+.btn-driver-detail{
+    margin-top: 50px;
+}
+.btn-update{
+    margin-right: 50px;
+    width: 220px;
+}
+.btn-delete {
+    width: 120px;
+}
+.btn-assign{
+    margin-right: 50px;
+    float: right;
+    font-size: 20px;
+}
+.delete-confirmation{
+    display: flex;
+    width: 300px;
+    margin-top: 20px;
+}
+.btn-danger{
+    margin-right: 40px;
+}
+.btn-secondary{
+    margin-right: 40px;
 }
