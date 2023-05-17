@@ -110,7 +110,7 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 @login_required
 def assign_to_the_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
-    driver = Driver.objects.get(pk=request.user.id)
+    driver = get_object_or_404(Driver, pk=request.user.id)
     car.drivers.add(driver)
 
     return redirect("taxi:car-detail", pk=pk)
@@ -119,7 +119,7 @@ def assign_to_the_car(request, pk):
 @login_required
 def remove_to_the_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
-    driver = Driver.objects.get(pk=request.user.id)
+    driver = get_object_or_404(Driver, pk=request.user.id)
     car.drivers.remove(driver)
 
     return redirect("taxi:car-detail", pk=pk)
