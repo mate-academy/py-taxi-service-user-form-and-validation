@@ -7,7 +7,26 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
 
-class DriverLicenseUpdateForm(UserCreationForm):
+def lisence_validation(license_number):
+    if len(license_number) != 8:
+        raise ValidationError("length must be equal 8 simbols'")
+
+    se = f"{license_number[0]}{license_number[1]}{license_number[2]}"
+    no = f"{license_number[3]}{license_number[4]}{license_number[5]}{license_number[6]}{license_number[7]}"
+
+    if not se.isalpha() or se.upper() != se:
+        raise ValidationError("first three simbols must be latin, upper, letters")
+    try:
+        int(no)
+    except ValueError:
+        raise ValidationError("last five simbols must be numeric")
+
+    return license_number
+
+
+
+
+class DriverCreateForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
 
@@ -18,23 +37,18 @@ class DriverLicenseUpdateForm(UserCreationForm):
         )
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
+        return lisence_validation(self.cleaned_data["license_number"])
 
-        if len(license_number) != 8:
-            raise ValidationError("length must be equal 8 simbols'")
 
-        se = f"{license_number[0]}{license_number[1]}{license_number[2]}"
-        no = f"{license_number[3]}{license_number[4]}{license_number[5]}{license_number[6]}{license_number[7]}"
+class DriverLicenseUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
 
-        if not se.isalpha() or se.upper() != se:
-            raise ValidationError("first three simbols must be latin, upper, letters")
+    def clean_license_number(self):
+        return lisence_validation(self.cleaned_data["license_number"])
 
-        try:
-            int(no)
-        except ValueError:
-            raise ValidationError("last five simbols must be numeric")
 
-        return license_number
 
 
 class CarForm(forms.ModelForm):
