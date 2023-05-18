@@ -10,9 +10,7 @@ from django import forms
 def lisence_validation(license_number):
     if len(license_number) != 8:
         raise ValidationError("length must be equal 8 simbols'")
-
     se = f"{license_number[0]}{license_number[1]}{license_number[2]}"
-
     if not se.isalpha() or se.upper() != se:
         raise ValidationError(
             "first three simbols must be latin, upper letters"
@@ -22,7 +20,6 @@ def lisence_validation(license_number):
             f"{license_number[6]}{license_number[7]}")
     except ValueError:
         raise ValidationError("last five simbols must be numeric")
-
     return license_number
 
 
