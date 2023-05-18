@@ -2,13 +2,13 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from taxi.forms import DriverCreateForm
+from taxi.forms import DriverLicenseUpdateForm
 
 
 class ValidLicenseNumberFormTests(TestCase):
     @staticmethod
     def create_form(test_license_number):
-        return DriverCreateForm(
+        return DriverLicenseUpdateForm(
             data={"license_number": test_license_number}
         )
 

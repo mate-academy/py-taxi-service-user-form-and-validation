@@ -12,18 +12,18 @@ def lisence_validation(license_number):
         raise ValidationError("length must be equal 8 simbols'")
 
     se = f"{license_number[0]}{license_number[1]}{license_number[2]}"
-    no = f"{license_number[3]}{license_number[4]}{license_number[5]}{license_number[6]}{license_number[7]}"
 
     if not se.isalpha() or se.upper() != se:
-        raise ValidationError("first three simbols must be latin, upper, letters")
+        raise ValidationError(
+            "first three simbols must be latin, upper letters"
+        )
     try:
-        int(no)
+        int(f"{license_number[3]}{license_number[4]}{license_number[5]}"
+            f"{license_number[6]}{license_number[7]}")
     except ValueError:
         raise ValidationError("last five simbols must be numeric")
 
     return license_number
-
-
 
 
 class DriverCreateForm(UserCreationForm):
@@ -47,8 +47,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         return lisence_validation(self.cleaned_data["license_number"])
-
-
 
 
 class CarForm(forms.ModelForm):
