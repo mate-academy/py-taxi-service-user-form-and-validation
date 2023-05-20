@@ -7,12 +7,17 @@
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <p>
+    <strong>License number:</strong> {{ driver.license_number }}
+    <a href="{% url 'taxi:driver-update' pk=driver.id %}">
+      <button type="button" class="btn btn-primary">Update license number</button>
+    </a>
+  </p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
     <h4>Cars</h4>
-
+    <br>
     {% for car in driver.cars.all %}
         <hr>
         <p><strong>Model:</strong> {{ car.model }}</p>
@@ -23,4 +28,7 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+  <a href="{% url 'taxi:driver-delete' pk=driver.id %}">
+    <button type="button" class="btn btn-primary">Delete {{ driver.username }}</button>
+  </a>
 {% endblock %}
