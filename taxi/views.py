@@ -93,7 +93,6 @@ class CarDriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def post(self, request, pk: int) -> Callable:
         user = request.user
-        # car = get_object_or_404(Car, id=pk)
         car = Car.objects.get(id=pk)
 
         if user in car.drivers.all():
