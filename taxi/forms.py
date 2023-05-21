@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from taxi.models import Driver, Car
+from taxi.models import Car, Driver
 
 
 class CleanLicenseNumberMixin:
@@ -58,3 +58,14 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
+
+
+class CarDriverUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Car
+        fields = []
+        widgets = {
+            "id": forms.HiddenInput(),
+            "drivers": forms.HiddenInput()
+        }

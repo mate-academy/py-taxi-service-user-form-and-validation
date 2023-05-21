@@ -1,3 +1,5 @@
+from typing import Callable
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -6,6 +8,7 @@ from django.views import generic
 
 from taxi.forms import (
     CarForm,
+    CarDriverUpdateForm,
     DriverCreationForm,
     DriverLicenseUpdateForm,
 )
@@ -84,17 +87,21 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:car-list")
 
 
-@login_required
-def car_add_or_delete_driver(request, pk):
-    user = request.user
-    car = Car.objects.get(id=pk)
+class CarDriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    form_class = CarDriverUpdateForm
 
-    if user in car.drivers.all():
-        car.drivers.remove(user)
-    else:
-        car.drivers.add(user)
+    def post(self, request, pk: int) -> Callable:
+        user = request.user
+        # car = get_object_or_404(Car, id=pk)
+        car = Car.objects.get(id=pk)
 
-    return redirect("taxi:car-detail", pk=pk)
+        if user in car.drivers.all():
+            car.drivers.remove(user)
+        else:
+            car.drivers.add(user)
+
+        return redirect("taxi:car-detail", pk=pk)
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
