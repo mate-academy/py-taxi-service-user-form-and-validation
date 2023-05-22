@@ -16,8 +16,8 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    assign_driver,
-    remove_driver
+    AssignDriverView,
+    RemoveDriverView
 )
 
 urlpatterns = [
@@ -64,12 +64,12 @@ urlpatterns = [
     ),
     path(
         "drivers/add-upload/<int:pk>/",
-        assign_driver,
+        AssignDriverView.as_view(),
         name="driver-assign-car"
     ),
     path(
         "drivers/remove-driver/<int:pk>/",
-        remove_driver,
+        RemoveDriverView.as_view(),
         name="driver-remove-car"
     ),
 ]
