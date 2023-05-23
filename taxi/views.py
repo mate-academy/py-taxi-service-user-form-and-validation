@@ -111,15 +111,15 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/license_update_form.html"
 
 
-def add_user(request, pk):
-    car = Car.objects.get(pk=pk)
-    car.drivers.add(request.user)
+class CarDriversUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    fields = ("drivers",)
 
-    return redirect("taxi:car-detail", pk=car.pk)
-
-
-def remove_user(request, pk):
-    car = Car.objects.get(pk=pk)
-    car.drivers.remove(request.user)
-
-    return redirect("taxi:car-detail", pk=car.pk)
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        car = Car.objects.get(pk=pk)
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
+        else:
+            car.drivers.add(request.user)
+        return redirect("taxi:car-detail", pk=pk)
