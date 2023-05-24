@@ -17,6 +17,7 @@ from .views import (
     ManufacturerUpdateView,
     ManufacturerDeleteView,
 )
+
 urlpatterns = [
     path("", index, name="index"),
     path(

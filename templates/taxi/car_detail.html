@@ -2,17 +2,17 @@
 
 {% block content %}
 
-    {% if request.user in  car.drivers.all %}
+  {% if request.user in  car.drivers.all %}
     <form action="{% url 'taxi:update-drivers' pk=car.pk %}" method="post" novalidate>
       {% csrf_token %}
       <input type="submit" value="Delete me from this car" class="btn btn-danger link-to-page">
     </form>
-    {% else%}
-    <form action="{% url 'taxi:update-drivers' pk=car.pk%}" method="post" novalidate>
+  {% else %}
+    <form action="{% url 'taxi:update-drivers' pk=car.pk %}" method="post" novalidate>
       {% csrf_token %}
       <input type="submit" value="Assign me to this car" class="btn btn-success link-to-page">
     </form>
-    {% endif %}
+  {% endif %}
   {{ request.user }}
   <h1>
     {{ car.model }}
