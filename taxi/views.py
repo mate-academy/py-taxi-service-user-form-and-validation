@@ -112,7 +112,7 @@ class AssignToCarView(LoginRequiredMixin, generic.UpdateView):
 
     def post(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
-        car = Car.objects.get(id=pk)
+        car = get_object_or_404(Car, id=pk)
         if request.user in car.drivers.all():
             car.drivers.remove(request.user)
         else:

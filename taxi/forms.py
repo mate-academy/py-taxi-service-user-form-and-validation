@@ -7,7 +7,6 @@ from taxi.models import Driver, Car
 
 
 class DriverCreateForm(UserCreationForm):
-
     class Meta(UserCreationForm.Meta):
         model = Driver
         fields = UserCreationForm.Meta.fields + (
@@ -18,7 +17,6 @@ class DriverCreateForm(UserCreationForm):
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-
     class Meta:
         model = Driver
         fields = ("license_number",)
@@ -31,16 +29,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 "Your license number must be 8 characters long"
             )
 
-        if not license_number[:3].isupper():
+        if not (license_number[:3].isupper() and license_number[:3].isalpha()):
             raise ValidationError(
                 "The first 3 characters of your license "
                 "must be uppercase letters"
-            )
-
-        if not license_number[:3].isalpha():
-            raise ValidationError(
-                "The first 3 characters of your license "
-                "must be in letters"
             )
 
         if not license_number[3:].isdigit():
