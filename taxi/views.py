@@ -112,7 +112,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = "taxi/driver_confirm_delete.html"
 
 
-class ChangeDriverCarView(LoginRequiredMixin, generic.UpdateView):
+class UpdateDriverCarStatusView(LoginRequiredMixin, generic.UpdateView):
     model = Car
     fields = ("drivers",)
 
