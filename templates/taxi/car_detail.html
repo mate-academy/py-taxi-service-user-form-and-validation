@@ -7,12 +7,12 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers
     {% if request.user not in car.drivers.all %}
-        <span><form style="float: right" method="post" action="{% url 'taxi:assign_driver' car.pk %}">
+        <span><form style="float: right" method="post" action="{% url 'taxi:assign-driver' car.pk %}">
             {% csrf_token %}
             <button style="text-align: right" type="submit" class="btn btn-success">Assign me to this car</button>
         </form></span>
-      {% else %}
-        <form style="float: right" method="post" action="{% url 'taxi:remove_driver' car.pk %}">
+    {% else %}
+        <form style="float: right" method="post" action="{% url 'taxi:remove-driver' car.pk %}">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Delete me from this car</button>
         </form>

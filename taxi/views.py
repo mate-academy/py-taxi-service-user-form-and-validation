@@ -104,13 +104,29 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-def assign_driver(request, car_pk):
-    car = get_object_or_404(Car, pk=car_pk)
-    car.drivers.add(request.user)
-    return redirect("taxi:car-detail", pk=car.pk)
+class AssignDriverView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    fields = []
+    template_name = "taxi/car_detail.html"
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.drivers.add(request.user)
+        return self.form_valid(self.get_form())
+
+    def get_success_url(self):
+        return reverse_lazy("taxi:car-detail", kwargs={"pk": self.object.pk})
 
 
-def remove_driver(request, car_pk):
-    car = get_object_or_404(Car, pk=car_pk)
-    car.drivers.remove(request.user)
-    return redirect("taxi:car-detail", pk=car.pk)
+class RemoveDriverView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    fields = []
+    template_name = "taxi/car_detail.html"
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.drivers.remove(request.user)
+        return self.form_valid(self.get_form())
+
+    def get_success_url(self):
+        return reverse_lazy("taxi:car-detail", kwargs={"pk": self.object.pk})
