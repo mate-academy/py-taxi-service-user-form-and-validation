@@ -7,3 +7,13 @@ venv/
 .pytest_cache/
 **__pycache__/
 db.sqlite3
+taxi_service/
+.github/
+static/
+tests/
+.flake8
+*.md
+manage.py
+*.txt
+taxi_service_db_data.json
+.gitignore
