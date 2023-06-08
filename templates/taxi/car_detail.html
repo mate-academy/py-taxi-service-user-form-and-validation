@@ -3,20 +3,39 @@
 {% block content %}
   <h1>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
-
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <h1>
+    Drivers
+
+    {% if request.user.is_authenticated %}
+      {% if not request.user in car.drivers.all %}
+        <a href="{% url 'taxi:driver-car-assign' pk=car.id %}" class="btn btn-primary link-to-page">Assign me to this
+          car</a>
+      {% else %}
+        <a href="{% url 'taxi:driver-car-remove' pk=car.id %}" class="btn btn-danger link-to-page">Delete me from this
+          car</a>
+      {% endif %}
+    {% endif %}
+  </h1>
+
   <hr>
+
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+
+  <a href="{% url 'taxi:car-create' %}" class="btn btn-primary">
+    Create
+  </a>
+
+  <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">
+    Delete
+  </a>
+
+  <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">
+    Update
+  </a>
 {% endblock %}
