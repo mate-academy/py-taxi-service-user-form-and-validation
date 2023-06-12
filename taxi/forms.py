@@ -14,7 +14,8 @@ class CheckLicenceNumberMixin(forms.ModelForm):
             raise ValidationError(
                 "License number must consist of 8 characters."
             )
-        if not license_number[0:3].isupper() and not license_number[0:3].isalpha():
+        if not license_number[0:3].isupper() \
+                and not license_number[0:3].isalpha():
             raise ValidationError(
                 "First 3 characters must be uppercase letters"
             )
