@@ -40,7 +40,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             )
         if not license_number[:3].isalpha():
             raise ValidationError(
-                "Ensure that first three letters are capital letters"
+                "Ensure that first three letters are letters"
             )
         if not license_number[3:].isnumeric():
             raise ValidationError(
