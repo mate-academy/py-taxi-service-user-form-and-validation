@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -68,7 +68,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
     @staticmethod
     def post(request, *args, **kwargs):
-        pk = kwargs.get("pk")
+        pk = kwargs.get_object_or_404("pk")
         user = request.user
         car = Car.objects.get(id=pk)
         if user in car.drivers.all():
