@@ -15,6 +15,7 @@
         <th>First name</th>
         <th>Last name</th>
         <th>License number</th>
+        <th>Delete driver</th>
       </tr>
     {% for driver in driver_list %}
       <tr>
@@ -23,6 +24,12 @@
         <td>{{ driver.first_name }}</td>
         <td>{{ driver.last_name }}</td>
         <td>{{ driver.license_number }}</td>
+        <td>
+          <a style="color: red"
+            href="{% url 'taxi:driver-delete' pk=driver.id %}">
+            Delete
+          </a>
+        </td>
       </tr>
     {% endfor %}
 
