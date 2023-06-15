@@ -1,0 +1,10 @@
+<form method="post" action="{% url 'taxi:add-remove-driver' car.id %}">
+  {% csrf_token %}
+  {% if user in car.drivers.all %}
+    <input type="hidden" name="action" value="remove">
+    <button class="btn btn-danger link-to-page">Delete me from this car</button>
+  {% else %}
+    <input type="hidden" name="action" value="add">
+    <button class="btn btn-success link-to-page">Assign me to this car</button>
+  {% endif %}
+</form>
