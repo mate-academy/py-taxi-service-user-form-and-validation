@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete manufacturer?</h1>
+  <h1>Delete driver?</h1>
+  <h5>{{ driver.first_name }} {{ driver.last_name }}</h5><br>
   <form action="" method="post">
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">No</a>
   </form>
 {% endblock %}
