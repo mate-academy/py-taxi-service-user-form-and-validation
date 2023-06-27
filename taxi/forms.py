@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxLengthValidator
 
 from .models import Driver, Car
 
@@ -23,7 +23,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 regex=r"[A-Z]{3}\d{5}",
                 message="Enter 3 letters and 5 numbers. "
                 "For example 'ABC12345'",
-            )
+            ),
+            MaxLengthValidator(8)
         ]
     )
 
