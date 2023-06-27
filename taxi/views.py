@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarCreateForm
@@ -29,26 +29,17 @@ def index(request):
     return render(request, "taxi/index.html", context=context)
 
 
-@login_required
-def delete_car_from_driver(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    driver = request.user
+class CarDeleteAssignDriverView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        car = get_object_or_404(Car, pk=pk)
+        driver = request.user
 
-    if request.method == "POST":
-        car.drivers.remove(driver)
+        if driver in car.drivers.all():
+            car.drivers.remove(driver)
+        else:
+            car.drivers.add(driver)
 
-    return redirect("taxi:car-detail", pk=car.pk)
-
-
-@login_required
-def assign_car_with_driver(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    driver = request.user
-
-    if request.method == "POST":
-        car.drivers.add(driver)
-
-    return redirect("taxi:car-detail", pk=car.pk)
+        return redirect("taxi:car-detail", pk=car.pk)
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
