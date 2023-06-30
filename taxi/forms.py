@@ -14,28 +14,18 @@ class DriverLicenseUpdateForm(ModelForm):
         license_number = self.cleaned_data["license_number"]
         if len(license_number) != 8:
             raise ValidationError(
-                f"Consist only of {DriverLicenseUpdateForm.LICENSE_LEN}"
-                "characters"
+                f"Consist only of {self.LICENSE_LEN}" "characters"
             )
         if (
-            not license_number[
-                : DriverLicenseUpdateForm.INT_START_INDEX
-            ].isupper()
-            or not license_number[
-                : DriverLicenseUpdateForm.INT_START_INDEX
-            ].isalpha()
+            not license_number[: self.INT_START_INDEX].isupper()
+            or not license_number[: self.INT_START_INDEX].isalpha()
         ):
             raise ValidationError(
-                f"First {DriverLicenseUpdateForm.INT_START_INDEX}"
+                f"First {self.INT_START_INDEX}"
                 " characters are uppercase letters"
             )
-        if not license_number[
-            DriverLicenseUpdateForm.INT_START_INDEX :
-        ].isdigit():
-            must_be_letters = (
-                DriverLicenseUpdateForm.LICENSE_LEN
-                - DriverLicenseUpdateForm.INT_START_INDEX
-            )
+        if not license_number[self.INT_START_INDEX :].isdigit():
+            must_be_letters = self.LICENSE_LEN - self.INT_START_INDEX
             raise ValidationError(
                 f"First {must_be_letters} characters are uppercase letters"
             )
