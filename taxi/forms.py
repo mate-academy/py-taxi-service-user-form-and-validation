@@ -17,11 +17,14 @@ class DriverLicenseUpdateForm(ModelForm):
                 f"Consist only of {DriverLicenseUpdateForm.LICENSE_LEN}"
                 "characters"
             )
-        if not license_number[
-            : DriverLicenseUpdateForm.INT_START_INDEX
-        ].isupper() or not license_number[
-            : DriverLicenseUpdateForm.INT_START_INDEX
-        ].isalpha():
+        if (
+            not license_number[
+                : DriverLicenseUpdateForm.INT_START_INDEX
+            ].isupper()
+            or not license_number[
+                : DriverLicenseUpdateForm.INT_START_INDEX
+            ].isalpha()
+        ):
             raise ValidationError(
                 f"First {DriverLicenseUpdateForm.INT_START_INDEX}"
                 " characters are uppercase letters"
@@ -40,7 +43,6 @@ class DriverLicenseUpdateForm(ModelForm):
 
 
 class CarCreateForm(ModelForm):
-
     class Meta:
         model = Car
         fields = "__all__"

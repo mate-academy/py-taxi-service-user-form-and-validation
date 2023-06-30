@@ -65,23 +65,21 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        car = context['object']
-        context["user_belongs_car"] = True if car.drivers.contains(self.request.user) else False
+        car = context["object"]
+        context["user_belongs_car"] = (
+            True if car.drivers.contains(self.request.user) else False
+        )
         return context
-    
-    def post(self, request, *args, **kwargs):
-        car_id = kwargs["pk"]
-        print("user id", request.user.id)
-        car = Car.objects.get(pk=car_id)
 
-        print(car.drivers.contains(request.user))
+    def post(self, request, *args, **kwargs):
+        car = Car.objects.get(pk=kwargs["pk"])
+
         if car.drivers.contains(request.user):
             car.drivers.remove(request.user)
         else:
             car.drivers.add(request.user)
 
         return redirect("taxi:car-detail", pk=kwargs["pk"])
-
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
