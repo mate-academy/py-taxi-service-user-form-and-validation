@@ -12,7 +12,7 @@ class DriverLicenseUpdateForm(ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        if len(license_number) != 8:
+        if len(license_number) != self.LICENSE_LEN:
             raise ValidationError(
                 f"Consist only of {self.LICENSE_LEN}" "characters"
             )
@@ -25,9 +25,9 @@ class DriverLicenseUpdateForm(ModelForm):
                 " characters are uppercase letters"
             )
         if not license_number[self.INT_START_INDEX :].isdigit():
-            must_be_letters = self.LICENSE_LEN - self.INT_START_INDEX
+            must_be_digits = self.LICENSE_LEN - self.INT_START_INDEX
             raise ValidationError(
-                f"First {must_be_letters} characters are uppercase letters"
+                f"Last {must_be_digits} characters are digits"
             )
         return license_number
 

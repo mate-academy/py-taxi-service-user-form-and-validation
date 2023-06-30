@@ -13,7 +13,6 @@
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers
-    <a style="float: right" class="btn btn-success" href="{% url 'taxi:add-remove-user' car.id %}">Ass...</a>
     <form action="{% url 'taxi:add-remove-user' car.id %}" method="post">
       {% csrf_token %}
         {% if user_belongs_car %}
