@@ -33,8 +33,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         is_lower = license_number_triad.islower()
         is_str = isinstance(license_number_triad, str)
         is_num = False
-        num = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        for num_ in num:
+        for num_ in range(10):
             if str(num_) in license_number_triad:
                 is_num = True
 
