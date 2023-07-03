@@ -123,7 +123,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class DeleteAssignCarView(View):
     @staticmethod
-    def get(request, pk):
+    def post(request, pk):
         car = Car.objects.get(id=pk)
         if request.user in car.drivers.all():
             car.drivers.remove(request.user)
