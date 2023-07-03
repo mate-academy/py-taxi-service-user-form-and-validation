@@ -21,35 +21,18 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-
-        if len(license_number) != DriverLicenseUpdateForm.MAX_LEN:
-            raise ValidationError(
-                f"Ensure that length of license number "
-                f"is < than {DriverLicenseUpdateForm.MAX_LEN}!"
-            )
-
-        license_number_triad = license_number[:3]
-        is_lower = license_number_triad.islower()
-        is_str = isinstance(license_number_triad, str)
-        is_num = False
-        for num_ in range(10):
-            if str(num_) in license_number_triad:
-                is_num = True
-
-        if is_lower or not is_str or is_num:
-            raise ValidationError(
-                "Ensure that your letters are uppercase!"
-            )
-
-        try:
-            isinstance(int(license_number[3:8]), int)
-        except ValueError:
-            raise ValidationError(
-                "Your last 5 characters must be digits!"
-            )
-
-        return license_number
+        license_data = self.cleaned_data["license_number"]
+        if len(license_data) != 8:
+            raise ValidationError("Number of characters must be 8")
+        part_1 = license_data[:3]
+        part_2 = license_data[3:]
+        if not part_1.isalpha():
+            raise ValidationError("First characters must be letters")
+        if not part_1.isupper():
+            raise ValidationError("First characters must be capital letters")
+        if not part_2.isdecimal():
+            raise ValidationError("Last 5 characters must be digits")
+        return license_data
 
 
 class CarForm(forms.ModelForm):
