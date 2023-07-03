@@ -23,7 +23,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     def clean_license_number(self):
         license_data = self.cleaned_data["license_number"]
         if len(license_data) != DriverLicenseUpdateForm.MAX_LEN:
-            raise ValidationError(f"Number of characters must be {DriverLicenseUpdateForm.MAX_LEN}")
+            raise ValidationError(
+                f"Number of characters must be {DriverLicenseUpdateForm.MAX_LEN}"
+            )
         second_part = license_data[3:]
         first_part = license_data[:3]
         if not first_part.isalpha() or not first_part.isupper():
