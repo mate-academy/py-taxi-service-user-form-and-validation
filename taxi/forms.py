@@ -22,15 +22,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_data = self.cleaned_data["license_number"]
-        if len(license_data) != 8:
-            raise ValidationError("Number of characters must be 8")
-        part_1 = license_data[:3]
-        part_2 = license_data[3:]
-        if not part_1.isalpha():
-            raise ValidationError("First characters must be letters")
-        if not part_1.isupper():
+        if len(license_data) != DriverLicenseUpdateForm.MAX_LEN:
+            raise ValidationError(f"Number of characters must be {DriverLicenseUpdateForm.MAX_LEN}")
+        second_part = license_data[3:]
+        first_part = license_data[:3]
+        if not first_part.isalpha() or not first_part.isupper():
             raise ValidationError("First characters must be capital letters")
-        if not part_2.isdecimal():
+        if not second_part.isdecimal():
             raise ValidationError("Last 5 characters must be digits")
         return license_data
 
