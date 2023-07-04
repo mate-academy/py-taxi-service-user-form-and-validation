@@ -1,22 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="card">
+          <div class="card-body">
+            <h1 class="card-title">{{ car.model }}</h1>
+            <p class="text-muted">Manufacturer: <strong>{{ car.manufacturer.name }}</strong>,
+              <em>{{ car.manufacturer.country }}</em></p>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+            {% if user in object.drivers.all %}
+              <a href="{% url 'taxi:car-toggle-driver' car_id=object.id %}" class="btn btn-danger mb-3">Remove me from
+                this car</a>
+            {% else %}
+              <a href="{% url 'taxi:car-toggle-driver' car_id=object.id %}" class="btn btn-primary mb-3">Assign me to
+                this car</a>
+            {% endif %}
+            <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary mb-3">Update</a>
+            <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger mb-3">Delete</a>
+
+            <h2 class="my-4">Drivers</h2>
+            <hr>
+            {% if car.drivers.exists %}
+              <ul class="list-group">
+                {% for driver in car.drivers.all %}
+                  <li class="list-group-item">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <strong>Username:</strong> {{ driver.username }}
+                      </div>
+                      <div class="col-md-3">
+                        <strong>Name:</strong> {{ driver.first_name }} {{ driver.last_name }}
+                      </div>
+                      <div class="col-md-3">
+                        <strong>License number:</strong> {{ driver.license_number }}
+                      </div>
+                      <div class="col-md-3">
+                        <a href="{{ driver.get_absolute_url }}" class="btn btn-primary">View Details</a>
+                      </div>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="text-muted">This car has no drivers assigned yet.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
