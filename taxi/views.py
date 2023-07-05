@@ -64,6 +64,21 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
 
+class CarAddRemoveDriverView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    fields = ("drivers",)
+
+    def post(self, request, *args, **kwargs):
+        car_id = kwargs["pk"]
+        driver = Driver.objects.get(id=request.user.id)
+
+        if Car.objects.get(id=car_id) in driver.cars.all():
+            driver.cars.remove(car_id)
+        else:
+            driver.cars.add(car_id)
+        return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=(car_id,)))
+
+
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
     fields = "__all__"
@@ -104,15 +119,3 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
-
-
-@login_required()
-def add_or_remove_driver(request, pk):
-    driver = Driver.objects.get(id=request.user.id)
-
-    if Car.objects.get(id=pk) in driver.cars.all():
-        driver.cars.remove(pk)
-    else:
-        driver.cars.add(pk)
-
-    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=(pk,)))
