@@ -16,8 +16,13 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    toggle_driver_in_car,
+    ToggleDriverInCarView,
 )
+
+
+class ToggleDriverView:
+    pass
+
 
 urlpatterns = [
     path("", index, name="index"),
@@ -73,7 +78,7 @@ urlpatterns = [
     ),
     path(
         "cars/<int:car_id>/toggle_driver/",
-        toggle_driver_in_car,
+        ToggleDriverInCarView.as_view(),
         name="car-toggle-driver",
     )
 ]
