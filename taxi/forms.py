@@ -24,10 +24,6 @@ class DriverUserCreationForm(UserCreationForm):
         model = Driver
         fields = UserCreationForm.Meta.fields + ("license_number",)
 
-    def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-        return check_license_number(license_number)
-
 
 class DriverLicenseUpdateForm(forms.ModelForm):
 
