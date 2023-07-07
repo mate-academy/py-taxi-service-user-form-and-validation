@@ -19,7 +19,7 @@ class DriverLicenseUpdateForm (forms.ModelForm):
         license_number = self.cleaned_data["license_number"]
         if len(license_number) != 8:
             raise forms.ValidationError(
-                "License number should contain 8 letters"
+                "License number should contain 8 symbols"
             )
         if not license_number[:3:].isalpha():
             raise forms.ValidationError(

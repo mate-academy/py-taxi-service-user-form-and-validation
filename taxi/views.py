@@ -64,7 +64,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
     def post(self, request, pk):
         user = request.user
-        car = Car.objects.get(id=pk)
+        car = Car.objects.get_object_or_404(pk=pk)
         if user in car.drivers.all():
             car.drivers.remove(user)
         else:
@@ -102,7 +102,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
     form_class = DriverForm
-    # success_url = reverse_lazy("taxi:driver-list")
+    success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
