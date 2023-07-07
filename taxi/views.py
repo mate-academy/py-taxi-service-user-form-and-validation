@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -108,11 +108,16 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-def car_driver_delete(request, car_pk: int, user_pk: int):
-    Car.objects.get(pk=car_pk).drivers.remove(Driver.objects.get(pk=user_pk))
-    return index(request)
+class CarDriverAddDellView(LoginRequiredMixin, generic.DetailView):
+    model = Car
 
+    def get_queryset(self):
+        car = get_object_or_404(Car, pk=self.kwargs["pk"])
+        driver = get_object_or_404(Driver, pk=self.kwargs["user_pk"])
 
-def car_driver_add(request, car_pk: int, user_pk: int):
-    Car.objects.get(pk=car_pk).drivers.add(Driver.objects.get(pk=user_pk))
-    return index(request)
+        if self.kwargs["key"] == "add":
+            car.drivers.add(driver)
+        elif self.kwargs["key"] == "delete":
+            car.drivers.remove(driver)
+
+        return Car.objects.filter(pk=self.kwargs["pk"])
