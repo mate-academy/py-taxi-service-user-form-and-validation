@@ -10,8 +10,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
-        if not license_number[:3].isalpha() or not license_number[:3].isupper():
-            raise ValidationError("The first 3 characters must be CAPITAL LETTERS!")
+        if (
+            not license_number[:3].isalpha()
+            or not license_number[:3].isupper()
+        ):
+            raise ValidationError(
+                "The first 3 characters must be CAPITAL LETTERS!"
+            )
         elif not license_number[3:].isdigit():
             raise ValidationError("The last 5 characters must be NUMBERS!")
 
