@@ -5,12 +5,14 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-class DriverLicenseUpdateForm(forms.ModelForm):
+class DriverCreateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
-        if (
+        if len(license_number) != 8:
+            raise ValidationError("License number must be 8 characters only")
+        elif (
             not license_number[:3].isalpha()
             or not license_number[:3].isupper()
         ):
@@ -25,6 +27,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
         fields = ("username", "first_name", "last_name", "license_number",)
+
+
+class DriverLicenseUpdateForm(DriverCreateForm, forms.ModelForm):
+
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
 
 
 class CarCreateForm(forms.ModelForm):
