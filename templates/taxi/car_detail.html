@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
   <div class="container py-5">
@@ -10,13 +11,15 @@
             <p class="text-muted">Manufacturer: <strong>{{ car.manufacturer.name }}</strong>,
               <em>{{ car.manufacturer.country }}</em></p>
 
-            {% if user in object.drivers.all %}
-              <a href="{% url 'taxi:car-toggle-driver' car_id=object.id %}" class="btn btn-danger mb-3">Remove me from
-                this car</a>
-            {% else %}
-              <a href="{% url 'taxi:car-toggle-driver' car_id=object.id %}" class="btn btn-primary mb-3">Assign me to
-                this car</a>
-            {% endif %}
+            <form method="POST" action="{% url 'taxi:car-toggle-driver' pk=car.id %}">
+              {% csrf_token %}
+              {% if user in car.drivers.all %}
+                <button type="submit" class="btn btn-danger mb-3">Remove me from this car</button>
+              {% else %}
+                <button type="submit" class="btn btn-primary mb-3">Assign me to this car</button>
+              {% endif %}
+            </form>
+
             <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary mb-3">Update</a>
             <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger mb-3">Delete</a>
 

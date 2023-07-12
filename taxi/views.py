@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
-from django.views import generic
+from django.urls import reverse_lazy, reverse
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverLicenseUpdateForm, CarForm
@@ -67,12 +67,14 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
     form_class = CarForm
-    success_url = reverse_lazy("taxi:car-list")
 
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(self.request, "Car created successfully!")
         return response
+
+    def get_success_url(self):
+        return reverse("taxi:car-detail", kwargs={"pk": self.object.pk})
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -116,11 +118,11 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class ToggleDriverInCarView(LoginRequiredMixin, generic.View):
-    def get(self, request, car_id):
-        car = get_object_or_404(Car, id=car_id)
+class ToggleDriverInCarView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        car = get_object_or_404(Car, id=pk)
         if request.user in car.drivers.all():
             car.drivers.remove(request.user)
         else:
             car.drivers.add(request.user)
-        return redirect("taxi:car-detail", pk=car_id)
+        return redirect("taxi:car-detail", pk=pk)
