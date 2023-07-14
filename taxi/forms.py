@@ -19,7 +19,7 @@ class DriverCreationForm(UserCreationForm):
             raise ValidationError(
                 "Driver license number should consists of 8 characters"
             )
-        if not data[0:3].isupper():
+        if not (data[0:3].isalpha() and data[0:3].isupper()):
             raise ValidationError(
                 "First 3 characters should be uppercase letters"
             )
@@ -39,7 +39,7 @@ class DriverLicenseUpdateForm(ModelForm):
             raise ValidationError(
                 "Driver license number should consists of 8 characters"
             )
-        if not data[0:3].isupper():
+        if not (data[0:3].isalpha() and data[0:3].isupper()):
             raise ValidationError(
                 "First 3 characters should be uppercase letters"
             )
