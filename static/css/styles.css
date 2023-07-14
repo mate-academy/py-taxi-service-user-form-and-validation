@@ -1,8 +1,16 @@
 body {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .link-to-page {
-    float: right;
-    margin: 0 2px 0 2px;
+  margin: 0 2px 0 2px;
+}
+
+.link-to-assign {
+  float: right;
+}
+
+.driver-list {
+  list-style: none;
+  padding: 0;
 }
