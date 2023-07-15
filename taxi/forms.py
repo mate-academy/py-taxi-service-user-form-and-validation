@@ -29,10 +29,12 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise ValidationError("Consist only of 8 characters")
 
         elif not (
-                license_number[:self.QUANTITY_LETTERS].isalpha() and
-                license_number[:self.QUANTITY_LETTERS].isupper()
+                license_number[:self.QUANTITY_LETTERS].isalpha()
+                and license_number[:self.QUANTITY_LETTERS].isupper()
         ):
-            raise ValidationError("First 3 characters should be uppercase letters")
+            raise ValidationError(
+                "First 3 characters should be uppercase letters"
+            )
 
         elif not license_number[-self.QUANTITY_DIGITS:].isdigit():
             raise ValidationError("Last 5 characters should be digits")
