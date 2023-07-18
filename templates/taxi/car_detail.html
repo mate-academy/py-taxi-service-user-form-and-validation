@@ -7,6 +7,23 @@
       Delete
     </a>
 
+    <form action="{% url "taxi:assign-or_delete_driver" pk=car.id%}" method="post">
+      {% csrf_token %}
+      {% if request.user in car.drivers.all%}
+        <input
+          type="Submit"
+          value="Delete me from this car"
+          class="btn btn-danger"
+        >
+      {% else %}
+        <input
+          type="Submit"
+          value="Assign me to this car"
+          class="btn btn-success"
+        >
+      {% endif %}
+    </form>
+
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
