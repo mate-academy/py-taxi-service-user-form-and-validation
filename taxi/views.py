@@ -81,7 +81,7 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 def car_update_driver_view(request, pk):
     car = Car.objects.get(id=pk)
-    driver = Driver.objects.get(id=request.user.id)
+    driver = request.user
     if driver in car.drivers.all():
         car.drivers.remove(driver.id)
     else:
