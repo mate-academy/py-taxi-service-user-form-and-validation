@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete manufacturer?</h1>
+  <h1>Delete driver?</h1>
   <form action="" method="post">
     {% csrf_token %}
-
+    <p>Are you sure, you want to delete the driver?</p>
     {% include "includes/approve_cancel_button.html" %}
   </form>
 {% endblock %}
