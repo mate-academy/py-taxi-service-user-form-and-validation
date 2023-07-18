@@ -23,4 +23,12 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+  <input type="button"
+  onclick="window.location.href='{% url 'taxi:driver-update' pk=driver.id %}'"
+  class="btn-primary"
+  value="Update">
+  <input type="button"
+  onclick="window.location.href='{% url 'taxi:driver-delete' pk=driver.id %}'"
+  class="btn-danger"
+  value="Delete">
 {% endblock %}
