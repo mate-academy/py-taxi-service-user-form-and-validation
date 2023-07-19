@@ -16,7 +16,7 @@
   <hr>
   <form method="post" action="{% url 'taxi:car-update-driver' pk=car.id %}">
     {% csrf_token %}
-    {% if request.car in car.drivers.all %}
+    {% if request.driver in car.drivers.all %}
       <input type="submit" value="Delete driver" class="btn btn-danger">
     {% else %}
       <input type="submit" value="Assign driver" class="btn-primary btn">
