@@ -11,5 +11,6 @@
   <form action="" method="post">
     {% csrf_token %}
     <input type="submit" value="Yes, I agree" class="btn btn-danger">
+    <a href="{% url 'taxi:driver-detail' pk=driver.pk %}" class="btn btn-primary">No, cancel</a>
   </form>
 {% endblock %}
