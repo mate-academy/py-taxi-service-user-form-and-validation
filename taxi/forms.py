@@ -26,7 +26,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
         if len(license_number) != 8:
             raise ValidationError("It should consist of exactly 8 characters.")
-        if not license_number[:3].isupper():
+        if not (license_number[:3].isupper() and license_number[:3].isalpha()):
             raise ValidationError(
                 "The first three characters should be uppercase letters."
             )
