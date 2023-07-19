@@ -29,16 +29,19 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 f"The licence should consist with"
                 f" {self.LICENCE_LENGTH} symbols"
             )
+
         if not (license_number[:self.CHARS].isupper()
                 and license_number[:self.CHARS].isalpha()):
             raise ValidationError(
                 f"The first {self.CHARS}"
                 f" characters should be uppercase letters"
             )
+
         if not license_number[self.CHARS:].isdigit():
             raise ValidationError(
                 f"The last {self.DIGIT} characters should be digits"
             )
+        
         return license_number
 
 
