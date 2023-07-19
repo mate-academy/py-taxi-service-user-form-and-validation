@@ -112,7 +112,10 @@ class AddDriverView(generic.RedirectView):
         car = get_object_or_404(Car, pk=self.kwargs["pk"])
         if self.request.user not in car.drivers.all():
             car.drivers.add(self.request.user)
-        return reverse_lazy("taxi:car-detail", kwargs={"pk": self.kwargs["pk"]})
+        return reverse_lazy(
+            "taxi:car-detail",
+            kwargs={"pk": self.kwargs["pk"]}
+        )
 
 
 class RemoveDriverView(generic.RedirectView):
@@ -120,4 +123,7 @@ class RemoveDriverView(generic.RedirectView):
         car = get_object_or_404(Car, pk=self.kwargs["pk"])
         if self.request.user in car.drivers.all():
             car.drivers.remove(self.request.user)
-        return reverse_lazy("taxi:car-detail", kwargs={"pk": self.kwargs["pk"]})
+        return reverse_lazy(
+            "taxi:car-detail",
+            kwargs={"pk": self.kwargs["pk"]}
+        )
