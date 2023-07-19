@@ -41,7 +41,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise ValidationError(
                 f"The last {self.DIGIT} characters should be digits"
             )
-        
         return license_number
 
 
