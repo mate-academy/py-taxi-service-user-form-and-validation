@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.core.exceptions import ValidationError
@@ -32,12 +34,16 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         license_number = self.cleaned_data["license_number"]
         print(license_number[0:3])
         if len(license_number) != 8:
-            raise ValidationError("Ensure that number of character equals to 8")
+            raise ValidationError(
+                "Ensure that number of character equals to 8"
+            )
 
-        if license_number[0:3] != license_number[0:3].upper():
-            raise ValidationError("First 3 character should be uppercase letters")
+        if not re.search("^[A-Z]{3}", license_number):
+            raise ValidationError(
+                "First 3 character should be uppercase letters"
+            )
         try:
             int(license_number[3:])
-        except:
+        except ValueError:
             raise ValidationError("Last 5 character should be digits")
         return license_number
