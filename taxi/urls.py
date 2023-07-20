@@ -60,11 +60,6 @@ urlpatterns = [
         DriverDeleteView.as_view(),
         name="driver-delete"
     ),
-    path(
-        "cars/<int:pk>/assign_delete/",
-        CarDetailView.as_view(),
-        name="car-assign-delete"
-    ),
 ]
 
 app_name = "taxi"
