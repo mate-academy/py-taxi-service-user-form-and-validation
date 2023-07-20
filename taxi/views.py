@@ -108,14 +108,12 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def add_driver(request, car_id):
-    car = get_object_or_404(Car, pk=car_id)
-    car.drivers.add(request.user)
-    return redirect("taxi:car-detail", pk=car_id)
+def driver_add_remove_from_car(request, car_id):
+    driver = Driver.objects.get(id=request.user.id)
+    car = Car.objects.get(id=car_id)
+    if driver in car.drivers.all():
+        car.drivers.remove(driver)
+    else:
+        car.drivers.add(driver)
 
-
-@login_required
-def remove_driver(request, car_id):
-    car = get_object_or_404(Car, pk=car_id)
-    car.drivers.remove(request.user)
     return redirect("taxi:car-detail", pk=car_id)
