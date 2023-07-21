@@ -111,11 +111,11 @@ def driver_car_update(request, car_pk):
     car = get_object_or_404(Car, id=car_pk)
     driver = request.user  # Assuming the logged-in user is the driver.
 
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        if action == 'add':
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "add":
             driver.cars.add(car)
-        elif action == 'remove':
+        elif action == "remove":
             driver.cars.remove(car)
         driver.save()
         return redirect("taxi:car-detail", pk=car_pk)
