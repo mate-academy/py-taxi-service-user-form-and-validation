@@ -107,17 +107,17 @@ class DriverLicenseUpdate(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def driver_car_update(request, car_pk, driver_pk):
-    car = Car.objects.get(id=car_pk)
-    driver = Driver.objects.get(id=driver_pk)
-    driver.cars.add(car)
-    driver.save()
-    return redirect("taxi:car-detail", pk=car_pk)
-
-
-def driver_car_delete(request, car_pk, driver_pk):
+def driver_car_update(request, car_pk):
     car = get_object_or_404(Car, id=car_pk)
-    driver = get_object_or_404(Driver, id=driver_pk)
-    driver.cars.remove(car)
-    driver.save()
+    driver = request.user  # Assuming the logged-in user is the driver.
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'add':
+            driver.cars.add(car)
+        elif action == 'remove':
+            driver.cars.remove(car)
+        driver.save()
+        return redirect("taxi:car-detail", pk=car_pk)
+
     return redirect("taxi:car-detail", pk=car_pk)
