@@ -33,7 +33,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
-        if not re.match("^[A-Z]{3}\d{5}$", license_number):
+        if not re.match(r"^[A-Z]{3}\d{5}$", license_number):
             raise ValidationError(
                 "License number must be 8 characters long, "
                 "with the first 3 characters as uppercase letters "
