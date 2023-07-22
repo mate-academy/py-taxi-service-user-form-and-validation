@@ -1,22 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+{{ car.model }}
+<br>
+<br>
+<a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+  Delete
+</a>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+<a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
+  Update
+</a>
+</h1>
+<p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+<br>
+<br>
+<div class="link-to-page">
+  {% if user not in car.drivers.all %}
+<form action="{% url 'taxi:driver-assign-car' pk=car.pk %}">
+  <input type="submit" value="Assign me to this car" class="btn btn-secondary link-to-page">
+</form>
+{% else %}
+<form action="{% url 'taxi:driver-remove-car' pk=car.pk %}">
+  <input type="submit" value="Delete me from this car" class="btn btn-warning link-to-page">
+</form>
+{% endif %}
+</div>
+<h1>Drivers</h1>
+<hr>
+<ul class="list-unstyled">
+  {% for driver in car.drivers.all %}
+  <li><strong>Username:</strong> {{ driver.username }}</li>
+  <li><strong>First Name:</strong> {{ driver.first_name }}</li>
+  <li><strong>Last Name:</strong> {{ driver.last_name }}</li>
   <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+  {% endfor %}
+</ul>
 {% endblock %}
