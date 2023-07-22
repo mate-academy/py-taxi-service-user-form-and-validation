@@ -62,7 +62,11 @@ urlpatterns = [
         DriverLicenseUpdateView.as_view(),
         name="driver-update"
     ),
-    path("cars/<int:car_id>/assign_driver/", driver_add_remove_from_car, name="add-driver"),
+    path(
+        "cars/<int:car_id>/assign_driver/",
+        driver_add_remove_from_car,
+        name="add-driver"
+    ),
 
 ]
 
