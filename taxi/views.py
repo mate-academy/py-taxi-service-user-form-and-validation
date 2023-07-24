@@ -95,7 +95,7 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class DriverDeleteView(LoginRequiredMixin, generic.DetailView):
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     template_name = "taxi/driver_confirm_delete.html"
     success_url = reverse_lazy("taxi:driver-list")
@@ -108,16 +108,10 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def assign_driver(request, car_id):
-    car = get_object_or_404(Car, pk=car_id)
-    if request.user not in car.drivers.all():
-        car.drivers.add(request.user)
-    return redirect("taxi:car-detail", pk=car.id)
-
-
-@login_required
-def remove_driver(request, car_id):
+def toggle_driver(request, car_id):
     car = get_object_or_404(Car, pk=car_id)
     if request.user in car.drivers.all():
         car.drivers.remove(request.user)
-    return redirect("taxi:car-detail", pk=car_id)
+    else:
+        car.drivers.add(request.user)
+    return redirect("taxi:car-detail", pk=car.id)
