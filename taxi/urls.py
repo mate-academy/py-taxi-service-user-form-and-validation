@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views import (
     index,
-    add_or_delete_driver,
     CarListView,
     CarDetailView,
     CarCreateView,
@@ -63,7 +62,7 @@ urlpatterns = [
     ),
     path(
         "drivers/<int:pk>/add_delete",
-        add_or_delete_driver,
+        DriverDeleteView.as_view(),
         name="add-delete-driver"
     ),
 ]
