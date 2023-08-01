@@ -107,23 +107,18 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class AddDriverView(generic.RedirectView):
+class ToggleDriverView(generic.RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         car = get_object_or_404(Car, pk=self.kwargs["pk"])
         if self.request.user not in car.drivers.all():
             car.drivers.add(self.request.user)
-        return reverse_lazy(
-            "taxi:car-detail",
-            kwargs={"pk": self.kwargs["pk"]}
-        )
-
-
-class RemoveDriverView(generic.RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        car = get_object_or_404(Car, pk=self.kwargs["pk"])
+            return reverse_lazy(
+                "taxi:car-detail",
+                kwargs={"pk": self.kwargs["pk"]}
+            )
         if self.request.user in car.drivers.all():
             car.drivers.remove(self.request.user)
-        return reverse_lazy(
-            "taxi:car-detail",
-            kwargs={"pk": self.kwargs["pk"]}
-        )
+            return reverse_lazy(
+                "taxi:car-detail",
+                kwargs={"pk": self.kwargs["pk"]}
+            )

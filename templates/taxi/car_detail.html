@@ -20,12 +20,12 @@
     {% endfor %}
   </ul>
   {% if user in car.drivers.all %}
-    <form method="post" action="{% url 'taxi:car-remove-driver' pk=car.id %}">
+    <form method="post" action="{% url 'taxi:car-toggle-driver' pk=car.id %}">
       {% csrf_token %}
       <button type="submit" class="btn btn-danger">Delete me from this car</button>
     </form>
   {% else %}
-    <form method="post" action="{% url 'taxi:car-add-driver' pk=car.id %}">
+    <form method="post" action="{% url 'taxi:car-toggle-driver' pk=car.id %}">
       {% csrf_token %}
       <button type="submit" class="btn btn-primary">Assign me to this car</button>
     </form>
