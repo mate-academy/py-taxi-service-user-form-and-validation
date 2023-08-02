@@ -51,9 +51,3 @@ class CarCreationForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
-
-
-class DriverUpdateCarsForm(forms.HiddenInput):
-    class Meta:
-        model = Driver
-        fields = ("",)
