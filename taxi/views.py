@@ -62,6 +62,10 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+
+class CarAssignDeleteView(LoginRequiredMixin, generic.DetailView):
+    model = Car
+
     def post(self, request, pk):
         user = request.user
         car = get_object_or_404(Car, pk=pk)
