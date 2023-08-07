@@ -9,9 +9,13 @@ class LicenseNumberMixin:
     def clean_license_number(self):
         license_num = self.cleaned_data.get("license_number")
         if len(license_num) != 8:
-            raise forms.ValidationError("Length of license number must be only 8 characters")
+            raise forms.ValidationError(
+                "Length of license number must be only 8 characters"
+            )
         if not license_num[:3].isalpha() or not license_num[:3].isupper():
-            raise forms.ValidationError("First 3 characters must be uppercase letters")
+            raise forms.ValidationError(
+                "First 3 characters must be uppercase letters"
+            )
         if not license_num[3:].isdigit():
             raise forms.ValidationError("Last 5 characters must be digits")
         return license_num
