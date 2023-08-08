@@ -16,20 +16,7 @@ class DriverCreationForm(UserCreationForm):
         )
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-
-        if len(license_number) != 8:
-            raise ValidationError("Length was expected to be 8")
-
-        if not all(65 <= ord(char) <= 90 for char in license_number[:3]):
-            raise ValidationError("The first three characters were"
-                                  " expected to be uppercase letters")
-
-        if not license_number[3:].isdigit():
-            raise ValidationError("The last five characters were"
-                                  " expected to be digits")
-
-        return license_number
+        return validate_license_number(self.cleaned_data["license_number"])
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -38,20 +25,20 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
+        return validate_license_number(self.cleaned_data["license_number"])
 
-        if len(license_number) != 8:
-            raise ValidationError("Length was expected to be 8")
 
-        if not all(65 <= ord(char) <= 90 for char in license_number[:3]):
-            raise ValidationError("The first three characters were"
-                                  " expected to be uppercase letters")
+def validate_license_number(license_number):
+    if len(license_number) != 8:
+        raise ValidationError("Length was expected to be 8")
+    elif not all(65 <= ord(char) <= 90 for char in license_number[:3]):
+        raise ValidationError("The first three characters were"
+                              " expected to be uppercase letters")
+    elif not license_number[3:].isdigit():
+        raise ValidationError("The last five characters were"
+                              " expected to be digits")
 
-        if not license_number[3:].isdigit():
-            raise ValidationError("The last five characters were"
-                                  " expected to be digits")
-
-        return license_number
+    return license_number
 
 
 class CarForm(forms.ModelForm):
