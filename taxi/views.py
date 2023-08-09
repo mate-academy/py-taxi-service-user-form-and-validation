@@ -29,22 +29,24 @@ def index(request):
     return render(request, "taxi/index.html", context=context)
 
 
-@login_required
-def assign_me_to_car(request, car_id):
-    current_driver = Driver.objects.get(id=request.user.id)
-    car = Car.objects.get(id=car_id)
-    car.drivers.add(current_driver)
+class AssignCarView(LoginRequiredMixin, generic.View):
+    @staticmethod
+    def get(request, car_id):
+        current_driver = Driver.objects.get(id=request.user.id)
+        car = Car.objects.get(id=car_id)
+        car.drivers.add(current_driver)
 
-    return redirect("taxi:car-detail", car.id)
+        return redirect("taxi:car-detail", car.id)
 
 
-@login_required
-def delete_me_from_car(request, car_id):
-    current_driver = Driver.objects.get(id=request.user.id)
-    car = Car.objects.get(id=car_id)
-    car.drivers.remove(current_driver)
+class DeleteCarView(LoginRequiredMixin, generic.View):
+    @staticmethod
+    def get(request, car_id):
+        current_driver = Driver.objects.get(id=request.user.id)
+        car = Car.objects.get(id=car_id)
+        car.drivers.remove(current_driver)
 
-    return redirect("taxi:car-detail", car.id)
+        return redirect("taxi:car-detail", car.id)
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
