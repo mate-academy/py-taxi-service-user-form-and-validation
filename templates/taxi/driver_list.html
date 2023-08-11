@@ -4,6 +4,11 @@
     <h1>Driver List
     </h1>
 
+   <a href="{% url 'taxi:driver-create' %}" class="btn btn-secondary">
+      Create
+    </a>
+  <br>
+
     {% if driver_list %}
     <table class="table">
       <tr>
@@ -28,3 +33,4 @@
       <p>There are no drivers in the service.</p>
     {% endif %}
 {% endblock %}
+
