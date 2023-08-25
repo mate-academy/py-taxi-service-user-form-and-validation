@@ -41,7 +41,7 @@ NOTE: Attach screenshots of all created or modified pages to pull request. It's 
 ### Note: Check your code using this [checklist](checklist.md) before pushing your solution.
 
 # Note
-Follow these steps if you need to use `crispy_forms` v2.0 with Python 3.11:
+Follow these steps if you need to use `cr   ispy_forms` v2.0 with Python 3.11:
 
 1. Add `CRISPY_TEMPLATE_PACK` to `settings.py`.
 

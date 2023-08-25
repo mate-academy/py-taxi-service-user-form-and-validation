@@ -111,10 +111,11 @@ class ToggleDriverAssignmentView(View):
 
     def post(self, request, *args, **kwargs):
         car = get_object_or_404(Car, pk=kwargs["pk"])
+        user = request.user
 
-        if request.user in car.drivers.all():
-            car.drivers.remove(request.user)
+        if user in car.drivers.all():
+            car.drivers.remove(user)
         else:
-            car.drivers.add(request.user)
+            car.drivers.add(user)
 
         return redirect("taxi:car-detail", pk=car.pk)
