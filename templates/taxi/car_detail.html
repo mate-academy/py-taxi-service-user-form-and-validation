@@ -12,7 +12,20 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <h1>
+    Drivers
+    {% if is_user_driver %}
+      <form  method="post" action="{% url 'taxi:delete-driver' object.pk %}">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete me from this car</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'taxi:assign-driver' object.pk %}">
+        {% csrf_token %}
+        <button class="btn btn-success" type="submit">Assign me to this car</button>
+      </form>
+    {% endif %}
+  </h1>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
