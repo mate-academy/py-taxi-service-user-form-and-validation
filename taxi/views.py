@@ -115,15 +115,12 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-@require_POST
-def assign_driver(request, car_pk):
-    car = get_object_or_404(Car, pk=car_pk)
-    car.drivers.add(request.user)
-    return redirect("taxi:car-detail", pk=car_pk)
-
-
-@require_POST
-def remove_driver(request, car_pk):
-    car = get_object_or_404(Car, pk=car_pk)
-    car.drivers.remove(request.user)
-    return redirect("taxi:car-detail", pk=car_pk)
+class AssignOrRemoveDriverView(generic.View):
+    def post(self, request, *args, **kwargs):
+        car = get_object_or_404(Car, pk=kwargs["pk"])
+        user = request.user
+        if user in car.drivers.all():
+            car.drivers.remove(user)
+        else:
+            car.drivers.add(user)
+        return redirect("taxi:car-detail", pk=car.pk)
