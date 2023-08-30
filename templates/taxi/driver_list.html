@@ -3,7 +3,9 @@
 {% block content %}
     <h1>Driver List
     </h1>
-
+    <a class="badge badge-info" href="{% url "taxi:driver-create"%}">
+      Create driver
+    </a>
     {% if driver_list %}
     <table class="table">
       <tr>
@@ -12,6 +14,7 @@
         <th>First name</th>
         <th>Last name</th>
         <th>License number</th>
+        <th>Delete</th>
       </tr>
     {% for driver in driver_list %}
       <tr>
@@ -20,6 +23,11 @@
         <td>{{ driver.first_name }}</td>
         <td>{{ driver.last_name }}</td>
         <td>{{ driver.license_number }}</td>
+        <td>
+          <a href="{% url "taxi:driver-delete" pk=driver.id %}">
+            Delete
+          </a>
+        </td>
       </tr>
     {% endfor %}
 
