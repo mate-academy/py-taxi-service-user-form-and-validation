@@ -6,18 +6,18 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-def validate_license(license_number: str):
-    length = (len(license_number) == 8)
-    letters = all(
-        char.isalpha() and char.isupper() for char in license_number[:3]
-    )
-    digits = all(char.isnumeric() for char in license_number[3:])
-    if not all((length, letters, digits),):
+def validate_license(self):
+    license_number = self.cleaned_data["license_number"]
+    if len(license_number) != 8:
+        raise ValidationError("Must consist only of 8 characters")
+    first_3: str = license_number[:3]
+    if not (first_3.isalpha() and first_3.isupper()):
         raise ValidationError(
-            "License number requirements: consist only of 8 characters, "
-            "first 3 characters are UPPERCASE letters, "
-            "last 5 characters are digits."
+            "First 3 characters must be uppercase letters"
         )
+    if not license_number[-5:].isdigit():
+        raise ValidationError("Last 5 characters must be digits")
+    return license_number
 
 
 class DriverCreationForm(UserCreationForm):
