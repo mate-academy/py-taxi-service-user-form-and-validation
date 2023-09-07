@@ -15,7 +15,7 @@ def validate_license_number(value):
     }
     for message, value in conditions.items():
         if not value:
-            raise ValidationError(f"{message}")
+            raise ValidationError(message)
 
 
 class Manufacturer(models.Model):
