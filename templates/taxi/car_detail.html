@@ -12,7 +12,23 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <h1>
+      Drivers
+      <form
+          action="{% url 'taxi:car-change-driver-state' pk=object.pk %}"
+          method="post"
+          class="link-to-page"
+      >
+        {% csrf_token %}
+        {% if user in object.drivers.all %}
+          <input type="hidden" name="action" value="remove">
+          <input type="submit" value="Remove me from this car" class="btn btn-danger">
+        {% else %}
+          <input type="hidden" name="action" value="assign">
+          <input type="submit" value="Assign me to this car" class="btn btn-success">
+        {% endif %}
+      </form>
+  </h1>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
