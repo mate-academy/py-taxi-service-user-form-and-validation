@@ -75,32 +75,18 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:car-list")
 
 
-class CarAssignDriverView(LoginRequiredMixin, generic.UpdateView):
+class CarChangeDriverView(LoginRequiredMixin, generic.UpdateView):
     model = Car
     fields = tuple()
 
     def post(self, request, *args, **kwargs):
         car = self.get_object()
-        user_pk = self.kwargs.get("driver_pk")
-        car.drivers.add(user_pk)
-        car.save()
-        return super().post(request, **kwargs)
-
-    def get_success_url(self):
-        return reverse_lazy(
-            "taxi:car-detail",
-            kwargs={"pk": self.kwargs.get("pk")}
-        )
-
-
-class CarRemoveDriverView(LoginRequiredMixin, generic.UpdateView):
-    model = Car
-    fields = tuple()
-
-    def post(self, request, *args, **kwargs):
-        car = self.get_object()
-        user_pk = self.kwargs.get("driver_pk")
-        car.drivers.remove(user_pk)
+        user_pk = request.user.pk
+        action = request.POST.get("action")
+        if action == "assign":
+            car.drivers.add(user_pk)
+        else:
+            car.drivers.remove(user_pk)
         car.save()
         return super().post(request, **kwargs)
 
