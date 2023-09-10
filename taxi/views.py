@@ -104,7 +104,9 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/driver_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("taxi:driver-detail", kwargs={"pk": self.object.id})
+        return reverse_lazy(
+            "taxi:driver-detail", kwargs={"pk": self.object.id}
+        )
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -116,9 +118,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 @login_required
 def toggle_assign_to_car(request, pk):
     driver = Driver.objects.get(id=request.user.id)
-    if (
-        Car.objects.get(id=pk) in driver.cars.all()
-    ):  # probably could check if car exists
+    if Car.objects.get(id=pk) in driver.cars.all():
         driver.cars.remove(pk)
     else:
         driver.cars.add(pk)
