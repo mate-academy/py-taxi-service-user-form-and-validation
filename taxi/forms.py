@@ -17,8 +17,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         license_number = self.cleaned_data["license_number"]
         if re.match(r"^[A-Z]{3}\d{5}$", license_number):
             return license_number
-        else:
-            raise ValidationError("Invalid license number")
+        raise ValidationError("Invalid license number")
 
 
 class DriverCreateForm(UserCreationForm, DriverLicenseUpdateForm):
