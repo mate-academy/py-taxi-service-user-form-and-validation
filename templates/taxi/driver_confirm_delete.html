@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete manufacturer?</h1>
+  <h1>Delete Driver</h1>
+  <h4 class="text-muted">{{ driver.username }}</h4>
+  <p>This Driver will be deleted, and all inform about him</p>
   <form action="" method="post">
     {% csrf_token %}
 
