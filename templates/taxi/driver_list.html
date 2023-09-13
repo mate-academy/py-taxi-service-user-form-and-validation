@@ -5,6 +5,8 @@
     </h1>
 
     {% if driver_list %}
+        <a href="{% url "taxi:driver-create" %}" class="btn btn-success">Create driver</a>
+        <br><br>
     <table class="table">
       <tr>
         <th>ID</th>
