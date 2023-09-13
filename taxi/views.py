@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy, reverse
+from django.http import HttpResponseRedirect
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarCreateView
 from .models import Driver, Car, Manufacturer
 
 
@@ -61,10 +63,23 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def get_queryset(self):
+        return Car.objects.filter(id=self.kwargs.get("pk")).\
+            prefetch_related("drivers")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["user_drives_this_car"] = False
+        if self.request.user in self.object.drivers.all():
+            context["user_drives_this_car"] = True
+
+        return context
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreateView
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +102,40 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name_suffix = "_license_update_form"
+
+    def get_success_url(self):
+        return reverse_lazy("taxi:driver-detail", args=[self.object.id])
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverChangeView(generic.DetailView):
+    model = Car
+
+    def get(self, request, *args, **kwargs):
+        current_user = self.request.user
+        current_car = self.get_object()
+
+        if current_user not in current_car.drivers.all():
+            current_car.drivers.add(current_user)
+        else:
+            current_car.drivers.remove(current_user)
+        current_car.save()
+
+        return HttpResponseRedirect(
+            reverse("taxi:car-detail", args=[current_car.id])
+        )
