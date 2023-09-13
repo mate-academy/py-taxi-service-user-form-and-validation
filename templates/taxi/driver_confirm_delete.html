@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete car?</h1>
+  <h1>Delete this driver?</h1>
   <hr>
   <form action="" method="post">
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
     <a
-      class="btn btn-primary"
-      href="{% url 'taxi:car-detail' pk=car.id %}"
+        class="btn btn-primary"
+        href="{% url 'taxi:driver-detail' pk=driver.id %}"
     >Cancel</a>
   </form>
 {% endblock %}
