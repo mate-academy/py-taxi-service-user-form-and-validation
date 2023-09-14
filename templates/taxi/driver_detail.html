@@ -9,6 +9,8 @@
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+  <p><a href="{% url "taxi:driver-update" driver.id %}">Update License</a></p>
+  <p><a href="{% url "taxi:driver-delete" driver.id %}">Delete Driver</a></p>
 
   <div class="ml-3">
     <h4>Cars</h4>
