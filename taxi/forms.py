@@ -22,12 +22,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             )
         elif (
             not license_number[:3].isalpha()
-            or license_number[:3] != license_number[:3].upper()
+            or not license_number[:3].isupper()
         ):
             raise ValidationError(
                 "First 3 characters of License"
                 " number should be uppercase letters"
             )
+
         elif not license_number[3:].isdigit():
             raise ValidationError(
                 "Last 5 characters of License number should be digits"
