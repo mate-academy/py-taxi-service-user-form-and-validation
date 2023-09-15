@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.core.exceptions import ValidationError
 
-from taxi.models import Driver
+from taxi.models import Driver, Car
 
 
 class DriverCreationForm(UserCreationForm):
@@ -27,3 +27,15 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         if not license_number[3:].isnumeric():
             raise ValidationError("License number must end with 5 digits.")
         return license_number
+
+
+class CarForm(forms.ModelForm):
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=Driver.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
+    class Meta:
+        model = Car
+        fields = "__all__"
