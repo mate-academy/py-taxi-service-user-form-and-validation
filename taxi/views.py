@@ -88,10 +88,10 @@ def car_driver_add(request: dict, pk: int):
 def car_driver_delete(request: dict, pk: int):
     car = Car.objects.get(id=pk)
     car.drivers.remove(request.user)
-    return HttpResponseRedirect(
-        reverse_lazy("taxi:car-detail",
-                     kwargs={"pk": pk}
-                     ))
+    return HttpResponseRedirect(reverse_lazy(
+        "taxi:car-detail",
+        kwargs={"pk": pk}
+    ))
 
 
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
