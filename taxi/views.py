@@ -77,7 +77,7 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 def car_driver_add(request: dict, pk: int):
-    car = Car.objects.get(id=pk)
+    car = Car.objects.get_object_or_404(id=pk)
     car.drivers.add(request.user)
     return HttpResponseRedirect(reverse_lazy(
         "taxi:car-detail",
@@ -86,7 +86,7 @@ def car_driver_add(request: dict, pk: int):
 
 
 def car_driver_delete(request: dict, pk: int):
-    car = Car.objects.get(id=pk)
+    car = Car.objects.get_object_or_404(id=pk)
     car.drivers.remove(request.user)
     return HttpResponseRedirect(reverse_lazy(
         "taxi:car-detail",
