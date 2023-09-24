@@ -22,11 +22,17 @@ class LicenseNumberValidationMixin:
             return True
 
         if len(license_number) != 8:
-            raise forms.ValidationError("License number must be 8 characters long")
+            raise forms.ValidationError(
+                "License number must be 8 characters long"
+            )
         if not first_3_uppercase_letters():
-            raise forms.ValidationError("License number must start with 3 uppercase letters")
+            raise forms.ValidationError(
+                "License number must start with 3 uppercase letters"
+            )
         if not license_number[-5:].isdigit():
-            raise forms.ValidationError("License number must end with 5 digits")
+            raise forms.ValidationError(
+                "License number must end with 5 digits"
+            )
         return license_number
 
 
@@ -40,7 +46,10 @@ class DriverCreateForm(UserCreationForm, LicenseNumberValidationMixin):
 
     class Meta:
         model = Driver
-        fields = ("username", "first_name", "last_name", "email", "password1", "password2", "license_number")
+        fields = (
+            "username", "first_name", "last_name",
+            "email", "password1", "password2", "license_number"
+        )
 
 
 class CarCreateForm(forms.ModelForm):
