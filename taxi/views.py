@@ -1,10 +1,14 @@
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from .forms import DriverCreationForm, CarForm, DriverLicenseUpdateForm
+from .forms import \
+    DriverCreationForm, \
+    CarForm, \
+    DriverLicenseUpdateForm, \
+    DriverUpdateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -83,6 +87,13 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
+
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
@@ -107,27 +118,14 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
-    form_class = DriverLicenseUpdateForm
-    success_url = reverse_lazy("taxi:driver-list")
-
-
-class AssignCarView(LoginRequiredMixin, generic.View):
+class AssignDeleteCarView(LoginRequiredMixin, generic.View):
     @staticmethod
-    def get(request, car_id):
+    def post(request, car_id):
         current_driver = Driver.objects.get(id=request.user.id)
         car = Car.objects.get(id=car_id)
-        car.drivers.add(current_driver)
-
-        return redirect("taxi:car-detail", car.id)
-
-
-class DeleteCarView(LoginRequiredMixin, generic.View):
-    @staticmethod
-    def get(request, car_id):
-        current_driver = Driver.objects.get(id=request.user.id)
-        car = Car.objects.get(id=car_id)
-        car.drivers.remove(current_driver)
+        if current_driver in car.drivers.all():
+            car.drivers.remove(current_driver)
+        else:
+            car.drivers.add(current_driver)
 
         return redirect("taxi:car-detail", car.id)

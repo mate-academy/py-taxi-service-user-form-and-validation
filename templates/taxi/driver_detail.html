@@ -2,14 +2,14 @@
 
 {% block content %}
   <h1>
-     Username: {{ driver.username }}<a href="{% url 'taxi:driver-update' pk=driver.id %}" style="float: right" class="btn btn-primary link-to-page">Edit</a>
+     Username: {{ driver.username }}<a href="{% url 'taxi:driver-edit' driver.id %}" style="float: right" class="btn btn-primary">Edit</a>
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
   <p>
-    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-primary">Update license number</a></p>
+    <a href="{% url 'taxi:driver-update' driver.id %}" class="btn btn-primary">Update license number</a></p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">

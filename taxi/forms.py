@@ -43,6 +43,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         return clean_license_number(license_number)
 
 
+class DriverUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = Driver
+        exclude = ("license_number",)
+
+
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
