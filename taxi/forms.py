@@ -46,9 +46,8 @@ class DriverCreateForm(UserCreationForm, LicenseNumberValidationMixin):
 
     class Meta:
         model = Driver
-        fields = (
-            "username", "first_name", "last_name",
-            "email", "password1", "password2", "license_number"
+        fields = UserCreationForm.Meta.fields + (
+            "first_name", "last_name", "email", "license_number",
         )
 
 

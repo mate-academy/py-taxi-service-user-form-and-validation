@@ -4,15 +4,5 @@
 {% block content %}
   <h1>Update license of {{ object }}</h1>
   <hr>
-  <form action=""
-        method="post"
-        novalidate>
-    {% csrf_token %}
-    {{ form|crispy }}
-
-    <input type="submit"
-           value="Submit"
-           class="btn btn-primary">
-  {% include "includes/go_back_button.html" %}
-  </form>
+  {% include "includes/form.html" %}
 {% endblock %}
