@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
@@ -42,8 +42,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "debug_toolbar",
-    "crispy_forms",
+    # "debug_toolbar",
+    # "crispy_forms",
+    # "crispy_bootstrap4",
     "taxi",
 ]
 
@@ -75,6 +76,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
