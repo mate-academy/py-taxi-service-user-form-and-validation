@@ -1,14 +1,15 @@
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import \
-    DriverCreationForm, \
-    CarForm, \
-    DriverLicenseUpdateForm, \
+from .forms import (
+    DriverCreationForm,
+    CarForm,
+    DriverLicenseUpdateForm,
     DriverUpdateForm
+)
 from .models import Driver, Car, Manufacturer
 
 
@@ -122,7 +123,7 @@ class AssignDeleteCarView(LoginRequiredMixin, generic.View):
     @staticmethod
     def post(request, car_id):
         current_driver = Driver.objects.get(id=request.user.id)
-        car = Car.objects.get(id=car_id)
+        car = get_object_or_404(Car, id=car_id)
         if current_driver in car.drivers.all():
             car.drivers.remove(current_driver)
         else:
