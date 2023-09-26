@@ -122,7 +122,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 class AssignDeleteCarView(LoginRequiredMixin, generic.View):
     @staticmethod
     def post(request, car_id):
-        current_driver = Driver.objects.get(id=request.user.id)
+        current_driver = get_object_or_404(Driver, id=request.user.id)
         car = get_object_or_404(Car, id=car_id)
         if current_driver in car.drivers.all():
             car.drivers.remove(current_driver)
