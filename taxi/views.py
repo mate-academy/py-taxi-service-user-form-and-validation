@@ -1,9 +1,15 @@
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from .forms import (
+    DriverCreationForm,
+    CarForm,
+    DriverLicenseUpdateForm,
+    DriverUpdateForm
+)
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,19 +70,32 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Car
     success_url = reverse_lazy("taxi:car-list")
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
@@ -87,3 +106,27 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class AssignDeleteCarView(LoginRequiredMixin, generic.View):
+    @staticmethod
+    def post(request, car_id):
+        current_driver = get_object_or_404(Driver, id=request.user.id)
+        car = get_object_or_404(Car, id=car_id)
+        if current_driver in car.drivers.all():
+            car.drivers.remove(current_driver)
+        else:
+            car.drivers.add(current_driver)
+
+        return redirect("taxi:car-detail", car.id)
