@@ -113,7 +113,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class CarDriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    template_name = "taxi/car-driver-form.html"
+    template_name = "taxi/car_driver_form.html"
     form_class = CarDriverForm
 
 
