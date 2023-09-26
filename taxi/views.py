@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Driver, Car, Manufacturer
+from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
 
 
 @login_required
@@ -64,7 +65,8 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
+
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -79,6 +81,22 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:car-list")
 
 
+class CarUpdateDriverView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    fields = ("drivers",)
+
+    def post(self, request, *args, **kwargs) -> redirect:
+        driver = request.user
+        car = get_object_or_404(Car, pk=kwargs["pk"])
+        queryset = car.drivers.all()
+        if driver in queryset:
+            car.drivers.remove(driver)
+        else:
+            car.drivers.add(driver)
+
+        return redirect("taxi:car-detail", pk=kwargs["pk"])
+
+
 class DriverListView(LoginRequiredMixin, generic.ListView):
     model = Driver
     paginate_by = 5
@@ -87,3 +105,18 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
