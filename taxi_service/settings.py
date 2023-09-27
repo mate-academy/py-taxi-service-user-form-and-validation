@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "crispy_bootstrap4",
     "crispy_forms",
-    "django_extensions",
     "taxi",
 ]
 
