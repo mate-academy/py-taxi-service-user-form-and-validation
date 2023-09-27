@@ -6,7 +6,11 @@
   <form action="" method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
-
+    {% if driver %}
+      <a href="{% url "taxi:car-detail" pk=car.id %}" class="btn btn-secondary">Cancel</a>
+    {% else %}
+      <a href="{% url "taxi:car-list" %}" class="btn btn-secondary">Cancel</a>
+    {% endif %}
     <input type="submit" value="Submit" class="btn btn-primary">
   </form>
 {% endblock %}

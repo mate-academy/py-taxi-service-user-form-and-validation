@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  {% if driver %}
+  <h1>Update license number</h1>
+  {% else %}
+    <h1>Create Driver</h1>
+  {% endif %}
+  <form action="" method="POST" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+  {% if driver %}
+        <a href="{% url "taxi:driver-detail" pk=driver.id %}" class="btn btn-secondary">Cancel</a>
+    {% else %}
+        <a href="{% url "taxi:driver-list" %}" class="btn btn-secondary">Cancel</a>
+  {% endif %}
+    <input type="submit" value="Submit" class="btn btn-primary">
+</form>
+{% endblock %}
