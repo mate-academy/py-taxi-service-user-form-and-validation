@@ -5,23 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from taxi.models import Car, Driver
 
 
-class DriverCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = Driver
-        fields = UserCreationForm.Meta.fields + (
-            "first_name",
-            "last_name",
-            "license_number",
-        )
-
-
-class DriverLicenseUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Driver
-        fields = ("license_number",)
-
-    license_number = forms.CharField(max_length=8, min_length=8)
-
+class DriverLicenseValidationMixin(forms.ModelForm):
     def clean_license_number(self):
         license_number = self.cleaned_data.get("license_number")
 
@@ -40,6 +24,22 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise forms.ValidationError("Last 5 characters must be digits.")
 
         return license_number
+
+
+class DriverCreationForm(DriverLicenseValidationMixin, UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = Driver
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "license_number",
+        )
+
+
+class DriverLicenseUpdateForm(DriverLicenseValidationMixin, forms.ModelForm):
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
 
 
 class CarForm(forms.ModelForm):
