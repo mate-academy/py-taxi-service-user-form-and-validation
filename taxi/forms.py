@@ -11,7 +11,8 @@ class CleanLicenseNumberMixine():
             raise forms.ValidationError(
                 "License number should be 8 characters long."
             )
-        if not license_number[0:3].isupper():
+        first_three = license_number[0:3]
+        if not first_three.isupper() or not first_three.isalpha():
             raise forms.ValidationError(
                 "The first three characters should be uppercase letters."
             )
