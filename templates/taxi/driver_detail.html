@@ -24,6 +24,6 @@
     {% endfor %}
   <br>
     <a href="{% url "taxi:driver-update" pk=driver.id %}" class="btn btn-outline-primary">Update licence number</a>
-    <a href="{% url "taxi:driver-delete" pk=driver.id %}" class="btn btn-outline-danger">Update licence number</a>
+    <a href="{% url "taxi:driver-delete" pk=driver.id %}" class="btn btn-outline-danger">Delete</a>
   </div>
 {% endblock %}

@@ -7,7 +7,7 @@
       Delete
     </a>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-outline-secondary link-to-page">
+    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-outline-primary link-to-page">
       Update
     </a>
     {% if user in car.drivers.all %}
