@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+
   <h1>
     Username: {{ driver.username }}
+
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
@@ -22,5 +24,11 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary left">
+      Update
+    </a>
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger left">
+      Delete
+    </a>
   </div>
 {% endblock %}
