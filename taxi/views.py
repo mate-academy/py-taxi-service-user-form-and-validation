@@ -107,7 +107,8 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
 
 
-def car_driver_update_view(request, pk):
+@login_required
+def car_driver_update(request, pk):
     car = Car.objects.get(id=pk)
     user = request.user
     if user in car.drivers.all():
