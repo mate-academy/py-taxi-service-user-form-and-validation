@@ -9,7 +9,11 @@
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+  <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
+      Delete Driver
+    </a>
 
+    </a>
   <div class="ml-3">
     <h4>Cars</h4>
 
@@ -22,5 +26,6 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary link-to-page">Update licence number</a>
   </div>
 {% endblock %}
