@@ -48,12 +48,12 @@ urlpatterns = [
     path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
     path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
     path(
-        "car/<int:pk>/add_driver/",
+        "car/<int:pk>/add-driver/",
         add_driver,
         name="add-driver"
     ),
     path(
-        "car/<int:pk>/remove_driver/",
+        "car/<int:pk>/remove-driver/",
         remove_driver,
         name="remove-driver"
     ),
