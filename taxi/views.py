@@ -77,21 +77,14 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     def post(request, *args, **kwargs):
         car = get_object_or_404(Car, pk=kwargs["pk"])
         user = request.user
-        # drivers = car.drivers.all()
 
         if "assign_me" in request.POST:
             car.drivers.add(user)
 
         if "delete_me" in request.POST:
             car.drivers.remove(user)
-            # drivers = car.drivers.exclude(pk=user.id)
 
         return redirect("taxi:car-detail", kwargs["pk"])
-        # return render(
-        #     request,
-        #     "taxi/car_detail.html",
-        #     context={"car": car, "drivers": drivers}
-        # )§
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
