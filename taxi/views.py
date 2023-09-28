@@ -107,6 +107,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
+@login_required
 def assign_or_delete_driver(
         request: HttpRequest,
         pk: int,
