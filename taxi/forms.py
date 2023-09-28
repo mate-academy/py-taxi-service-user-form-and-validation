@@ -33,7 +33,7 @@ class DriverCreationForm(UserCreationForm):
         return license_number
 
 
-class DriverLicenseUpdateForm(UserChangeForm):
+class DriverLicenseUpdateForm(UserChangeForm, DriverCreationForm):
     class Meta(UserChangeForm.Meta):
         model = Driver
         exclude = ["username", ]
@@ -42,22 +42,6 @@ class DriverLicenseUpdateForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields.pop("password")
-
-    def clean(self):
-        cleaned_data = super().clean()
-        license_number = cleaned_data.get("license_number")
-
-        if len(license_number) != 8:
-            raise ValidationError("License should be 8 characters long.")
-
-        if not license_number[:3].isalpha() or (
-                license_number[:3] != license_number[:3].upper()):
-            raise ValidationError(
-                "First three symbols should be uppercase letters."
-            )
-
-        if not license_number[3:].isnumeric():
-            raise ValidationError("Last five symbols should be numbers.")
 
 
 class CarCreationView(forms.ModelForm):
