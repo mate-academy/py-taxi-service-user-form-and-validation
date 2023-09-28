@@ -63,16 +63,6 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
-    def get(self, request, *args, **kwargs):
-        car = self.get_object()
-        drivers = car.drivers.all()
-        context = {"car": car, "drivers": drivers}
-        return render(
-            request,
-            "taxi/car_detail.html",
-            context=context
-        )
-
     @staticmethod
     def post(request, *args, **kwargs):
         car = get_object_or_404(Car, pk=kwargs["pk"])
@@ -132,11 +122,11 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     @staticmethod
     def post(request, *args, **kwargs):
         driver = get_object_or_404(Driver, pk=kwargs["pk"])
-        form = DriverLicenseUpdateForm(request.POST)
+        form = DriverLicenseUpdateForm(request.POST, instance=driver)
 
         if form.is_valid():
             driver.license_number = form["license_number"].data
-            driver.save()
+            form.save()
             return redirect("taxi:driver-detail", kwargs["pk"])
 
         return HttpResponse("Not valid license number!")
