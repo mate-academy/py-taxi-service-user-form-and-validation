@@ -18,11 +18,14 @@
         <h2 class="text-left">Drivers</h2>
       </div>
       <div class="col-auto">
-        {% if request.user in car.drivers.all  %}
-          <button class="btn btn-danger">Delete me from this car</button>
-        {% else %}
-          <button class="btn btn-success">Assign me to this car</button>
-        {% endif %}
+        <form method="post" action="{% url 'taxi:delete-or-add' pk=car.id %}">
+          {% csrf_token %}
+          {% if request.user in car.drivers.all %}
+            <button type="submit" class="btn btn-danger">Delete me from this car</button>
+          {% else %}
+            <button type="submit" class="btn btn-success">Assign me to this car</button>
+            </form>
+          {% endif %}
       </div>
     </div>
   </div>

@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
@@ -63,6 +64,22 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+
+        if self.request.method == "POST":
+            is_exist = self.request.POST.get("is_exist")
+            car_id = self.request.POST.get("car_id")
+            user_id = self.request.POST.get("car_id")
+            car = Car.objects.get(id=car_id)
+            if is_exist:
+                Car.objects.filter(drivers=user_id).delete()
+            else:
+                user = Driver.objects.get(id=user_id)
+                car.drivers.add(user)
+
+        return context
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
@@ -111,3 +128,18 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
+
+
+@login_required
+def delete_or_add(request: HttpRequest, pk: int, *args,
+                  **kwargs) -> HttpResponse:
+    car = Car.objects.get(id=pk)
+    driver = Driver.objects.get(id=request.user.id)
+    if driver in car.drivers.all():
+        car.drivers.remove(driver)
+        car.save()
+    else:
+        car.drivers.add(driver)
+        car.save()
+
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
