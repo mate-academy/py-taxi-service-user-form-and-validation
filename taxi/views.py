@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from taxi.forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
 
 from .models import Driver, Car, Manufacturer
 
@@ -61,10 +63,23 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    @staticmethod
+    def post(request, *args, **kwargs):
+        car = get_object_or_404(Car, pk=kwargs["pk"])
+        user = request.user
+
+        if "assign_me" in request.POST:
+            car.drivers.add(user)
+
+        if "delete_me" in request.POST:
+            car.drivers.remove(user)
+
+        return redirect("taxi:car-detail", kwargs["pk"])
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +102,31 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+
+    @staticmethod
+    def post(request, *args, **kwargs):
+        driver = get_object_or_404(Driver, pk=kwargs["pk"])
+        form = DriverLicenseUpdateForm(request.POST, instance=driver)
+
+        if form.is_valid():
+            driver.license_number = form["license_number"].data
+            form.save()
+            return redirect("taxi:driver-detail", kwargs["pk"])
+
+        return HttpResponse("Not valid license number!")
