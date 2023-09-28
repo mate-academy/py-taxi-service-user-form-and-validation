@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from taxi.forms import DriverLicenseUpdateForm
+from taxi.forms import DriverLicenseUpdateForm, DriverCreationForm
 
 
 class ValidLicenseNumberFormTests(TestCase):
@@ -22,7 +22,10 @@ class ValidLicenseNumberFormTests(TestCase):
         self.assertFalse(self.create_form("TES1234").is_valid())
 
     def test_first_3_characters_should_be_uppercase_letters(self):
-        self.assertFalse(self.create_form("TE123456").is_valid())
+        form = DriverCreationForm(
+            data={"username": "testuser", "first_name": "John", "last_name": "Doe", "email": "test@example.com",
+                  "license_number": "TE123456"})
+        self.assertFalse(form.is_valid())
 
     def test_last_5_characters_should_be_be_digits(self):
         self.assertFalse(self.create_form("TEST2345").is_valid())

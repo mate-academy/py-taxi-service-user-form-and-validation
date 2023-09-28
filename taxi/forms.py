@@ -5,11 +5,8 @@ from .models import Driver, Car
 
 
 class LicenseNumberMixin:
-    def __init__(self):
-        self.cleaned_data = None
-
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
+        license_number = self.cleaned_data.get("license_number")
         if len(license_number) != 8:
             raise forms.ValidationError(
                 "License number must consist of 8 characters"
