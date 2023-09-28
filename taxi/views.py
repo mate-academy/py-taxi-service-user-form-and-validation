@@ -143,11 +143,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
         if form.is_valid():
             driver.license_number = form["license_number"].data
-            form.save()
-            # driver_list = Driver.objects.all()
-            # context = {
-            #     "driver_list": driver_list,
-            # }
+            driver.save()
             return redirect("taxi:driver-detail", kwargs["pk"])
 
         return HttpResponse("Not valid license number!")
