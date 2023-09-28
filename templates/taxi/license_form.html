@@ -3,7 +3,7 @@
 
 {% block content %}
   <h1>Update License Number</h1>
-  <form action="" method="post" novalidate>
+  <form method="post" novalidate onsubmit="return false">
     {% csrf_token %}
     {{  form|crispy }}
     <input type="submit" value="Submit" class="btn btn-primary">
