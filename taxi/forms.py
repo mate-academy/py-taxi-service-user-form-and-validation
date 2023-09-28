@@ -41,7 +41,7 @@ class CarCreateUpdateForm(forms.ModelForm):
         fields = "__all__"
 
 
-class DriverCreateForm(UserCreationForm):
+class DriverCreateForm(UserCreationForm, DriverLicenseUpdateForm):
 
     class Meta(UserCreationForm.Meta):
         model = Driver
