@@ -1,6 +1,5 @@
-from http.client import HTTPResponse
-
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -11,7 +10,7 @@ from .models import Driver, Car, Manufacturer
 
 
 @login_required
-def index(request):
+def index(request) -> HttpResponse:
     """View function for the home page of the site."""
 
     num_drivers = Driver.objects.count()
@@ -110,7 +109,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def car_assign(request, pk):
+def car_assign(request, pk) -> HttpResponse:
     car = Car.objects.get(pk=pk)
     curr_driver = request.user
     if curr_driver in car.drivers.all():

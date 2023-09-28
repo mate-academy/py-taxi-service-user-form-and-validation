@@ -6,7 +6,7 @@
   <p>Are you sure that you want to delete {{ driver }}?</p>
   <form action="" method="post">
     {% csrf_token %}
-    <a href="{% url "taxi:driver-detail" pk=driver.id %}" class="btn btn-secondary">Cancel</a>
+    <input type="submit" value="Cancel" class="btn btn-primary del-button" style="margin-left: 50px">
     <input type="submit" value="Yes" class="btn btn-danger">
   </form>
 {% endblock %}
