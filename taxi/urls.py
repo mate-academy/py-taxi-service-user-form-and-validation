@@ -14,7 +14,6 @@ from .views import (
     ManufacturerUpdateView,
     ManufacturerDeleteView,
     DriverDeleteView,
-    # DriverUpdateView,
     DriverLicenseUpdateView, DriverCreateView, delete_or_add,
 )
 
