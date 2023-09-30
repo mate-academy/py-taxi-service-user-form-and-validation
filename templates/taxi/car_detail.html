@@ -6,13 +6,13 @@
     {% if user in car.drivers.all %}
       <a
        class="btn btn-danger"
-       href="{% url 'taxi:assign-driver' driver_id=user.id car_id=car.id operation='D' %}">
+       href="{% url 'taxi:driver-assignation' driver_id=user.id car_id=car.id %}">
         Delete me from this car
       </a>
     {% else %}
       <a
       class="btn btn-success"
-      href="{% url 'taxi:assign-driver' driver_id=user.id car_id=car.id operation='A' %}">
+      href="{% url 'taxi:driver-assignation' driver_id=user.id car_id=car.id %}">
         Assign me to this car</a>
     {% endif %}
   </h1>

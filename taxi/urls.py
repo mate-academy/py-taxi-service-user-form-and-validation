@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views import (
     index,
-    assign_driver,
     CarListView,
     CarDetailView,
     CarCreateView,
@@ -17,6 +16,7 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+    car_assign_or_disemploy_driver,
 )
 
 urlpatterns = [
@@ -62,9 +62,9 @@ urlpatterns = [
         name="driver-update",
     ),
     path(
-        "cars/assignation/<int:car_id>/<int:driver_id>/<str:operation>/",
-        assign_driver,
-        name="assign-driver",
+        "cars/assign/<int:car_id>/<int:driver_id>/",
+        car_assign_or_disemploy_driver,
+        name="driver-assignation",
     ),
 ]
 

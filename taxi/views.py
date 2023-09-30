@@ -30,13 +30,14 @@ def index(request):
     return render(request, "taxi/index.html", context=context)
 
 
-def assign_driver(
-    request: HttpRequest, driver_id: int, car_id: int, operation: str
-):
-    if operation == "A":
-        Car.objects.get(id=car_id).drivers.add(driver_id)
+def car_assign_or_disemploy_driver(
+    request: HttpRequest, driver_id: int, car_id: int,
+) -> HttpResponseRedirect:
+    car = Car.objects.prefetch_related("drivers").get(id=car_id)
+    if request.user in car.drivers.all():
+        car.drivers.remove(driver_id)
     else:
-        Car.objects.get(id=car_id).drivers.remove(driver_id)
+        car.drivers.add(driver_id)
     return HttpResponseRedirect(f"/cars/{car_id}/")
 
 
