@@ -61,7 +61,7 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
-    queryset = Car.objects.all().prefetch_related("drivers")
+    queryset = Car.objects.prefetch_related("drivers")
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
@@ -90,7 +90,7 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = Driver.objects.prefetch_related("cars__manufacturer")
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
