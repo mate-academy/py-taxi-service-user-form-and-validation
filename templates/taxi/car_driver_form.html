@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    {% if not user in car.drivers.all %}
+      Add {{ user.username }} to {{ car.model }}?
+    {% else %}
+      Delete {{ user.username }} from {{ car.model }}?
+    {% endif %}
+  </h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    {% if not user in car.drivers.all %}
+      <a class="btn btn-primary" href="{% url 'taxi:add-driver-to-car' pk=car.id %}">Add</a>
+      <a class="btn btn-danger" href="{% url 'taxi:car-detail' pk=car.id %}">No</a>
+    {% else %}
+      <a class="btn btn-danger" href="{% url 'taxi:delete-driver-from-car' pk=car.id %}">Delete</a>
+      <a class="btn btn-primary" href="{% url 'taxi:car-detail' pk=car.id %}">No</a>
+    {% endif %}
+  </form>
+{% endblock %}
