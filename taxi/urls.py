@@ -15,7 +15,8 @@ from .views import (
     ManufacturerDeleteView,
     DriverCreateView,
     DriverDeleteView,
-    DriverUpdateView, add_or_delete_driver,
+    DriverUpdateView,
+    add_or_delete_driver,
 )
 
 urlpatterns = [
