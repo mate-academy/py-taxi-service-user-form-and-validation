@@ -12,12 +12,11 @@ class LicenseNumberValidationMixin:
         def first_3_uppercase_letters():
             first_3_letters = license_number[:3]
 
-            for letter in first_3_letters:
-                if letter.islower():
-                    return False
+            if not first_3_letters.isupper():
+                return False
 
-                if letter.isdigit():
-                    return False
+            if not first_3_letters.isalpha():
+                return False
 
             return True
 
