@@ -24,9 +24,6 @@ class Driver(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.first_name} {self.last_name})"
 
-    def get_absolute_url(self):
-        return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
-
 
 class Car(models.Model):
     model = models.CharField(max_length=255)
