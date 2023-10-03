@@ -12,17 +12,17 @@
       Update
     </a>
 
-    <form method="post" action="{% url 'taxi:assign-driver-to-car' car_id=car.id %}" id="assign-form">
+    <form method="post" action="{% url 'taxi:assign-driver-to-car' pk=car.id %}" id="assign-form">
       {% csrf_token %}
-      <button type="submit" class="btn btn-success">
+      <button type="submit" class="btn btn-success" name="assign">
         Assign me to this car
       </button>
     </form>
 
-    <form method="post" action="{% url 'taxi:remove-driver-from-car' car_id=car.id %}" id="remove-form" style="display: none;">
+    <form method="post" action="{% url 'taxi:remove-driver-from-car' pk=car.id %}" id="remove-form">
       {% csrf_token %}
-      <button type="submit" class="btn btn-danger">
-        Delete me from this car
+      <button type="submit" class="btn btn-danger" name="remove">
+        Remove me from this car
       </button>
     </form>
   </h1>
@@ -34,23 +34,5 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
-
-  <script>
-    document.getElementById('assign-form').addEventListener('submit', function (e) {
-      e.preventDefault();
-      fetch(this.action, {
-        method: 'POST',
-        body: new FormData(this),
-        headers: {
-          'X-CSRFToken': '{{ csrf_token }}'
-        }
-      }).then(function (response) {
-        if (response.ok) {
-          document.getElementById('assign-form').style.display = 'none';
-          document.getElementById('remove-form').style.display = 'block';
-        }
-      });
-    });
-  </script>
 </div>
 {% endblock %}
