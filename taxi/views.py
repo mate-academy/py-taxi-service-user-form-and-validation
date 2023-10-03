@@ -1,9 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverLicenseUpdateForm, CarForm, DriverCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,13 +66,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +89,49 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+    template_name = "taxi/driver_form.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+    def form_valid(self, form):
+        user = form.save()
+        user.set_password(form.cleaned_data["password1"])
+        user.save()
+        messages.success(self.request, "Driver created successfully.")
+        return super().form_valid(form)
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_form.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_confirm_delete.html"
+
+
+def assign_driver_to_car(request, car_id):
+    user = request.user
+    car = get_object_or_404(Car, pk=car_id)
+
+    if car.drivers.filter(pk=user.pk).exists():
+        car.drivers.remove(user)
+    else:
+        car.drivers.add(user)
+
+    return redirect("taxi:car-detail", pk=car_id)
+
+
+def remove_driver_from_car(request, car_id):
+    car = get_object_or_404(Car, id=car_id)
+    car.driver = None
+    car.save()
+    return redirect("taxi:car-detail", car_id=car_id)
