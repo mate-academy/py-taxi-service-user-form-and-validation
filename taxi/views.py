@@ -107,7 +107,9 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-def car_assign_delete_driver_view(request: HttpRequest, pk: int) -> HttpResponse:
+def car_assign_delete_driver_view(
+    request: HttpRequest, pk: int
+) -> HttpResponse:
     if request.user in Car.objects.get(id=pk).drivers.all():
         Car.objects.get(id=pk).drivers.remove(request.user)
     else:
