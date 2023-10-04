@@ -85,9 +85,7 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 @login_required
 def remove_or_assign_to_car(request, pk) -> HttpResponseRedirect:
     driver = Driver.objects.get(id=request.user.id)
-    if (
-        Car.objects.get(id=pk) in driver.cars.all()
-    ):
+    if Car.objects.get(id=pk) in driver.cars.all():
         driver.cars.remove(pk)
     else:
         driver.cars.add(pk)
