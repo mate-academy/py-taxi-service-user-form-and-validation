@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 from taxi.models import Driver, Car
@@ -39,3 +40,9 @@ class CarCreateForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
+
+
+class DriverCreateForm(DriverLicenseUpdateForm, UserCreationForm):
+    class Meta:
+        model = Driver
+        fields = UserCreationForm.Meta.fields + ("license_number",)
