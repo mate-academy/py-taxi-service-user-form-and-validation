@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-class CarForm(forms.ModelForm):
+class CarCreationForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
