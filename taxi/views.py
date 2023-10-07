@@ -33,7 +33,6 @@ def index(request):
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
     context_object_name = "manufacturer_list"
-    template_name = "taxi/manufacturer_list.html"
     paginate_by = 5
 
 
@@ -93,7 +92,6 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = DriverCreateForm
-    template_name = "taxi/driver_form.html"
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -104,7 +102,6 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
-    template_name = "taxi/driver_form.html"
     success_url = reverse_lazy("taxi:driver-list")
 
 
