@@ -56,7 +56,11 @@ urlpatterns = [
         DriverDeleteView.as_view(),
         name="driver-delete"
     ),
-    path("cars/<int:pk>/assign/", remove_or_assign_driver, name="assign-driver"),
+    path(
+        "cars/<int:pk>/assign/",
+        remove_or_assign_driver,
+        name="assign-driver"
+    ),
     path(
         "license/<int:pk>/update",
         DriverLicenseUpdateView.as_view(),
