@@ -55,10 +55,7 @@ urlpatterns = [
         CarUpdateDriverView.as_view(),
         name="car-update-driver"
     ),
-    path("drivers/create/",
-         DriverCreateView.as_view(),
-         name="driver-create"
-    ),
+    path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
     path(
         "drivers/<int:pk>/delete",
         DriverDeleteView.as_view(),
