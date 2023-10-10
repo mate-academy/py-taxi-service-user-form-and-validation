@@ -114,11 +114,8 @@ def remove_or_assign_driver(request, pk):
     user = request.user
     if user in car.drivers.all():
         car.drivers.remove(user)
-        return redirect(reverse(
-            "taxi:car-detail", kwargs={"pk": pk}
-        ))
     else:
         car.drivers.add(user)
-        return redirect(reverse(
-            "taxi:car-detail", kwargs={"pk": pk}
-        ))
+    return redirect(reverse(
+        "taxi:car-detail", kwargs={"pk": pk}
+    ))
