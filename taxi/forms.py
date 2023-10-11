@@ -44,7 +44,7 @@ class DriverLicenseUpdateForm(LicenseNumberValidationMixin, UserChangeForm):
         self.fields["password"].widget = forms.HiddenInput()
 
 
-class BookForm(forms.ModelForm):
+class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
