@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -108,16 +108,16 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
-    queryset = (
-        get_user_model().objects.prefetch_related("cars__manufacturer")
-    )
+    queryset = get_user_model().objects.prefetch_related("cars__manufacturer")
 
 
 @login_required
 def assign_delete_to_car(request, pk: int):
-    driver = get_user_model().objects.get(id=request.user.id)
-    if Car.objects.get(id=pk) in driver.cars.all():
-        driver.cars.remove(pk)
+    car = get_object_or_404(Car, id=pk)
+
+    if car.drivers.filter(id=request.user.id).exists():
+        car.drivers.remove(request.user)
     else:
-        driver.cars.add(pk)
+        car.drivers.add(request.user)
+
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
