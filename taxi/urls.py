@@ -15,7 +15,8 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    assign_or_delete, DriverUpdateView,
+    DriverUpdateView,
+    assign_or_delete,
 )
 
 
