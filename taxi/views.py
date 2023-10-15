@@ -1,6 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -57,11 +56,16 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
 class CarListView(LoginRequiredMixin, generic.ListView):
     model = Car
     paginate_by = 5
-    queryset = Car.objects.all().select_related("manufacturer")
+    queryset = Car.objects.select_related("manufacturer")
 
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["driver_list"] = self.object.drivers.all()
+        return context
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
@@ -88,7 +92,7 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = Driver.objects.prefetch_related("cars__manufacturer")
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
@@ -107,19 +111,17 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-@login_required
-def assign_or_delete(request: HttpRequest, car_id: int) -> HttpResponse:
-    user = request.user
-    car = Car.objects.get(id=car_id)
+class CarUpdateDriverView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    fields = ("drivers",)
 
-    if user in car.drivers.all():
-        if "delete" in request.POST:
-            car.drivers.remove(user)
-    else:
-        if "assign" in request.POST:
-            car.drivers.add(user)
-    context = {
-        "car": car
-    }
+    def post(self, request, *args, **kwargs) -> redirect:
+        driver = request.user
+        car = get_object_or_404(Car, pk=kwargs["pk"])
+        queryset = car.drivers.all()
+        if driver in queryset:
+            car.drivers.remove(driver)
+        else:
+            car.drivers.add(driver)
 
-    return render(request, "taxi/car_detail.html", context=context)
+        return redirect("taxi:car-detail", pk=kwargs["pk"])

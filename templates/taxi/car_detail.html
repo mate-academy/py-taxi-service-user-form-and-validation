@@ -11,18 +11,23 @@
   <div class="ml-3">
     <h4>
       Drivers
-      {% if user in car.drivers.all %}
-        <a href="{% url 'taxi:car-assign-or-delete' car.id %}" class="btn btn-danger link-to-page">
-        Delete me from this car
-        </a>
-      {% else %}
-        <a href="{% url 'taxi:car-assign-or-delete' car.id %}" class="btn btn-success link-to-page">
-        Assign me to this car
-        </a>
-      {% endif %}
+      <form action="{% url "taxi:car-update-driver" pk=car.id %}" method="post">
+        {% csrf_token %}
+        {% if request.user in car.drivers.all %}
+          <input
+            type="submit"
+            class="btn btn-danger link-to-page"
+            value="Delete me from this car" />
+        {% else %}
+          <input
+            type="submit"
+            class="btn btn-success link-to-page"
+            value="Assign me to this car" />
+        {% endif %}
+      </form>
     </h4>
 
-    {% for driver in car.drivers.all %}
+    {% for driver in driver_list %}
         <hr>
         <p><strong>Username:</strong> {{ driver.username }}</p>
         <p><strong>Full name:</strong> {{ driver.first_name }} {{ driver.last_name }}</p>
