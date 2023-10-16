@@ -15,17 +15,15 @@ class LicenseNumberValidatorMixin:
             raise ValidationError("License length should be 8 characters")
 
         for el in license_number[:3]:
-            if el in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+            if not el.isalpha():
                 raise ValidationError(error_message)
 
         if license_number[:3] != license_number[:3].upper():
             raise ValidationError(error_message)
 
-        try:
-            for num in license_number[3:]:
-                int(num)
-        except ValueError:
-            raise ValidationError("Last 5 characters must be digits")
+        for num in license_number[3:]:
+            if not num.isdigit():
+                raise ValidationError("Last 5 characters must be digits")
 
         return license_number
 
