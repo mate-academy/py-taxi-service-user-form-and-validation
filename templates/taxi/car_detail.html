@@ -12,7 +12,7 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <form>
+  <form method="post" action="{% url 'taxi:car-driver-update' pk=car.id %}">
     {% csrf_token %}
     <h1>
       Drivers

@@ -92,9 +92,9 @@ class CarDriversUpdateView(LoginRequiredMixin, generic.View):
         except Car.DoesNotExist:
             return HttpResponseBadRequest("Car not found")
 
-        drivers = car.drivers.all()
+        drivers = car.drivers
 
-        if request.user in drivers:
+        if request.user in drivers.all():
             drivers.remove(request.user)
         else:
             drivers.add(request.user)
