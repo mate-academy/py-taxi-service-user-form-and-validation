@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -83,15 +83,20 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class CarDriversUpdateView(LoginRequiredMixin, generic.View):
     @staticmethod
-    def get(request: HttpRequest, pk: int) -> HttpResponseRedirect:
-        drivers = Car.objects.get(pk=pk).drivers
+    def post(request: HttpRequest, pk: int) -> HttpResponseRedirect | HttpResponseBadRequest:
+        try:
+            car = Car.objects.get(pk=pk)
+        except Car.DoesNotExist:
+            return HttpResponseBadRequest("Car not found")
 
-        if request.user in drivers.all():
+        drivers = car.drivers.all()
+
+        if request.user in drivers:
             drivers.remove(request.user)
         else:
             drivers.add(request.user)
 
-        return redirect("taxi:car-detail", pk=pk)
+        return HttpResponseRedirect(reverse("taxi:car-detail", args=[pk]))
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
