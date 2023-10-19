@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import (HttpRequest,
                          HttpResponseRedirect,
                          HttpResponseBadRequest)
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -87,11 +87,7 @@ class CarDriversUpdateView(LoginRequiredMixin, generic.View):
     @staticmethod
     def post(request: HttpRequest,
              pk: int) -> HttpResponseRedirect | HttpResponseBadRequest:
-        try:
-            car = Car.objects.get(pk=pk)
-        except Car.DoesNotExist:
-            return HttpResponseBadRequest("Car not found")
-
+        car = get_object_or_404(Car, pk=pk)
         drivers = car.drivers
 
         if request.user in drivers.all():
