@@ -15,9 +15,16 @@ class LicenseNumberValidator:
         license_number = self.cleaned_data["license_number"]
 
         if len(license_number) != self.LICENSE_LENGTH:
-            raise ValidationError("License number should consist of 8 characters")
-        elif not license_number[:self.UPPER_COUNT].isupper() or not license_number[:self.UPPER_COUNT].isalpha():
-            raise ValidationError("First 3 characters should be uppercase letters")
+            raise ValidationError(
+                "License number should consist of 8 characters"
+            )
+        elif not (
+                license_number[:self.UPPER_COUNT].isupper()
+                or not license_number[:self.UPPER_COUNT].isalpha()
+        ):
+            raise ValidationError(
+                "First 3 characters should be uppercase letters"
+            )
         elif not license_number[self.UPPER_COUNT:].isdigit():
             raise ValidationError("Last 5 characters should be digits")
 
