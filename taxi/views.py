@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarCreationForm
 from .models import Driver, Car, Manufacturer
@@ -108,7 +109,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 @login_required()
 def car_driver_update_view(request: HttpRequest, pk: int) -> HttpResponse:
-    car_drivers = Car.objects.get(pk=pk).drivers
+    car_drivers = get_object_or_404(Car, pk=pk).drivers
 
     if request.user in car_drivers.all():
         car_drivers.remove(request.user)
