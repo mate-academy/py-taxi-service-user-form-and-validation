@@ -20,7 +20,8 @@ class LicenseNumberValidator:
             )
         elif not (
                 license_number[:self.UPPER_COUNT].isupper()
-                or not license_number[:self.UPPER_COUNT].isalpha()
+        ) or not (
+                license_number[:self.UPPER_COUNT].isalpha()
         ):
             raise ValidationError(
                 "First 3 characters should be uppercase letters"
