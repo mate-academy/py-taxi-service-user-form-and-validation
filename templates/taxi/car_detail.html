@@ -6,16 +6,18 @@
   <p>
     Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})
     {% if car in user.cars.all %}
-      <form action="{% url 'taxi:car-delete-from' pk=car.id %}" method="post">
+      <form action="{% url 'taxi:car-assign-or-delete' pk=car.id %}" method="post">
         {% csrf_token %}
         <input class="btn btn-danger link-to-page" type="submit" value="Delete me from this car">
         <input type="hidden" name="user-id" value="{{ user.id }}">
+        <input type="hidden" name="identificator" value="delete">
       </form>
     {% else %}
-      <form action="{% url 'taxi:car-assign' pk=car.id %}" method="post">
+      <form action="{% url 'taxi:car-assign-or-delete' pk=car.id %}" method="post">
         {% csrf_token %}
         <input class="btn btn-success link-to-page" type="submit" value="Assign me to this car">
         <input type="hidden" name="user-id" value="{{ user.id }}">
+        <input type="hidden" name="identificator" value="assign">
       </form>
 
     {% endif %}
