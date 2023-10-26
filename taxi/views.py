@@ -108,14 +108,13 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def assign_driver_to_car(request, car_id):
+def manage_driver(request, car_id):
     car = Car.objects.get(pk=car_id)
-    car.drivers.add(request.user)
-    return redirect("taxi:car-list")
 
-
-@login_required
-def remove_driver_from_car(request, car_id):
-    car = Car.objects.get(pk=car_id)
-    car.drivers.remove(request.user)
+    if request.method == "POST":
+        car.drivers.add(request.user)
+        return redirect("taxi:car-list")
+    elif request.method == "GET":
+        car.drivers.remove(request.user)
+        return redirect("taxi:car-list")
     return redirect("taxi:car-list")
