@@ -105,7 +105,6 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
     form_class = DriverCreationForm
-    template_name = "taxi/driver_form.html"
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
