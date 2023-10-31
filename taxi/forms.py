@@ -13,8 +13,8 @@ class LicenseNumberValidationForm(forms.ModelForm):
             raise ValidationError(
                 "The license must contain 8 characters"
             )
-        if (not license_number[:3].isalpha()) \
-                or (not license_number[:3].isupper()):
+        if ((not license_number[:3].isalpha())
+                or (not license_number[:3].isupper())):
             raise ValidationError(
                 "The first three characters must be uppercase letters"
             )

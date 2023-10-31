@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -33,7 +33,7 @@ def index(request):
 @login_required()
 def assign_to_car(request: HttpRequest, pk: int) -> HttpResponse:
     user = request.user
-    car = Car.objects.get(id=pk)
+    car = get_object_or_404(Car, pk=pk)
 
     if user in car.drivers.all():
         car.drivers.remove(user)
