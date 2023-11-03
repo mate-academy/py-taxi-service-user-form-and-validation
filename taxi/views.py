@@ -120,4 +120,3 @@ class ManageDriverView(View):
     def get(self, request, car_id):
         car = Car.objects.get(pk=car_id)
         car.drivers.remove(request.user)
-
