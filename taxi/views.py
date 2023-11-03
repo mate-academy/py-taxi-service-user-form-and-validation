@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CarForm, DriverLicenseUpdateForm, DriverCreationForm
@@ -107,14 +107,14 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-@login_required
-def manage_driver(request, car_id):
-    car = Car.objects.get(pk=car_id)
+class ManageDriverView(View):
 
-    if request.method == "POST":
+    def post(self, request, car_id):
+        car = Car.objects.get(pk=car_id)
         car.drivers.add(request.user)
         return redirect("taxi:car-list")
-    elif request.method == "GET":
+
+    def get(self, request, car_id):
+        car = Car.objects.get(pk=car_id)
         car.drivers.remove(request.user)
         return redirect("taxi:car-list")
-    return redirect("taxi:car-list")
