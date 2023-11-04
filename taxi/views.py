@@ -116,7 +116,3 @@ class ManageDriverView(View):
         else:
             car.drivers.add(request.user)
         return redirect("taxi:car-list")
-
-    def get(self, request, car_id):
-        car = Car.objects.get(pk=car_id)
-        car.drivers.remove(request.user)
