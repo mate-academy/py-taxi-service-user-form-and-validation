@@ -100,10 +100,10 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class DriverLiceneUpdateForm(LoginRequiredMixin, generic.UpdateView):
+class DriverUpdateForm(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
-    template_name = "taxi/license_form.html"
+    template_name = "taxi/driver_form.html"
 
     def get_success_url(self):
         return reverse_lazy("taxi:driver-detail",
