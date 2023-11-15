@@ -4,7 +4,6 @@
   <h1>
     Username: {{ driver.username }}
   </h1>
-
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
@@ -23,4 +22,10 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+  <a href="{% url 'taxi:driver-license-update' driver.id%}" class="btn btn-secondary float-left link-to-page">
+    Update
+  </a>
+    <a href="{% url 'taxi:driver-delete' driver.id %}" class="btn btn-danger float-left link-to-page">
+    Delete
+  </a>
 {% endblock %}
