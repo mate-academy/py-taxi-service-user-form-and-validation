@@ -2,10 +2,14 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  <h1>{{ object|yesno:"Update,Create" }} manufacturer</h1>
+  <h1>{{ object|yesno:"Update Driver License,Create Driver" }}</h1>
   <form action="" method="post" novalidate>
     {% csrf_token %}
-      {{ form|crispy }}
+    {{ form|crispy }}
+
     <input type="submit" value="Submit" class="btn btn-primary">
+    <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary">
+      BACK to Driver List
+    </a>
   </form>
 {% endblock %}
