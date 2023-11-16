@@ -8,16 +8,16 @@ from taxi.validators import license_number_validator
 
 class DriverUserCreationForm(UserCreationForm):
     first_name = forms.CharField(max_length=256, required=True)
-    last_name = forms.CharField(max_length=256, required=True, )
+    last_name = forms.CharField(max_length=256, required=True)
     license_number = forms.CharField(
         required=True,
         validators=license_number_validator
     )
 
     class Meta(UserCreationForm.Meta):
+        FIELDS = ("first_name", "last_name", "license_number")
         model = Driver
-        fields = UserCreationForm.Meta.fields + \
-            ("first_name", "last_name", "license_number")
+        fields = UserCreationForm.Meta.fields + FIELDS
 
 
 class CarForm(forms.ModelForm):
