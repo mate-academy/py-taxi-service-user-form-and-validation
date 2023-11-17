@@ -75,7 +75,7 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:car-list")
 
 
-class CarUpdateDriverView( generic.UpdateView):
+class CarUpdateDriverView(generic.UpdateView):
     model = Car
     fields = "__all__"
     success_url = reverse_lazy("taxi:car-detail")
