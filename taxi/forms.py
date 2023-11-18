@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 
 from taxi.models import Driver, Car
 
+
 def licence_is_valid(licence):
     if len(licence) != 8:
         raise ValidationError("License number must be 8 symbols")
