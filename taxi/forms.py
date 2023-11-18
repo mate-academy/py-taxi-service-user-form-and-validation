@@ -31,7 +31,7 @@ class DriverCreateForm(UserCreationForm):
         )
 
 
-class DriverUpdateForm(forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     license_number = forms.CharField(max_length=8)
 
     def clean_license_number(self):
