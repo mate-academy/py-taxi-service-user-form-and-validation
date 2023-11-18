@@ -5,20 +5,23 @@ from django.core.exceptions import ValidationError
 
 from taxi.models import Driver, Car
 
+def licence_is_valid(licence):
+    if len(licence) != 8:
+        raise ValidationError("License number must be 8 symbols")
+
+    if not licence[:3].isalpha():
+        raise ValidationError("First three symbols must be alpha symbols")
+    elif not licence[:3].isupper():
+        raise ValidationError("First three symbols must be in uppercase")
+    if not licence[3:].isdigit():
+        raise ValidationError("Last symbols must be digit")
+
 
 class DriverCreateForm(UserCreationForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        if len(license_number) != 8:
-            raise ValidationError("License number must be 8 symbols")
-
-        if not license_number[:3].isalpha():
-            raise ValidationError("First three symbols must be alpha symbols")
-        elif not license_number[:3].isupper():
-            raise ValidationError("First three symbols must be in uppercase")
-        if not license_number[3:].isdigit():
-            raise ValidationError("Last symbols must be digit")
+        licence_is_valid(license_number)
 
         return license_number
 
@@ -36,15 +39,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        if len(license_number) != 8:
-            raise ValidationError("License number must be 8 symbols")
-
-        if not license_number[:3].isalpha():
-            raise ValidationError("First three symbols must be alpha symbols")
-        elif not license_number[:3].isupper():
-            raise ValidationError("First three symbols must be in uppercase")
-        if not license_number[3:].isdigit():
-            raise ValidationError("Last symbols must be digit")
+        licence_is_valid(license_number)
 
         return license_number
 
