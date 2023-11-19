@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver License Update</title>
+</head>
+<body>
+    <h2>Driver License Update</h2>
+
+    <form method="post" action="{% url 'taxi:driver-license-update' driver.id %}">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Update License</button>
+    </form>
+
+    <p>Current License Number: {{ driver.license_number }}</p>
+
+    <a href="{% url 'taxi:driver-list' %}">Back to Driver List</a>
+</body>
+</html>

@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverCreationForm
+from .forms import DriverCreationForm, DriverLicenseUpdateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -93,3 +93,27 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
     form_class = DriverCreationForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenseUpdateView(View):
+    template_name = 'taxi/driver_license_update.html'
+
+    def get(self, request, *args, **kwargs):
+        # Extract the driver ID from the URL parameters
+        driver_id = kwargs.get('pk')
+        driver = Driver.objects.get(pk=driver_id)
+        form = DriverLicenseUpdateForm(initial={'license_number': driver.license_number})
+        return render(request, self.template_name, {'form': form, 'driver': driver})
+
+    def post(self, request, *args, **kwargs):
+        form = DriverLicenseUpdateForm(request.POST)
+        if form.is_valid():
+            # Process the form data (update the driver's license, etc.)
+            # Redirect to success page or perform other actions
+            return redirect('taxi:driver-list')
+        return render(request, self.template_name, {'form': form})
