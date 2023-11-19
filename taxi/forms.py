@@ -1,16 +1,14 @@
 from django.contrib.auth.forms import UserCreationForm
-
+from django import forms
+from django.core.validators import RegexValidator
 from taxi.models import Driver
 
 
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("license_number", )
+        fields = UserCreationForm.Meta.fields + ("license_number",)
 
-
-from django import forms
-from django.core.validators import RegexValidator
 
 class DriverLicenseUpdateForm(forms.Form):
     license_number = forms.CharField(
