@@ -2,25 +2,57 @@
 
 {% block content %}
   <h1>
-    Username: {{ driver.username }}
+    {{ driver.username }}
+    <a href="{% url "taxi:driver-delete" driver.id %}"
+       class="btn btn-danger link-to-page">
+      Delete
+    </a>
   </h1>
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+  <table class="table">
+    <tr>
+      <th>First name</th>
+      <td>{{ driver.first_name }}</td>
+    </tr>
+    <tr>
+      <th>Second name</th>
+      <td>{{ driver.last_name }}</td>
+    </tr>
+    <tr>
+      <th>License number</th>
+      <td>{{ driver.license_number }}
+        (<a href="{% url "taxi:driver-update" driver.id %}">
+          Update
+        </a>)
+      </td>
+    </tr>
+    <tr>
+      <th>Is staff</th>
+      <td>{{ driver.is_staff }}</td>
+    </tr>
+  </table>
 
-  <div class="ml-3">
-    <h4>Cars</h4>
+  <div class="w-25">
+    <h3>Cars</h3>
 
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
+    <ul class="list-group">
+      {% for car in driver.cars.all %}
+          <li class="list-group-item">
+            <strong>Model:</strong>
+            <a href="{% url "taxi:car-detail" car.id %}">
+              {{ car.model }}
+            </a>
+          </li>
+          <li class="list-group-item">
+            <strong>Manufacturer:</strong> {{ car.manufacturer }}
+          </li>
+          <li class="list-group-item text-muted">
+            <strong>Id:</strong> {{ car.id }}
+          </li>
+          <br>
+      {% empty %}
+        <li class="list-group-item" style="color: red">No cars!</li>
+      {% endfor %}
+    </ul>
   </div>
 {% endblock %}
