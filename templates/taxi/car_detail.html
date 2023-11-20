@@ -26,7 +26,11 @@
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+      <li>
+        <p><strong>Driver: </strong>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</p>
+        <p><strong>License number:</strong> {{ driver.license_number }}</p>
+        <hr>
+      </li>
     {% endfor %}
   </ul>
 {% endblock %}
