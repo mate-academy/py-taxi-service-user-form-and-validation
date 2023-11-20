@@ -20,35 +20,27 @@ class DriverLicenseUpdateForm(ModelForm):
         license_number = self.cleaned_data["license_number"]
         pattern = r"^[A-Z]{3}[0-9]{5}"
 
-        if (len(license_number) != self.LICENSE_REQUIRED_LENGTH
-                or not re.match(pattern=pattern, string=license_number)):
+        if len(license_number) != self.LICENSE_REQUIRED_LENGTH:
             raise ValidationError(
-                "License number invalid! Please enter correct license number."
+                "License number invalid! License number "
+                f"should be {self.LICENSE_REQUIRED_LENGTH} characters long."
+            )
+        if not re.match(pattern=pattern, string=license_number):
+            raise ValidationError(
+                "License number invalid! Correct license number format - "
+                "AAA11111 (3 uppercase letters followed by 5 digits)."
             )
 
         return license_number
 
 
-class DriverCreationForm(UserCreationForm):
-    LICENSE_REQUIRED_LENGTH = 8
+class DriverCreationForm(UserCreationForm, DriverLicenseUpdateForm):
 
     class Meta:
         model = get_user_model()
         fields = UserCreationForm.Meta.fields + (
             "first_name", "last_name", "license_number",
         )
-
-    def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-        pattern = r"^[A-Z]{3}[0-9]{5}"
-
-        if (len(license_number) != self.LICENSE_REQUIRED_LENGTH
-                or not re.match(pattern=pattern, string=license_number)):
-            raise ValidationError(
-                "License number invalid! Please enter correct license number."
-            )
-
-        return license_number
 
 
 class CarForm(ModelForm):
