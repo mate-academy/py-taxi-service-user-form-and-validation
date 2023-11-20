@@ -87,7 +87,6 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
 
 
@@ -114,4 +113,4 @@ def car_assign_delete_driver_view(
         Car.objects.get(id=pk).drivers.remove(request.user)
     else:
         Car.objects.get(id=pk).drivers.add(request.user)
-    return redirect(f"/cars/{pk}/")
+    return redirect("taxi:car-detail", pk)
