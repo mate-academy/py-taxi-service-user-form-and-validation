@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import generic, View
+from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverCreationForm, CarCreateForm
+from .forms import DriverCreationForm, CarCreateForm, DriverLicenseUpdateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -119,5 +119,5 @@ def remove_me_from_car(request, pk):
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    fields = ("license_number",)
+    form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
