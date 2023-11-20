@@ -9,10 +9,15 @@ from .views import (
     CarDeleteView,
     DriverListView,
     DriverDetailView,
+    DriverCreateView,
+    DriverLicenseUpdateView,
+    DriverDeleteView,
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+    car_delete_driver,
+    car_assign_driver,
 )
 
 urlpatterns = [
@@ -37,12 +42,47 @@ urlpatterns = [
         ManufacturerDeleteView.as_view(),
         name="manufacturer-delete",
     ),
-    path("cars/", CarListView.as_view(), name="car-list"),
-    path("cars/<int:pk>/", CarDetailView.as_view(), name="car-detail"),
-    path("cars/create/", CarCreateView.as_view(), name="car-create"),
-    path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
-    path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
-    path("drivers/", DriverListView.as_view(), name="driver-list"),
+    path(
+        "cars/", CarListView.as_view(), name="car-list"
+    ),
+    path(
+        "cars/<int:pk>/", CarDetailView.as_view(), name="car-detail"
+    ),
+    path(
+        "cars/create/", CarCreateView.as_view(), name="car-create"
+    ),
+    path(
+        "cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"
+    ),
+    path(
+        "cars/<int:pk>/driver-delete/",
+        car_delete_driver,
+        name="driver-car-delete"
+    ),
+    path(
+        "cars/<int:pk>/driver-assign/",
+        car_assign_driver,
+        name="driver-car-assign"
+    ),
+    path(
+        "cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"
+    ),
+    path(
+        "drivers/", DriverListView.as_view(), name="driver-list"
+    ),
+    path(
+        "driver/create/", DriverCreateView.as_view(), name="driver-create"
+    ),
+    path(
+        "driver/<int:pk>/delete/",
+        DriverDeleteView.as_view(),
+        name="driver-delete"
+    ),
+    path(
+        "driver/<int:pk>/licence-update/",
+        DriverLicenseUpdateView.as_view(),
+        name="driver-update",
+    ),
     path(
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
     ),
