@@ -108,7 +108,11 @@ class DriverLicenseUpdateView(View):
         form = DriverLicenseUpdateForm(
             initial={"license_number": driver.license_number}
         )
-        return render(request, self.template_name, {"form": form, "driver": driver})
+        return render(
+            request,
+            self.template_name,
+            {"form": form, "driver": driver}
+        )
 
     def post(self, request, *args, **kwargs):
         form = DriverLicenseUpdateForm(request.POST)

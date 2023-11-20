@@ -18,7 +18,8 @@ class DriverLicenseUpdateForm(forms.Form):
         validators=[
             RegexValidator(
                 regex=r"^[A-Z]{3}\d{5}$",
-                message="The driver's license must consist of 3 uppercase letters followed by 5 digits.",
+                message="The driver's license must consist of"
+                        "3 uppercase letters followed by 5 digits.",
             ),
         ],
         widget=forms.TextInput(attrs={"placeholder": "ABC12345"}),
