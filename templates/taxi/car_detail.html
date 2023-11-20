@@ -14,13 +14,14 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>
     Drivers
-      {% if user not in car.drivers.all %}
-        <a href="{% url 'taxi:car-add-driver' pk=car.id %}" class="btn btn-primary link-to-page">
-        Assign me to this car
+    <a href="{% url 'taxi:car-add-remove-driver' pk=car.id %}"
+        {% if user not in car.drivers.all %}
+       class="btn btn-success link-to-page">
+          Assign me to this car
         {% else %}
-        <a href="{% url 'taxi:car-remove-driver' pk=car.id %}" class="btn btn-danger link-to-page">
-        Delete me from this car
-      {% endif %}
+          class="btn btn-danger link-to-page">
+          Delete me from this car
+        {% endif %}
     </a>
   </h1>
   <hr>
