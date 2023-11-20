@@ -26,7 +26,7 @@
   </div>
 
   <div class="action-buttons mt-3">
-    <a href="{% url 'taxi:driver-license-update' driver.id %}" class="btn btn-primary">Update License</a>
+    <a href="{% url 'taxi:driver-update' driver.id %}" class="btn btn-primary">Update License</a>
     <a href="{% url 'taxi:driver-delete' driver.id %}" class="btn btn-danger">Delete Driver</a>
   </div>
 {% endblock %}

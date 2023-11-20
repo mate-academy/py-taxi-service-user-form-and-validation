@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarCreateForm
+from .forms import DriverCreationForm, CarCreateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -99,30 +99,6 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class DriverLicenseUpdateView(View):
-    template_name = "taxi/driver_license_update.html"
-
-    def get(self, request, *args, **kwargs):
-        driver_id = kwargs.get("pk")
-        driver = Driver.objects.get(pk=driver_id)
-        form = DriverLicenseUpdateForm(
-            initial={"license_number": driver.license_number}
-        )
-        return render(
-            request,
-            self.template_name,
-            {"form": form, "driver": driver}
-        )
-
-    def post(self, request, *args, **kwargs):
-        form = DriverLicenseUpdateForm(request.POST)
-        if form.is_valid():
-            driver_id = kwargs.get("pk")
-            driver = Driver.objects.get(pk=driver_id)
-            driver.license_number = form.cleaned_data["license_number"]
-            driver.save()
-            return redirect("taxi:driver-list")
-        return render(request, self.template_name, {"form": form})
 
 
 def assign_me_to_car(request, pk):
@@ -145,5 +121,5 @@ def remove_me_from_car(request, pk):
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    fields = "__all__"
+    fields = ("license_number",)
     success_url = reverse_lazy("taxi:driver-list")
