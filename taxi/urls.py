@@ -68,10 +68,10 @@ urlpatterns = [
          name="driver-update"),
     path("cars/<int:pk>/add-driver/",
          car_add_driver,
-         name="add-driver"),
+         name="car_add_driver"),
     path("cars/<int:pk>/delete-driver/",
          car_delete_driver,
-         name="delete-driver"),
+         name="car_delete_driver"),
 ]
 
 app_name = "taxi"
