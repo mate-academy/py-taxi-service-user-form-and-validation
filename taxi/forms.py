@@ -25,9 +25,9 @@ class CarCreateForm(forms.ModelForm):
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     license_number_validator = RegexValidator(
-        regex=r'^[A-Z]{3}\d{5}$',
-        message='License number must consist of 3 uppercase letters followed by 5 digits.',
-        code='invalid_license_number'
+        regex=r"^[A-Z]{3}\d{5}$",
+        message="License number must consist of 3 uppercase letters followed by 5 digits.",
+        code="invalid_license_number",
     )
 
     license_number = forms.CharField(validators=[license_number_validator])
@@ -37,6 +37,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data['license_number']
+        license_number = self.cleaned_data["license_number"]
 
         return license_number
