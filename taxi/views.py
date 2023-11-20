@@ -99,8 +99,6 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-
-
 def assign_me_to_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
 
