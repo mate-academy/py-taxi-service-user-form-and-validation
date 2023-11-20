@@ -10,17 +10,17 @@ from taxi.models import Car, Driver
 
 
 class DriverLicenseUpdateForm(ModelForm):
-    REQUIRED_LENGTH = 8
+    LICENSE_REQUIRED_LENGTH = 8
 
     class Meta:
         model = Driver
-        fields = ("license_number", )
+        fields = ("license_number",)
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
         pattern = r"^[A-Z]{3}[0-9]{5}"
 
-        if (len(license_number) != self.REQUIRED_LENGTH
+        if (len(license_number) != self.LICENSE_REQUIRED_LENGTH
                 or not re.match(pattern=pattern, string=license_number)):
             raise ValidationError(
                 "License number invalid! Please enter correct license number."
@@ -30,13 +30,25 @@ class DriverLicenseUpdateForm(ModelForm):
 
 
 class DriverCreationForm(UserCreationForm):
-    REQUIRED_LENGTH = 8
+    LICENSE_REQUIRED_LENGTH = 8
 
     class Meta:
         model = get_user_model()
         fields = UserCreationForm.Meta.fields + (
             "first_name", "last_name", "license_number",
         )
+
+    def clean_license_number(self):
+        license_number = self.cleaned_data["license_number"]
+        pattern = r"^[A-Z]{3}[0-9]{5}"
+
+        if (len(license_number) != self.LICENSE_REQUIRED_LENGTH
+                or not re.match(pattern=pattern, string=license_number)):
+            raise ValidationError(
+                "License number invalid! Please enter correct license number."
+            )
+
+        return license_number
 
 
 class CarForm(ModelForm):
