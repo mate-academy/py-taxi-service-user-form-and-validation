@@ -63,7 +63,10 @@ urlpatterns = [
         name="driver-license-update"
     ),
     path("cars/<int:pk>/assign/", assign_me_to_car, name="assign-me-to-car"),
-    path("cars/<int:pk>/remove/", remove_me_from_car, name="remove-me-from-car"),
+    path(
+        "cars/<int:pk>/remove/",
+        remove_me_from_car,
+        name="remove-me-from-car"),
 ]
 
 app_name = "taxi"
