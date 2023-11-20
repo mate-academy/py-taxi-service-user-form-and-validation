@@ -13,10 +13,11 @@ from .views import (
     DriverDetailView,
     DriverCreateView,
     DriverUpdateView,
+    DriverDeleteView,
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
-    ManufacturerDeleteView, DriverDeleteView,
+    ManufacturerDeleteView,
 )
 
 
