@@ -11,13 +11,14 @@ class LicenseNumberValidationMixin(forms.ModelForm):
 
     def clean_license_number(self) -> str:
         license_number = self.cleaned_data["license_number"]
+        license_first_letters = license_number[: self.FIRST_LETTERS]
         if len(license_number) != self.LENGTH:
             raise forms.ValidationError(
                 f"License number length should be {self.LENGTH} characters"
             )
         if (
-            not license_number[: self.FIRST_LETTERS].isupper()
-            or not license_number[: self.FIRST_LETTERS].isalpha()
+            not license_first_letters.isupper()
+            or not license_first_letters.isalpha()
         ):
             raise forms.ValidationError(
                 f"First {self.FIRST_LETTERS} letters should be uppercase"
