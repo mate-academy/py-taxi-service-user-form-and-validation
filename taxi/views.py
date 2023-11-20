@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverLicenseUpdateForm, DriverCreateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -26,6 +28,22 @@ def index(request):
     }
 
     return render(request, "taxi/index.html", context=context)
+
+
+@login_required()
+def car_driver_assignment(
+        request: HttpRequest,
+        pk: int,
+        driver_id: int
+) -> HttpResponse:
+    car = get_object_or_404(Car, pk=pk)
+    driver = get_object_or_404(Driver, pk=driver_id)
+
+    if driver in car.drivers.all()[:]:
+        car.drivers.remove(driver_id)
+    else:
+        car.drivers.add(driver_id)
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -87,3 +105,36 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreateForm
+
+
+class DriverUpdateForm(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+
+
+class DriverDeleteForm(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    fields = "__all__"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required()
+def car_driver_update_view(request: HttpRequest, pk: int) -> HttpResponse:
+    car_drivers = Car.objects.get(pk=pk).drivers
+
+    if request.user in car_drivers.all():
+        car_drivers.remove(request.user)
+    else:
+        car_drivers.add(request.user)
+
+    return redirect("taxi:car-detail", pk=pk)
