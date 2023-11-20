@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -103,7 +103,6 @@ class DriverLicenseUpdateView(View):
     template_name = 'taxi/driver_license_update.html'
 
     def get(self, request, *args, **kwargs):
-
         driver_id = kwargs.get('pk')
         driver = Driver.objects.get(pk=driver_id)
         form = DriverLicenseUpdateForm(initial={'license_number': driver.license_number})
@@ -118,3 +117,21 @@ class DriverLicenseUpdateView(View):
             driver.save()
             return redirect('taxi:driver-list')
         return render(request, self.template_name, {'form': form})
+
+
+def assign_me_to_car(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+
+    if request.user not in car.drivers.all():
+        car.drivers.add(request.user)
+
+    return redirect('taxi:car-detail', pk=pk)
+
+
+def remove_me_from_car(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+
+    if request.user in car.drivers.all():
+        car.drivers.remove(request.user)
+
+    return redirect('taxi:car-detail', pk=pk)

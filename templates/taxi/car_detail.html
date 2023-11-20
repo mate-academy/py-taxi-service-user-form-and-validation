@@ -1,14 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-
-  </h1>
+  <h1>{{ car.model }}</h1>
 
   <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}, {{ car.manufacturer.country }}</p>
 
-  <h2>Drivers <a href="#" class="btn btn-primary">Assign Me to this Car</a></h2>
+  <h2>Drivers</h2>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
@@ -21,11 +18,17 @@
     {% endfor %}
   </ul>
 
+  {% if user not in car.drivers.all %}
+    <a href="{% url 'taxi:assign-me-to-car' pk=car.id %}" class="btn btn-primary">Assign Me to this Car</a>
+  {% else %}
+    <a href="{% url 'taxi:remove-me-from-car' pk=car.id %}" class="btn btn-danger">Remove Me from this Car</a>
+  {% endif %}
+
   <div class="row mt-3">
-    <div>
+    <div class="col">
       <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">Update Car</a>
     </div>
-    <div>
+    <div class="col">
       <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">Delete Car</a>
     </div>
   </div>
