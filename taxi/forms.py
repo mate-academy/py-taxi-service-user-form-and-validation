@@ -9,29 +9,35 @@ from taxi.models import Driver, Car
 class DriverCreationForms(UserCreationForm):
     class Meta(UserCreationForm):
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number",)
+        fields = UserCreationForm.Meta.fields + ("first_name",
+                                                 "last_name",
+                                                 "license_number",)
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number",)
+        fields = UserCreationForm.Meta.fields + ("first_name",
+                                                 "last_name",
+                                                 "license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-        if len(license_number) != 8:
+        license_num = self.cleaned_data["license_number"]
+        if len(license_num) != 8:
             raise ValidationError("lengths must be 8")
-        elif not (license_number[:3].isalpha() and license_number[:3].isupper()):
+        elif not (license_num[:3].isalpha() and license_num[:3].isupper()):
             raise ValidationError("first 3 letters must be upper and A-Z")
-        elif not (license_number[4:].isdigit()):
+        elif not (license_num[4:].isdigit()):
             raise ValidationError("must be 5 numbers")
-        return license_number
+        return license_num
 
 
 class CarForm(forms.ModelForm):
-    drivers = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.all(),
-                                             widget=forms.CheckboxSelectMultiple,
-                                             required=False)
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
 
     class Meta:
         model = Car
