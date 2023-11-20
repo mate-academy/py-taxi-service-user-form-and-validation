@@ -100,23 +100,25 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverLicenseUpdateView(View):
-    template_name = 'taxi/driver_license_update.html'
+    template_name = "taxi/driver_license_update.html"
 
     def get(self, request, *args, **kwargs):
-        driver_id = kwargs.get('pk')
+        driver_id = kwargs.get("pk")
         driver = Driver.objects.get(pk=driver_id)
-        form = DriverLicenseUpdateForm(initial={'license_number': driver.license_number})
-        return render(request, self.template_name, {'form': form, 'driver': driver})
+        form = DriverLicenseUpdateForm(
+            initial={"license_number": driver.license_number}
+        )
+        return render(request, self.template_name, {"form": form, "driver": driver})
 
     def post(self, request, *args, **kwargs):
         form = DriverLicenseUpdateForm(request.POST)
         if form.is_valid():
-            driver_id = kwargs.get('pk')
+            driver_id = kwargs.get("pk")
             driver = Driver.objects.get(pk=driver_id)
-            driver.license_number = form.cleaned_data['license_number']
+            driver.license_number = form.cleaned_data["license_number"]
             driver.save()
-            return redirect('taxi:driver-list')
-        return render(request, self.template_name, {'form': form})
+            return redirect("taxi:driver-list")
+        return render(request, self.template_name, {"form": form})
 
 
 def assign_me_to_car(request, pk):
@@ -125,7 +127,7 @@ def assign_me_to_car(request, pk):
     if request.user not in car.drivers.all():
         car.drivers.add(request.user)
 
-    return redirect('taxi:car-detail', pk=pk)
+    return redirect("taxi:car-detail", pk=pk)
 
 
 def remove_me_from_car(request, pk):
@@ -134,4 +136,4 @@ def remove_me_from_car(request, pk):
     if request.user in car.drivers.all():
         car.drivers.remove(request.user)
 
-    return redirect('taxi:car-detail', pk=pk)
+    return redirect("taxi:car-detail", pk=pk)
