@@ -13,19 +13,24 @@ class CleanDriverLicenseMixin(forms.ModelForm):
 
     def clean_license_number(self) -> str:
         license_number = self.cleaned_data["license_number"]
-        if not (license_number[:self.LETTERS_LENGHT].isupper() and license_number[:self.LETTERS_LENGHT].isalpha()):
-            raise ValidationError(f"First {self.LETTERS_LENGHT} characters must be uppercased letters")
+        if not (license_number[:self.LETTERS_LENGHT].isupper()
+                and license_number[:self.LETTERS_LENGHT].isalpha()):
+            raise ValidationError(f"First {self.LETTERS_LENGHT} characters "
+                                  "must be uppercased letters")
         if len(license_number) != self.LENGHT:
-            raise ValidationError(f"License number must consist only of {self.LENGHT} characters!")
+            raise ValidationError("License number must consist "
+                                  f"only of {self.LENGHT} characters!")
         if not license_number[-self.DIGITS_LENGHT:].isdecimal():
-            raise ValidationError(f"Last {self.DIGITS_LENGHT} characters must be digits")
+            raise ValidationError(f"Last {self.DIGITS_LENGHT} "
+                                  "characters must be digits")
         return license_number
 
 
 class DriverCreationForm(CleanDriverLicenseMixin, UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number")
+        fields = (UserCreationForm.Meta.fields
+                  + ("first_name", "last_name", "license_number"))
 
 
 class DriverLicenseUpdateForm(CleanDriverLicenseMixin, forms.ModelForm):
