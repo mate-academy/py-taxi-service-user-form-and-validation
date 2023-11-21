@@ -31,6 +31,7 @@ def index(request):
     return render(request, "taxi/index.html", context=context)
 
 
+@login_required
 def car_assign(request, pk: int):
     user = request.user
     car = Car.objects.get(id=pk)
@@ -38,6 +39,7 @@ def car_assign(request, pk: int):
     return redirect("taxi:car-detail", pk=pk)
 
 
+@login_required
 def car_unassign(request, pk: int):
     user = request.user
     car = Car.objects.get(id=pk)
