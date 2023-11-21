@@ -107,6 +107,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
+@login_required()
 def car_assign_driver_view(
         request: HttpRequest,
         pk: int,
@@ -115,6 +116,7 @@ def car_assign_driver_view(
     return redirect("taxi:car-detail", pk)
 
 
+@login_required()
 def car_delete_driver_view(
         request: HttpRequest,
         pk: int,
