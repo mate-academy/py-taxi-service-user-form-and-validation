@@ -9,12 +9,12 @@ class DriverCreationForm(UserCreationForm):
     license_number = forms.CharField(
         required=True,
         validators=[
-            RegexValidator(regex='^[A-Z]{3}\d{5}$',
+            RegexValidator(regex="^[A-Z]{3}\\d{5}$",
                            message=("License number must be of length 8,"
                                     " start with 3 uppercase letters"
                                     " and end with 5 digits"))
         ]
-    )    
+    )
 
     class Meta(UserCreationForm.Meta):
         model = Driver
@@ -25,7 +25,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     license_number = forms.CharField(
         required=True,
         validators=[
-            RegexValidator(regex='^[A-Z]{3}\d{5}$',
+            RegexValidator(regex="^[A-Z]{3}\\d{5}$",
                            message=("License number must be of length 8,"
                                     " start with 3 uppercase letters"
                                     " and end with 5 digits"))

@@ -84,7 +84,7 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
     fields = "__all__"
     success_url = reverse_lazy("taxi:car-list")
 
-    def get_form(self, form_class = None):
+    def get_form(self, form_class=None):
         if not form_class:
             form_class = self.get_form_class()
         form = super().get_form(form_class)
