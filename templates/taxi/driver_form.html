@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if driver.license_number or driver.is_superuser %}
+    <h1>{{ object|yesno:"Update,Create" }} Driver's license number </h1>
+  {% else %}
+    <h1>Create Driver </h1>
+  {% endif %}
+  {% include 'includes/forms.html' %}
+{% endblock %}
