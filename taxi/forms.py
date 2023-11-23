@@ -16,16 +16,22 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         if not len(license_number) == 8:
             raise ValidationError("License number must consists of 8 symbols!")
         if not (license_number[:3].isalpha() and license_number[:3].isupper()):
-            raise ValidationError("First 3 symbols of license number must be uppercase letters!")
+            raise ValidationError(
+                "First 3 symbols of license number must be uppercase letters!"
+            )
         if not license_number[-5:].isdigit():
-            raise ValidationError("Last 5 symbols of license number must be digits!")
+            raise ValidationError(
+                "Last 5 symbols of license number must be digits!"
+            )
         return license_number
 
 
 class DriverCreationForm(UserCreationForm, DriverLicenseUpdateForm):
     class Meta:
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number")
+        fields = UserCreationForm.Meta.fields + (
+            "first_name", "last_name", "license_number"
+        )
 
 
 class CarForm(forms.ModelForm):
