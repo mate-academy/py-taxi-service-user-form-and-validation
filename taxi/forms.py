@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 
 from taxi.models import Driver
-from taxi.validators import license_number_validator
+from taxi.form_validators import license_number_validator
 
 
 class DriverLicenseUpdateForm(ModelForm):
