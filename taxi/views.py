@@ -1,9 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverLicenseUpdateForm, DriverCreateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -26,6 +29,18 @@ def index(request):
     }
 
     return render(request, "taxi/index.html", context=context)
+
+
+@login_required()
+def car_driver_assignment(
+        request: HttpRequest,
+        pk: int,
+) -> HttpResponse:
+    if request.user in Car.objects.get(id=pk).drivers.all():
+        Car.objects.get(id=pk).drivers.remove(request.user)
+    else:
+        Car.objects.get(id=pk).drivers.add(request.user)
+    return redirect("taxi:car-detail", pk)
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -80,10 +95,42 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = get_user_model()
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
+    model = get_user_model()
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = get_user_model()
+    form_class = DriverCreateForm
+
+
+class DriverUpdateForm(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+    form_class = DriverLicenseUpdateForm
+
+
+class DriverDeleteForm(LoginRequiredMixin, generic.DeleteView):
+    model = get_user_model()
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+    form_class = DriverLicenseUpdateForm
+
+
+@login_required()
+def car_driver_update_view(request: HttpRequest, pk: int) -> HttpResponse:
+    car_drivers = Car.objects.get(pk=pk).drivers
+
+    if request.user in car_drivers.all():
+        car_drivers.remove(request.user)
+    else:
+        car_drivers.add(request.user)
+
+    return redirect("taxi:car-detail", pk=pk)
