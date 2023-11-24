@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import View, generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
@@ -11,7 +11,7 @@ from .models import Driver, Car, Manufacturer
 
 
 @login_required
-def index(request):
+def index(request: HttpRequest) -> HttpResponse:
     """View function for the home page of the site."""
 
     num_drivers = Driver.objects.count()
@@ -67,7 +67,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    orm_class = CarForm
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -107,19 +107,17 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-@login_required()
-def assign_driver_view(
-        request: HttpRequest,
-        pk: int,
-) -> HttpResponse:
-    Car.objects.get(id=pk).drivers.add(request.user)
-    return redirect("taxi:car-detail", pk)
+class AddDriverView(LoginRequiredMixin, View):
+    model = Car
+
+    def get(self, request, **kwargs) -> HttpResponse:
+        Car.objects.get(id=kwargs["pk"]).drivers.add(request.user)
+        return redirect("taxi:car-detail", kwargs["pk"])
 
 
-@login_required()
-def delete_driver_view(
-        request: HttpRequest,
-        pk: int,
-) -> HttpResponse:
-    Car.objects.get(id=pk).drivers.remove(request.user)
-    return redirect("taxi:car-detail", pk)
+class DelDriverView(LoginRequiredMixin, View):
+    model = Car
+
+    def get(self, request, **kwargs) -> HttpResponse:
+        Car.objects.get(id=kwargs["pk"]).drivers.remove(request.user)
+        return redirect("taxi:car-detail", kwargs["pk"])
