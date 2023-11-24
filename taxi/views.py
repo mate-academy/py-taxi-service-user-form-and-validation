@@ -110,7 +110,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 class AddDriverView(LoginRequiredMixin, View):
     model = Car
 
-    def get(self, request, **kwargs) -> HttpResponse:
+    def post(self, request, **kwargs) -> HttpResponse:
         Car.objects.get(id=kwargs["pk"]).drivers.add(request.user)
         return redirect("taxi:car-detail", kwargs["pk"])
 
@@ -118,6 +118,6 @@ class AddDriverView(LoginRequiredMixin, View):
 class DelDriverView(LoginRequiredMixin, View):
     model = Car
 
-    def get(self, request, **kwargs) -> HttpResponse:
+    def post(self, request, **kwargs) -> HttpResponse:
         Car.objects.get(id=kwargs["pk"]).drivers.remove(request.user)
         return redirect("taxi:car-detail", kwargs["pk"])
