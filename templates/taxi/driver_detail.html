@@ -3,11 +3,14 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <p>
+    <strong>License number:</strong> {{ driver.license_number }}</p>
+
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
@@ -22,5 +25,14 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+
+
+      <a href="{% url 'taxi:driver-update' pk=driver.id %}">
+        <input class="btn btn-primary btn-lg" type="submit" value="edit driver license"></a>
+
+      <a href="{% url 'taxi:driver-delete' pk=driver.id %}">
+        <input class="btn btn-danger btn-lg" type="submit" value="delete driver"></a>
+
   </div>
+
 {% endblock %}
