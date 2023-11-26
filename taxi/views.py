@@ -110,10 +110,10 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 @login_required()
 def car_drivers_setup(request: HttpRequest, pk: int) -> HttpResponse:
-    driver = request.user
-    car_drivers = Car.objects.get(pk=pk).drivers.all()
-    if driver in car_drivers:
-        Car.objects.get(pk=pk).drivers.remove(driver)
+    user = request.user
+    car = Car.objects.get(pk=pk)
+    if car in user.cars.all():
+        car.drivers.remove(user)
     else:
-        Car.objects.get(pk=pk).drivers.add(driver)
+        car.drivers.add(user)
     return redirect(f"/cars/{pk}")
