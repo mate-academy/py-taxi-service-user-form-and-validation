@@ -77,6 +77,7 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = CarForm
 
 
+@login_required
 def car_add_driver_view(request: HttpRequest,
                         pk: int,
                         driver_pk: int) -> HttpResponse:
@@ -88,6 +89,7 @@ def car_add_driver_view(request: HttpRequest,
     return redirect(reverse("taxi:car-detail", args=(pk,)))
 
 
+@login_required
 def car_remove_driver_view(request: HttpRequest,
                            pk: int,
                            driver_pk: int) -> HttpResponse:
