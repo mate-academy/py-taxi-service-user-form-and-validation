@@ -13,15 +13,6 @@
         <li>
           <a href="{% url "taxi:car-detail" pk=car.id %} ">{{ car.id }}</a>
           {{ car.model }} ({{ car.manufacturer.name }})
-          {% if car in user.cars.all %}
-              <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}">
-                Delete me from this car
-              </a>
-            {% else %}
-              <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}">
-                Assign me to this car
-              </a>
-            {% endif %}
         </li>
       {% endfor %}
     </ul>
