@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -13,7 +14,7 @@ from .models import Driver, Car, Manufacturer
 def index(request: HttpRequest) -> HttpResponse:
     """View function for the home page of the site."""
 
-    num_drivers = Driver.objects.count()
+    num_drivers = get_user_model().objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
 
@@ -36,10 +37,10 @@ def car_driver_assignment(
         pk: int,
         driver_id: int
 ) -> HttpResponse:
-    car = get_object_or_404(Car, pk=pk)
-    driver = get_object_or_404(Driver, pk=driver_id)
+    car = Car.objects.get(pk=pk)
+    driver = get_user_model().objects.get(pk=driver_id)
 
-    if driver in car.drivers.all()[:]:
+    if driver in car.drivers.all():
         car.drivers.remove(driver_id)
     else:
         car.drivers.add(driver_id)
@@ -98,26 +99,27 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = get_user_model()
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    model = get_user_model()
+    queryset = (get_user_model().objects.all()
+                .prefetch_related("cars__manufacturer"))
 
 
 class DriverCreateView(generic.CreateView):
-    model = Driver
+    model = get_user_model()
     form_class = DriverCreationForm
 
 
 class DriverUpdateView(generic.UpdateView):
-    model = Driver
+    model = get_user_model()
     form_class = DriverLicenseUpdateForm
 
 
 class DriverDeleteView(generic.DeleteView):
-    model = Driver
+    model = get_user_model()
     success_url = reverse_lazy("taxi:driver-list")
     template_name = "taxi/driver_confirmation_delete.html"
