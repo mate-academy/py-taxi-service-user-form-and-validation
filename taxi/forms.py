@@ -25,13 +25,6 @@ class DriverCreatForm(UserCreationForm):
             "first_name",
             "last_name",
         )
-        help_texts = {
-            "license_number":
-                "License number should consist of 8 characters. "
-                "The first 3 characters should be uppercase letters, "
-                "and the last 5 characters should be digits. "
-                "For example 'JON26231'"
-        }
 
     def clean_license_number(self):
         return license_validator(self.cleaned_data["license_number"])
@@ -41,13 +34,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
         fields = ["license_number"]
-        help_texts = {
-            "license_number":
-                "License number should consist of 8 characters. "
-                "The first 3 characters should be uppercase letters, "
-                "and the last 5 characters should be digits. "
-                "For example 'JON26231'"
-        }
 
     def clean_license_number(self):
         return license_validator(self.cleaned_data["license_number"])
