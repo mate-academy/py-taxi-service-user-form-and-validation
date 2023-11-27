@@ -17,8 +17,7 @@ from .views import (
     DriverDeleteView,
     DriverLicenseUpdateView,
     LicenseNumberDeleteView,
-    car_add_driver,
-    car_delete_driver,
+    toggle_assign_to_car,
 )
 
 urlpatterns = [
@@ -66,12 +65,9 @@ urlpatterns = [
     path("driver/<int:pk>/update/",
          DriverLicenseUpdateView.as_view(),
          name="driver-update"),
-    path("cars/<int:pk>/add-driver/",
-         car_add_driver,
-         name="driver-add-car"),
-    path("cars/<int:pk>/delete-driver/",
-         car_delete_driver,
-         name="driver-delete-car"),
+    path("cars/<int:pk>/change-car-drivers/",
+         toggle_assign_to_car,
+         name="change-car-drivers"),
 ]
 
 app_name = "taxi"
