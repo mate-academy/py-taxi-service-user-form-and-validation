@@ -108,7 +108,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 class ToggleAssignToCarView(LoginRequiredMixin, View):
     @staticmethod
-    def get(request, pk):
+    def post(request, pk):
         driver = get_object_or_404(Driver, id=request.user.id)
         car = get_object_or_404(Car, id=pk)
 
