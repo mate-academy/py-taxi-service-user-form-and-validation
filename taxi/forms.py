@@ -34,7 +34,8 @@ class DriverCreateForm(DriverLicenseValidationMixin, UserCreationForm):
         fields = UserCreationForm.Meta.fields + (
             "first_name",
             "last_name",
-            "license_number",)
+            "license_number",
+        )
 
 
 class DriverLicenseUpdateForm(DriverLicenseValidationMixin, forms.ModelForm):
