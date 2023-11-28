@@ -18,14 +18,16 @@ class DriverLicenseUpdateForm(ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
-        pattern = r"^[A-Z]{3}[0-9]{5}"
+        start = license_number[:3]
+        end = license_number[3:]
 
         if len(license_number) != self.LICENSE_REQUIRED_LENGTH:
             raise ValidationError(
                 "License number invalid! License number "
                 f"should be {self.LICENSE_REQUIRED_LENGTH} characters long."
             )
-        if not re.match(pattern=pattern, string=license_number):
+        if (not start.isalpha() or start != start.upper()
+                or not end.isnumeric()):
             raise ValidationError(
                 "License number invalid! Correct license number format - "
                 "AAA11111 (3 uppercase letters followed by 5 digits)."
