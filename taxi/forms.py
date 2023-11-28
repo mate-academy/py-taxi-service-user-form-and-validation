@@ -7,30 +7,27 @@ from taxi.models import Driver, Car
 
 
 def validation_license_number(license_number):
-    length = 8
-    first_char = 3
-    last_char = 5
 
-    if len(license_number) != length:
-        raise ValidationError(f"Must consist only of {length} characters")
-    if not license_number[:first_char].isalpha() or \
-            not license_number[:first_char].isupper():
+    if len(license_number) != 8:
+        raise ValidationError("Must consist only of 8 characters")
+    if not license_number[:3].isalpha() or not license_number[:3].isupper():
         raise ValidationError(
-            f"First {first_char} characters must be uppercase letters"
+            "First 3 characters must be uppercase letters"
         )
-    if not license_number[-last_char].isdigit():
-        raise ValidationError(f"Last {last_char} characters must be digits")
+    if not license_number[-5].isdigit():
+        raise ValidationError("Last 5 characters must be digits")
 
     return license_number
 
 
 class DriverCreationForm(UserCreationForm):
-
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = (UserCreationForm.Meta.fields
-                  + ("license_number", "first_name", "last_name", )
-                  )
+        fields = UserCreationForm.Meta.fields + (
+            "license_number",
+            "first_name",
+            "last_name",
+        )
 
     def clean_license_number(self):
         return validation_license_number(self.cleaned_data["license_number"])
@@ -42,7 +39,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Driver
-        fields = ("license_number", )
+        fields = ("license_number",)
 
 
 class CarForm(forms.ModelForm):

@@ -6,8 +6,10 @@
     {% if user in car.drivers.all %}
     <a href="{% url 'taxi:car-delete-driver' pk=car.id %}" class="btn btn-danger ">Delete me from this car</a>
     {% else %}
+    <b>
     <a href="{% url 'taxi:car-add-driver' pk=car.id %}" class="btn btn-success">Assign me to this car</a>
-    {% endif %}
+    </b>
+      {% endif %}
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
