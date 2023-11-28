@@ -8,12 +8,16 @@ class FirstCharactersUppercase(validators.BaseValidator):
         "uppercase."
     )
 
-    def compare(self, a, b):
-        return a < b
+    def compare(self, arg1, arg2):
+        return arg1 < arg2
 
-    def clean(self, x):
+    def clean(self, value):
         return sum(
-            [1 for char in x[:self.limit_value] if char == char.upper()]
+            [
+                1
+                for char in value[:self.limit_value]
+                if (not char.isdigit()) and char == char.upper()
+            ]
         )
 
 
@@ -22,10 +26,10 @@ class LastCharactersDigits(validators.BaseValidator):
         "Last %(limit_value)s characters must be as digital."
     )
 
-    def compare(self, a, b):
-        return a < b
+    def compare(self, arg1, arg2):
+        return arg1 < arg2
 
-    def clean(self, x):
+    def clean(self, value):
         return sum(
-            [1 for char in x[-self.limit_value:] if char.isdigit()]
+            [1 for char in value[-self.limit_value:] if char.isdigit()]
         )
