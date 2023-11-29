@@ -4,5 +4,20 @@ body {
 
 .link-to-page {
     float: right;
-    margin: 0 2px 0 2px;
+    margin: 0 10px 0 2px;
+
+}
+
+.btn_panel {
+    display: block;
+
+}
+
+.btn_panel__link {
+    text-decoration: none;
+    padding-right: 10px;
+}
+
+.btn_panel__link:hover{
+    text-decoration: none;
 }
