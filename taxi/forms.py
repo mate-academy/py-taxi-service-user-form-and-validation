@@ -8,11 +8,17 @@ from taxi.models import Driver, Car
 
 def clean_license(license_number):
     if len(license_number) != 8:
-        raise ValidationError("License number must contain 8 characters.")
+        raise ValidationError(
+            "License number must contain 8 characters."
+        )
     if not (license_number[:3].isalpha() and license_number[:3].isupper()):
-        raise ValidationError("The first 3 characters must be letters and uppercase.")
+        raise ValidationError(
+            "The first 3 characters must be letters and uppercase."
+        )
     if not license_number[3:].isdigit():
-        raise ValidationError("The last 5 characters must be numbers.")
+        raise ValidationError(
+            "The last 5 characters must be numbers."
+        )
     return license_number
 
 
