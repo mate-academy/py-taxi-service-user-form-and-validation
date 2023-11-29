@@ -7,12 +7,13 @@ from taxi.models import Driver, Car
 
 
 def clean_license(license_number):
-    if len(license_number) == 8:
-        letter = all(letter.isupper() for letter in license_number[:3])
-        digit = all(num.isdigit() for num in license_number[3:])
-        if letter and digit:
-            return license_number
-    raise ValidationError("license number is not correct")
+    if len(license_number) != 8:
+        raise ValidationError("License number must contain 8 characters.")
+    if not (license_number[:3].isalpha() and license_number[:3].isupper()):
+        raise ValidationError("The first 3 characters must be letters and uppercase.")
+    if not license_number[3:].isdigit():
+        raise ValidationError("The last 5 characters must be numbers.")
+    return license_number
 
 
 class DriverCreateForm(UserCreationForm):

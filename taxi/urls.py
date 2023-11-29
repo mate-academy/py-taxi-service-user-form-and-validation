@@ -65,12 +65,12 @@ urlpatterns = [
         name="driver-update"
     ),
     path(
-        "cars/<int:pk>/add",
+        "cars/<int:pk>/add/",
         add_current_user_to_car,
         name="add-driver"
     ),
     path(
-        "cars/<int:pk>/remove",
+        "cars/<int:pk>/remove/",
         delete_current_user_from_car,
         name="remove-driver"
     )
