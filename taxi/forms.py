@@ -20,7 +20,8 @@ class DriverCreationForm(UserCreationForm):
         license_number = self.cleaned_data["license_number"]
         if len(license_number) != DriverCreationForm.LICENSE_NUMBER_LENGTH:
             raise ValidationError("Wrong license number")
-        if license_number[:3] != license_number[:3].upper():
+        if (not license_number[:3].isalpha()
+                or license_number[:3] != license_number[:3].upper()):
             raise ValidationError("Wrong license number")
         if not license_number[3:8].isdigit():
             raise ValidationError("Wrong license number")
@@ -36,7 +37,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         license_number = self.cleaned_data["license_number"]
         if len(license_number) != DriverCreationForm.LICENSE_NUMBER_LENGTH:
             raise ValidationError("Wrong license number")
-        if license_number[:3] != license_number[:3].upper():
+        if (not license_number[:3].isalpha()
+                or license_number[:3] != license_number[:3].upper()):
             raise ValidationError("Wrong license number")
         if not license_number[3:8].isdigit():
             raise ValidationError("Wrong license number")
