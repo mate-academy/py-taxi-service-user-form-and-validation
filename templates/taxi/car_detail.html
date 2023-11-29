@@ -4,7 +4,7 @@
   <h1>
     {{ car.model }}
     {% if user not in car.drivers.all %}
-      <a href="{% url "taxi:car-driver-update" pk=car.id %}">Assign me to this car</a>
+      <a href="{% url 'taxi:car-driver-update' pk=car.id %}">Assign me to this car</a>
     {% else %}
       <a href="{% url 'taxi:car-update' pk=car.id %}">Delete me from this car</a>
     {% endif %}
@@ -16,7 +16,7 @@
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
-  </h1>ba
+  </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
   <hr>
