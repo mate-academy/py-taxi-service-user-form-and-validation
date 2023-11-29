@@ -3,11 +3,21 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+    {% if driver.id == user.id %}
+      <a href="{% url 'taxi:driver-delete' pk=driver.id%}" class="btn btn-danger link-to-page">
+        Delete Profile</a>
+    {% endif %}
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <p><strong>License number:</strong> {{ driver.license_number }}
+    {% if driver.id == user.id %}
+      <a href="{% url 'taxi:driver-license' pk=driver.id%}"
+         class="btn btn-primary align-left  link-to-page">
+        Update license</a>
+    {% endif %}
+  </p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
@@ -15,7 +25,7 @@
 
     {% for car in driver.cars.all %}
         <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
+        <p><strong>Model: </strong><a href="{% url 'taxi:car-detail' pk=car.id %}">{{ car.model }}</a></p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
         <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
 
