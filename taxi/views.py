@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverCreationForm, CarForm
+from .forms import DriverCreationForm, CarForm, DriverLicenseUpdateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -111,27 +110,13 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    fields = ("license_number",)
-    template_name = "taxi/driver_update_license.html"
+    form_class = DriverLicenseUpdateForm
 
     def get_success_url(self) -> str:
         return reverse_lazy(
             "taxi:driver-detail",
             kwargs={"pk": self.object.pk}
         )
-
-    def form_valid(self, form) -> str:
-        license_number = form.cleaned_data["license_number"]
-        if len(license_number) != DriverCreationForm.LICENSE_NUMBER_LENGTH:
-            form.add_error("license_number", "Wrong license number")
-            return self.form_invalid(form)
-        if license_number[:3] != license_number[:3].upper():
-            form.add_error("license_number", "Wrong license number")
-            return self.form_invalid(form)
-        if not license_number[3:8].isdigit():
-            form.add_error("license_number", "Wrong license number")
-            return self.form_invalid(form)
-        return super().form_valid(form)
 
 
 def change_car_drivers(request: HttpRequest, pk: int) -> HttpResponse:

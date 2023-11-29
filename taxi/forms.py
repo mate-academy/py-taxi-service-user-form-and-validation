@@ -27,6 +27,22 @@ class DriverCreationForm(UserCreationForm):
         return license_number
 
 
+class DriverLicenseUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
+
+    def clean_license_number(self) -> str:
+        license_number = self.cleaned_data["license_number"]
+        if len(license_number) != DriverCreationForm.LICENSE_NUMBER_LENGTH:
+            raise ValidationError("Wrong license number")
+        if license_number[:3] != license_number[:3].upper():
+            raise ValidationError("Wrong license number")
+        if not license_number[3:8].isdigit():
+            raise ValidationError("Wrong license number")
+        return license_number
+
+
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=Driver.objects.all(),
