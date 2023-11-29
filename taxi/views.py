@@ -74,7 +74,9 @@ class CarDetailView(
             car.drivers.remove(user)
         else:
             car.drivers.add(user)
-        return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
+        return HttpResponseRedirect(
+            reverse("taxi:car-detail", kwargs={"pk": pk})
+        )
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
