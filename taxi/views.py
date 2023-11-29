@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.core.exceptions import ValidationError
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreationForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -61,11 +64,17 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def get_context_data(self, **kwargs) -> dict:
+        context = super().get_context_data(**kwargs)
+        car = self.object
+        context["drivers_id"] = car.drivers.values_list("id", flat=True)
+        return context
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
+    template_name = "taxi/car_form.html"
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -87,3 +96,48 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    template_name = "taxi/driver_confirm_delete.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    fields = ("license_number",)
+    template_name = "taxi/driver_update_license.html"
+
+    def get_success_url(self) -> str:
+        return reverse_lazy(
+            "taxi:driver-detail",
+            kwargs={"pk": self.object.pk}
+        )
+
+    def form_valid(self, form) -> str:
+        license_number = form.cleaned_data["license_number"]
+        if len(license_number) != DriverCreationForm.LICENSE_NUMBER_LENGTH:
+            form.add_error("license_number", "Wrong license number")
+            return self.form_invalid(form)
+        if license_number[:3] != license_number[:3].upper():
+            form.add_error("license_number", "Wrong license number")
+            return self.form_invalid(form)
+        if not license_number[3:8].isdigit():
+            form.add_error("license_number", "Wrong license number")
+            return self.form_invalid(form)
+        return super().form_valid(form)
+
+
+def change_car_drivers(request: HttpRequest, pk: int) -> HttpResponse:
+    if (request.user.id in
+            Car.objects.get(id=pk).drivers.values_list("id", flat=True)):
+        Car.objects.get(id=pk).drivers.remove(request.user.id)
+    else:
+        Car.objects.get(id=pk).drivers.add(request.user.id)
+    return redirect("taxi:car-detail", pk=pk)
