@@ -31,7 +31,7 @@ def index(request):
 
 
 @login_required
-def assing_me(request: HttpRequest, pk: int) -> HttpResponse:
+def car_attachment(request: HttpRequest, pk: int) -> HttpResponse:
     drivers = Car.objects.get(pk=pk).drivers
     user = request.user
     if request.user in drivers.all():
@@ -83,7 +83,7 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -109,7 +109,6 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
-    template_name = "taxi/driver_confirm_delete.html"
     success_url = reverse_lazy("taxi:driver-list")
 
 
