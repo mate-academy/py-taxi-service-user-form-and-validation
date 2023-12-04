@@ -1,8 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -111,13 +111,17 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-@login_required
-def assign_current_user_to_car(request: HttpRequest, pk: int) -> HttpResponse:
-    Car.objects.get(id=pk).drivers.add(request.user)
-    return redirect(f"/cars/{pk}")
+class AssignCurrentUser(LoginRequiredMixin, generic.View):
+
+    @staticmethod
+    def post(request: HttpRequest, pk: int) -> HttpResponse:
+        Car.objects.get(id=pk).drivers.add(request.user)
+        return redirect(reverse("taxi:car-detail", args=[pk]))
 
 
-@login_required
-def delete_current_user_to_car(request: HttpRequest, pk: int) -> HttpResponse:
-    Car.objects.get(id=pk).drivers.remove(request.user)
-    return redirect(f"/cars/{pk}")
+class DeleteCurrentUser(LoginRequiredMixin, generic.View):
+
+    @staticmethod
+    def post(request: HttpRequest, pk: int) -> HttpResponse:
+        Car.objects.get(id=pk).drivers.remove(request.user)
+        return redirect(reverse("taxi:car-detail", args=[pk]))

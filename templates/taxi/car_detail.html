@@ -13,13 +13,18 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers
     {% if user not in car.drivers.all %}
-      <a href="{% url 'taxi:assign-current-user' pk=car.id %}" class="btn btn-success link-to-page">
-      Assign me to this car</a>
+      <form action="{% url 'taxi:assign-current-user' pk=car.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary link-to-page">Assign me to this car</button>
+      </form>
     {% else %}
-      <a href="{% url 'taxi:delete-current-user' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete me from this car</a>
+      <form action="{% url 'taxi:delete-current-user' pk=car.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger link-to-page">Delete me from this car</button>
+      </form>
     {% endif %}
   </h1>
+
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
@@ -27,3 +32,24 @@
     {% endfor %}
   </ul>
 {% endblock %}
+
+
+{#{% if user not in car.drivers.all %}#}
+{#  <form action="{% url "taxi:assign-driver" car.id %}" method="post" class="my-2">#}
+{#    {% csrf_token %}#}
+{#    <button style="float: right" type="submit" class="btn btn-primary">Assign me to this car</button>#}
+{#  </form>#}
+{#{% else %}#}
+{#  <form action="{% url "taxi:remove-driver" car.id %}" method="get" class="my-2">#}
+{#    {% csrf_token %}#}
+{#    <button style="float: right" type="submit" class="btn btn-danger">Delete me from this car</button>#}
+{#  </form>#}
+{#{% endif %}#}
+
+{#{% if user not in car.drivers.all %}#}
+{#  <a href="{% url 'taxi:assign-current-user' pk=car.id %}" class="btn btn-success link-to-page">#}
+{#  Assign me to this car</a>#}
+{#{% else %}#}
+{#  <a href="{% url 'taxi:delete-current-user' pk=car.id %}" class="btn btn-danger link-to-page">#}
+{#  Delete me from this car</a>#}
+{#{% endif %}#}
