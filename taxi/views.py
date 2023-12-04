@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -115,7 +115,7 @@ class AssignCurrentUser(LoginRequiredMixin, generic.View):
 
     @staticmethod
     def post(request: HttpRequest, pk: int) -> HttpResponse:
-        Car.objects.get(id=pk).drivers.add(request.user)
+        get_object_or_404(Car, id=pk).drivers.add(request.user)
         return redirect(reverse("taxi:car-detail", args=[pk]))
 
 
@@ -123,5 +123,5 @@ class DeleteCurrentUser(LoginRequiredMixin, generic.View):
 
     @staticmethod
     def post(request: HttpRequest, pk: int) -> HttpResponse:
-        Car.objects.get(id=pk).drivers.remove(request.user)
+        get_object_or_404(Car, id=pk).drivers.remove(request.user)
         return redirect(reverse("taxi:car-detail", args=[pk]))
