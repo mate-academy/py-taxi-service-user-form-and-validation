@@ -6,7 +6,7 @@
     {% if user not in car.drivers.all %}
       <a href="{% url 'taxi:car-driver-update' pk=car.id %}">Assign me to this car</a>
     {% else %}
-      <a href="{% url 'taxi:car-update' pk=car.id %}">Delete me from this car</a>
+      <a href="{% url 'taxi:car-driver-update' pk=car.id %}">Delete me from this car</a>
     {% endif %}
 
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
