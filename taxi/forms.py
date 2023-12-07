@@ -15,9 +15,9 @@ class LicenseNumberValidationMixin(forms.ModelForm):
             raise forms.ValidationError(
                 f"License number length should be {self.LENGTH} characters"
             )
-        if (
-            not license_number[: self.FIRST_LETTERS].isupper()
-            or not license_number[: self.FIRST_LETTERS].isalpha()
+        if not (
+            license_number[: self.FIRST_LETTERS].isupper()
+            and license_number[: self.FIRST_LETTERS].isalpha()
         ):
             raise forms.ValidationError(
                 f"First {self.FIRST_LETTERS} letters should be uppercase"
