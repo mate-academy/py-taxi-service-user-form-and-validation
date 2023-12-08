@@ -25,13 +25,13 @@
         <td>{{ driver.last_name }}</td>
         <td>{{ driver.license_number }}</td>
       <td>
-        <a href="{% url 'taxi:driver-update' pk=driver.id %}">UPDATE</a>
+        <a href="{% url 'taxi:driver-update-1' pk=driver.id %}">UPDATE</a>
       </td>
       <td>
         <a style="color: red" href="{% url 'taxi:driver-delete' pk=driver.id %}">DELETE</a>
       </td>
       <td>
-        <a style="color: orange" href="{% url 'taxi:driver-license' pk=driver.id %}">EDIT License</a>
+        <a style="color: orange" href="{% url 'taxi:driver-update' pk=driver.id %}">EDIT License</a>
       </td>
       </tr>
     {% endfor %}
