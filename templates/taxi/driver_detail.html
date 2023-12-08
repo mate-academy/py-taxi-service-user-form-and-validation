@@ -16,7 +16,7 @@
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p>
     <strong>License number:</strong> {{ driver.license_number }}
-    <a href="{% url 'taxi:driver-update-license' pk=driver.id %}" class="btn btn-warning link-to-page">
+    <a href="{% url 'taxi:driver-license' pk=driver.id %}" class="btn btn-warning link-to-page">
       Update License
     </a>
   </p>

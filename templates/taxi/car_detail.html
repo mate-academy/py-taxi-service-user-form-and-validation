@@ -16,11 +16,11 @@
   <h1>
     Drivers
         {% if user not in car.drivers.all %}
-          <a href="{% url 'taxi:car-update' pk=car.id %}">
+          <a href="{% url 'taxi:car-update-add-driver' pk=car.id %}">
             <button style="float: right" type="button" class="btn btn-success">Assign me to this car</button>
           </a>
         {% else %}
-          <a href="{% url 'taxi:car-update' pk=car.id %}">
+          <a href="{% url 'taxi:car-update-delete-driver' pk=car.id %}">
             <button style="float: right" type="button" class="btn btn-danger">Delete me from this car</button>
           </a>
         {% endif %}
