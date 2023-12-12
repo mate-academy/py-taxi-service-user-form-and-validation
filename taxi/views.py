@@ -4,7 +4,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from taxi.forms import UserCreationForm, DriverLicenseUpdateForm, CarCreationForm
+from taxi.forms import (UserCreationForm,
+                        DriverLicenseUpdateForm,
+                        CarCreationForm)
 from .models import Driver, Car, Manufacturer
 
 

@@ -25,7 +25,7 @@ class UserCreationForm(UserCreationForm):
             except ValueError:
                 continue
         try:
-            last_5 = int(license_number[-5:])
+            int(license_number[-5:])
             return license_number
         except ValueError:
             raise ValidationError("Last 5 characters have to be digits")
@@ -61,7 +61,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             except ValueError:
                 continue
         try:
-            last_5 = int(license_number[-5:])
+
+            int(license_number[-5:])
             return license_number
         except ValueError:
             raise ValidationError("Last 5 characters have to be digits")
