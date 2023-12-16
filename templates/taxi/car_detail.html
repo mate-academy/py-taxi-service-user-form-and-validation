@@ -21,8 +21,14 @@
     {% endfor %}
   </ul>
     {% if user in car.drivers.all %}
-        <a href="{% url "taxi:car-delete-driver" pk=car.id %}">Delete me from drivers</a>
+        <form action="{% url "taxi:car-delete-driver" pk=car.id %}" method="post">
+            {% csrf_token %}
+            <input type="Submit" value="Delete me from drivers">
+        </form>
     {% else %}
-        <a href="{% url "taxi:car-add-driver" pk=car.id %}">Assign me to drivers</a>
+        <form action="{% url "taxi:car-add-driver" pk=car.id %}" method="post">
+            {% csrf_token %}
+            <input type="Submit" value="Assign me to drivers">
+        </form>
     {% endif %}
 {% endblock %}
