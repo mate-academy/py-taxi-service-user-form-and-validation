@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views import (
     index,
-    car_driver_action,
     CarListView,
     CarDetailView,
     CarCreateView,
@@ -15,7 +14,9 @@ from .views import (
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
-    ManufacturerDeleteView, DriverUpdateView,
+    ManufacturerDeleteView,
+    DriverUpdateView,
+    CarDriverActionView,
 )
 
 urlpatterns = [
@@ -66,7 +67,7 @@ urlpatterns = [
     ),
     path(
         "cars/<int:pk>/action/<str:action>/",
-        car_driver_action,
+        CarDriverActionView.as_view(),
         name="car-driver-action"
     ),
 ]
