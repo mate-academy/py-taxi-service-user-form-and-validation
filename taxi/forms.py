@@ -29,7 +29,7 @@ class LicenseNumberValidationMixin:
         return license_number
 
 
-class DriverCreationForm(UserCreationForm, LicenseNumberValidationMixin):
+class DriverCreationForm(LicenseNumberValidationMixin, UserCreationForm):
     class Meta:
         model = Driver
         fields = UserCreationForm.Meta.fields + (
@@ -39,10 +39,11 @@ class DriverCreationForm(UserCreationForm, LicenseNumberValidationMixin):
         )
 
 
-class DriverLicenseUpdateForm(forms.ModelForm, LicenseNumberValidationMixin):
+class DriverLicenseUpdateForm(LicenseNumberValidationMixin, forms.ModelForm):
     class Meta:
         model = Driver
         fields = ("license_number",)
+
 
 
 class CarCreationForm(forms.ModelForm):

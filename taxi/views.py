@@ -117,9 +117,8 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 @login_required
 def assign_or_delete_car(request: HttpRequest, pk: int) -> redirect:
     car = get_object_or_404(Car, pk=pk)
-    user_is_driver = car.drivers.filter(id=request.user.id).exists()
 
-    if user_is_driver:
+    if car.drivers.filter(id=request.user.id).exists():
         car.drivers.remove(request.user)
     else:
         car.drivers.add(request.user)
