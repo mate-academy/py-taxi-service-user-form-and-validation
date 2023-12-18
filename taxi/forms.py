@@ -45,7 +45,6 @@ class DriverLicenseUpdateForm(LicenseNumberValidationMixin, forms.ModelForm):
         fields = ("license_number",)
 
 
-
 class CarCreationForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
