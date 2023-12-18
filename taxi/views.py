@@ -112,15 +112,12 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/driver_create.html"
 
 
-def car_delete_driver(request, pk):
+@login_required
+def car_delete_update_driver(request, pk):
     if request.method == "POST":
         car = Car.objects.get(id=pk)
-        car.drivers.remove(request.user.id)
-    return HttpResponseRedirect(reverse("taxi:car-list"))
-
-
-def car_add_driver(request, pk):
-    if request.method == "POST":
-        car = Car.objects.get(id=pk)
-        car.drivers.add(request.user.id)
+        if request.user.id in [driver.id for driver in car.drivers.all()]:
+            car.drivers.remove(request.user.id)
+        else:
+            car.drivers.add(request.user.id)
     return HttpResponseRedirect(reverse("taxi:car-list"))
