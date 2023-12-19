@@ -1,7 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, CheckboxSelectMultiple, ModelMultipleChoiceField
+from django.forms import (
+    ModelForm,
+    CheckboxSelectMultiple,
+    ModelMultipleChoiceField
+)
 
 from .models import Driver, Car
 
@@ -10,7 +14,10 @@ def validate_license_number(license_number: str) -> str:
     if len(license_number) != 8:
         raise ValidationError("License number must consist of 8 characters")
     if not (license_number[:3].isupper() and license_number[3:].isdigit()):
-        raise ValidationError("First 3 characters must be uppercase letters and last 5 characters must be digits")
+        raise ValidationError(
+            "First 3 characters must be uppercase letters "
+            "and last 5 characters must be digits"
+        )
     return license_number
 
 

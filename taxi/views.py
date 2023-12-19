@@ -117,5 +117,6 @@ class AssignMe(LoginRequiredMixin, View):
         else:
             car.drivers.add(driver)
 
-        return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[car_id]))
-
+        return HttpResponseRedirect(
+            reverse_lazy("taxi:car-detail", args=[car_id])
+        )
