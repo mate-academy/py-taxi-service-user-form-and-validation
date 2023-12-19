@@ -55,7 +55,7 @@ urlpatterns = [
     path(
         "drivers/<int:pk>/license_update/",
         DriverLicenseUpdateView.as_view(),
-        name="driver-license-update"
+        name="driver-update"
     ),
     path(
         "drivers/<int:pk>/delete/",
