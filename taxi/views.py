@@ -117,9 +117,10 @@ class CarDriverUpdate(LoginRequiredMixin, generic.DeleteView):
 
     @classmethod
     def delete(cls, request, pk):
-        car = Car.objects.get(id=pk)
-        if request.user in car.drivers.all():
-            car.drivers.remove(request.user.id)
-        else:
-            car.drivers.add(request.user.id)
+        if request.method == "POST":
+            car = Car.objects.get(id=pk)
+            if request.user in car.drivers.all():
+                car.drivers.remove(request.user.id)
+            else:
+                car.drivers.add(request.user.id)
         return HttpResponseRedirect(cls.success_url)
