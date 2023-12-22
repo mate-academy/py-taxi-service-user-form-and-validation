@@ -6,19 +6,15 @@ from taxi.models import Driver, Car
 
 
 def validate_license_number(license_number: str) -> str:
-    length = 8
-    three_uppercase = license_number[:3].isupper()
-    three_uppercase_letter = license_number[:3].isalpha()
-    five_digits = license_number[3:].isnumeric()
-    if len(license_number) != length:
+    if len(license_number) != 8:
         raise ValidationError(
             "Ensure that length of password is exactly 8 characters"
         )
-    if not three_uppercase or not three_uppercase_letter:
+    if not license_number[:3].isupper() or not license_number[:3].isalpha():
         raise ValidationError(
             "Ensure that first three characters are letters in upper case"
         )
-    if not five_digits:
+    if not license_number[3:].isnumeric():
         raise ValidationError(
             "Ensure that last 5 characters are digits"
         )
