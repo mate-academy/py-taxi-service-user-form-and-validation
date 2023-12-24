@@ -23,6 +23,7 @@ class CleanMixin:
             raise ValidationError("Last 5 characters have to be digits")
         return license_number
 
+
 class UserCreationForm(CleanMixin, UserCreationForm):
     class Meta:
         model = Driver
