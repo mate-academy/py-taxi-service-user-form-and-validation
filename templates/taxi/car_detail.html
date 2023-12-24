@@ -20,15 +20,12 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
-    {% if user in car.drivers.all %}
-        <form action="{% url "taxi:car-delete-update-driver" pk=car.id %}" method="post">
-            {% csrf_token %}
-            <input type="Submit" value="Delete me from drivers">
-        </form>
+<form action="{% url "taxi:car-delete-update-driver" pk=car.id %}" method="post">
+    {% csrf_token %}
+    {% if user in car.objects.all %}
+        <input type="Submit" value="Delete me from drivers">
     {% else %}
-        <form action="{% url "taxi:car-delete-update-driver" pk=car.id %}" method="post">
-            {% csrf_token %}
-            <input type="Submit" value="Assign me to drivers">
-        </form>
-    {% endif %}
+        <input type="Submit" value="Assign me to drivers"
+    {% endif %}>
+</form>
 {% endblock %}
