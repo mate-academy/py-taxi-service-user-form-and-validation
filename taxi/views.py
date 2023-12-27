@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import DriverCreationForm, CarForm, DriverLicenseUpdateForm
 
@@ -107,12 +108,15 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/driver_license_form.html"
 
 
-@login_required
-def car_assign_me(request, pk):
-    driver = request.user
-    car = Car.objects.get(pk=pk)
-    if driver in car.drivers.all():
-        car.drivers.remove(driver)
-    else:
-        car.drivers.add(driver)
-    return redirect("taxi:car-detail", pk=pk)
+class AssignMeView(LoginRequiredMixin, View):
+    def post(self, request: HttpRequest, car_id: int) -> HttpResponse:
+        driver = get_object_or_404(Driver, id=request.user.id)
+        car = get_object_or_404(Car, id=car_id)
+        if driver in car.drivers.all():
+            car.drivers.remove(driver)
+        else:
+            car.drivers.add(driver)
+
+        return HttpResponseRedirect(
+            reverse_lazy("taxi:car-detail", args=[car_id])
+        )
