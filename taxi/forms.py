@@ -21,24 +21,21 @@ class DriverCreationForm(UserCreationForm):
 
         if len(license_number) != DriverLicenseUpdateForm.LICENSE_NUMBER_LEN:
             raise ValidationError(
-                f"Ensure that that length of license_number is "
+                f"Ensure that that length of license number is "
                 f"{DriverLicenseUpdateForm.LICENSE_NUMBER_LEN}"
             )
 
         if (not license_number[
-               :DriverLicenseUpdateForm.UPPERCASE_NUM
-               ].isupper() and not
-                license_number[
-                :DriverLicenseUpdateForm.UPPERCASE_NUM
-                ].isalpha()):
+                :DriverLicenseUpdateForm.UPPERCASE_NUM].isupper()
+                or not license_number[
+                    :DriverLicenseUpdateForm.UPPERCASE_NUM].isalpha()):
             raise ValidationError(
                 f"Ensure that first {DriverLicenseUpdateForm.UPPERCASE_NUM} "
                 f"characters are uppercase letters"
             )
 
         if not license_number[
-                DriverLicenseUpdateForm.UPPERCASE_NUM:
-                ].isdigit():
+                DriverLicenseUpdateForm.UPPERCASE_NUM:].isdigit():
             raise ValidationError(
                 f"Ensure that last {DriverLicenseUpdateForm.DIGIT_NUM} "
                 f"characters are digits"
@@ -61,24 +58,21 @@ class DriverLicenseUpdateForm(UserChangeForm):
 
         if len(license_number) != DriverLicenseUpdateForm.LICENSE_NUMBER_LEN:
             raise ValidationError(
-                f"Ensure that that length of license_number is "
+                f"Ensure that that length of license number is "
                 f"{DriverLicenseUpdateForm.LICENSE_NUMBER_LEN}"
             )
 
         if (not license_number[
-               :DriverLicenseUpdateForm.UPPERCASE_NUM
-               ].isupper() and not
-                license_number[
-                :DriverLicenseUpdateForm.UPPERCASE_NUM
-                ].isalpha()):
+                :DriverLicenseUpdateForm.UPPERCASE_NUM].isupper()
+                or not license_number[
+                :DriverLicenseUpdateForm.UPPERCASE_NUM].isalpha()):
             raise ValidationError(
                 f"Ensure that first {DriverLicenseUpdateForm.UPPERCASE_NUM} "
                 f"characters are uppercase letters"
             )
 
         if not license_number[
-                DriverLicenseUpdateForm.UPPERCASE_NUM:
-                ].isdigit():
+                DriverLicenseUpdateForm.UPPERCASE_NUM:].isdigit():
             raise ValidationError(
                 f"Ensure that last {DriverLicenseUpdateForm.DIGIT_NUM} "
                 f"characters are digits"

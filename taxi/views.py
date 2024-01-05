@@ -67,16 +67,16 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 @login_required
 def add_driver(request: HttpRequest, pk: int) -> redirect:
-        car = get_object_or_404(Car, pk=pk)
-        car.drivers.add(request.user)
-        return redirect("taxi:car-detail", pk)
+    car = get_object_or_404(Car, pk=pk)
+    car.drivers.add(request.user)
+    return redirect("taxi:car-detail", pk)
 
 
 @login_required
 def remove_driver(request: HttpRequest, pk: int) -> redirect:
-        car = get_object_or_404(Car, pk=pk)
-        car.drivers.remove(request.user)
-        return redirect("taxi:car-detail", pk)
+    car = get_object_or_404(Car, pk=pk)
+    car.drivers.remove(request.user)
+    return redirect("taxi:car-detail", pk)
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
@@ -103,7 +103,8 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
-    queryset = get_user_model().objects.all().prefetch_related("cars__manufacturer")
+    queryset = (get_user_model().objects.all()
+                .prefetch_related("cars__manufacturer"))
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
