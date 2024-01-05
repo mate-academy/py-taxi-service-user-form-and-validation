@@ -66,10 +66,10 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
     def post(self, request, *args, **kwargs):
         car = self.get_object()
-        if "assign_driver" in request.POST:
-            car.drivers.add(request.user)
-        elif "remove_driver" in request.POST:
+        if request.user in car.drivers.all():
             car.drivers.remove(request.user)
+        else:
+            car.drivers.add(request.user)
         return HttpResponseRedirect(
             reverse("taxi:car-detail", kwargs={"pk": car.pk})
         )

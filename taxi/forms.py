@@ -26,8 +26,10 @@ class BaseDriverForm(forms.ModelForm):
 class DriverCreationForm(UserCreationForm, BaseDriverForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = (UserCreationForm.Meta.fields
-                  + ("license_number", "first_name", "last_name",))
+        fields = (
+            UserCreationForm.Meta.fields
+            + ("license_number", "first_name", "last_name",)
+        )
 
 
 class DriverLicenseUpdateForm(BaseDriverForm):
