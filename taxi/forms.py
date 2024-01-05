@@ -5,18 +5,13 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver
 
 
-def validate_license_number(license_number) -> str:
-    for letter in license_number[:3]:
-        if letter not in "QWERTYUIOPASDFGHJKLZXCVBNM":
-            raise ValidationError("Ensure the value of first"
-                                  " must be 3 uppercase letter")
-    for num in license_number[3:]:
-        if num not in "1234567890":
-            raise ValidationError("Ensure the value"
-                                  " of last 5 symbols must be numbers")
-    if len(license_number) != 8:
-        raise ValidationError("Ensure the lenght of license number must be 8")
-    return license_number
+def clean_license(license_number):
+    if len(license_number) == 8:
+        letter = all(letter.isupper() for letter in license_number[:3])
+        num = all(num.isdigit() for num in license_number[3:])
+        if letter and num:
+            return license_number
+    raise ValidationError("license number is not correct")
 
 
 class DriverCreateForm(UserCreationForm):
@@ -26,7 +21,7 @@ class DriverCreateForm(UserCreationForm):
                   + ("first_name", "last_name", "license_number"))
 
     def clean_license_number(self):
-        return validate_license_number(self.cleaned_data["license_number"])
+        return clean_license(self.cleaned_data["license_number"])
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -35,4 +30,4 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ["license_number"]
 
     def clean_license_number(self):
-        return validate_license_number(self.cleaned_data["license_number"])
+        return clean_license(self.cleaned_data["license_number"])

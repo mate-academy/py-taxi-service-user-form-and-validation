@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverCreateForm, DriverLicenseUpdateForm
@@ -115,13 +115,27 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-@login_required
-def assign_to_car(request, pk):
-    driver = get_user_model().objects.get(id=request.user.id)
-    if (
-        Car.objects.get(id=pk) in driver.cars.all()
-    ):
-        driver.cars.remove(pk)
-    else:
-        driver.cars.add(pk)
-    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
+# @login_required
+# def assign_to_car(request, pk):
+#     driver = get_user_model().objects.get(id=request.user.id)
+#     if (
+#         Car.objects.get(id=pk) in driver.cars.all()
+#     ):
+#         driver.cars.remove(pk)
+#     else:
+#         driver.cars.add(pk)
+#     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
+
+class CarEditDriverView(LoginRequiredMixin, View):
+
+    @staticmethod
+    def post(request, pk):
+        driver = get_object_or_404(Driver, id=request.user.id)
+        car = get_object_or_404(Car, id=pk)
+
+        if car in driver.cars.all():
+            driver.cars.remove(car)
+        else:
+            driver.cars.add(car)
+
+        return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
