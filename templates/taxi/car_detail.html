@@ -10,6 +10,17 @@
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
+    {% if user_is_driver %}
+      <form action="{% url 'taxi:car-assign' pk=car.pk %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger link-to-page" type="submit">Delete me from this car</button>
+      </form>
+    {% else %}
+      <form action="{% url 'taxi:car-assign' pk=car.pk %}" method="post">
+          {% csrf_token %}
+          <button class="btn btn-secondary link-to-page" type="submit">Assign me to this car</button>
+      </form>
+    {% endif %}
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
