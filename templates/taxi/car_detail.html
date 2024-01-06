@@ -21,7 +21,7 @@
       {% else %}
           <form action="{% url 'taxi:remove-driver' pk=car.id %}" method="post">
             {% csrf_token %}
-            <button class="btn btn-danger link-to-page">Delete me to this car</button>
+            <button class="btn btn-danger link-to-page">Delete me from this car</button>
           </form>
     {% endif %}
   </h1>
