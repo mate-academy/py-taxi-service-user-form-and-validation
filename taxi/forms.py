@@ -26,7 +26,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise forms.ValidationError(
                 "License number must consist of 8 characters.")
 
-        if not license_number[:3].isupper() or not license_number[:3].isalpha():
+        if not license_number[:3].isupper() \
+                or not license_number[:3].isalpha():
             raise forms.ValidationError(
                 "First 3 characters must be uppercase letters.")
 
