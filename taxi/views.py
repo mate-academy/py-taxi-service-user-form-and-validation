@@ -113,7 +113,7 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 class AssignOrDeleteCarView(View):
-    template_name = "car_detail.html"
+    template_name = "taxi/car_detail.html"
 
     @login_required
     def get(self, request, pk):
