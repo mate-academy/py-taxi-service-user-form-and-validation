@@ -89,7 +89,9 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
-    queryset = get_user_model().objects.all().prefetch_related("cars__manufacturer")
+    queryset = get_user_model().objects.all().prefetch_related(
+        "cars__manufacturer"
+    )
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
@@ -108,7 +110,9 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-def assign_delete_driver(request: HttpRequest, pk: int) -> HttpResponseRedirect:
+def assign_delete_driver(
+        request: HttpRequest, pk: int
+) -> HttpResponseRedirect:
     car = get_object_or_404(Car, pk=pk)
     driver = request.user
     if driver in car.drivers.all():
