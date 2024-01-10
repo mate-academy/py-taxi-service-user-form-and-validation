@@ -44,7 +44,7 @@ class DriverCreatedForm(LicenseNumberValidators, UserCreationForm):
         return cleaned_data
 
 
-class DriverUpdateForm(LicenseNumberValidators, forms.ModelForm):
+class DriverLicenseUpdateForm(LicenseNumberValidators, forms.ModelForm):
 
     class Meta:
         model = Driver
