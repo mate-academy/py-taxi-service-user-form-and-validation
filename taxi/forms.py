@@ -29,7 +29,6 @@ class LicenseNumberValidators(forms.Form):
 
 
 class DriverCreatedForm(LicenseNumberValidators, UserCreationForm):
-
     class Meta:
         model = Driver
         fields = UserCreationForm.Meta.fields + (
@@ -46,13 +45,13 @@ class DriverCreatedForm(LicenseNumberValidators, UserCreationForm):
 
 class DriverLicenseUpdateForm(LicenseNumberValidators, forms.ModelForm):
 
-    def clean(self):
-        cleaned_data = super().clean()
-        return cleaned_data
-
     class Meta:
         model = Driver
         fields = ("license_number",)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
 
 
 class CarCreatedForm(forms.ModelForm):
