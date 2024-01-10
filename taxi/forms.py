@@ -10,7 +10,7 @@ class LicenseNumberValidators(forms.Form):
     def clean_license_number(self) -> str:
         license_number = self.cleaned_data["license_number"]
 
-        if not license_number[:3].isupper():
+        if not (license_number[:3].isupper() and license_number[:3].isalpha()):
             raise forms.ValidationError(
                 "First 3 characters are uppercase letters."
             )
@@ -46,13 +46,13 @@ class DriverCreatedForm(LicenseNumberValidators, UserCreationForm):
 
 class DriverLicenseUpdateForm(LicenseNumberValidators, forms.ModelForm):
 
-    class Meta:
-        model = Driver
-        fields = ("license_number",)
-
     def clean(self):
         cleaned_data = super().clean()
         return cleaned_data
+
+    class Meta:
+        model = Driver
+        fields = ("license_number",)
 
 
 class CarCreatedForm(forms.ModelForm):
