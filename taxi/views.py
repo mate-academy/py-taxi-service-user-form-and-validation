@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
@@ -107,21 +107,23 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-@login_required
-def add_current_user_to_car(request, pk):
-    car = get_object_or_404(Car, pk=pk)
+class DriverAssignOrDeleteCarView(LoginRequiredMixin, View):
+    template_name = "taxi/car_detail.html"
 
-    if request.user not in car.drivers.all():
-        car.drivers.add(request.user)
+    def get(self, request, pk):
+        car = get_object_or_404(Car, pk=pk)
+        user_is_driver = car.drivers.filter(id=request.user.id).exists()
 
-    return redirect("taxi:car-detail", pk=pk)
+        context = {"car": car, "user_is_driver": user_is_driver}
+        return render(request, self.template_name, context)
 
+    def post(self, request, pk):
+        car = get_object_or_404(Car, pk=pk)
+        user_is_driver = car.drivers.filter(id=request.user.id).exists()
 
-@login_required
-def remove_current_user_from_car(request, pk):
-    car = get_object_or_404(Car, pk=pk)
+        if user_is_driver:
+            car.drivers.remove(request.user)
+        else:
+            car.drivers.add(request.user)
 
-    if request.user in car.drivers.all():
-        car.drivers.remove(request.user)
-
-    return redirect("taxi:car-detail", pk=pk)
+        return redirect("taxi:car-detail", pk=pk)
