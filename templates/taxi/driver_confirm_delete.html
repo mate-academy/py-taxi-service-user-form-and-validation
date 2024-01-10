@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+  <h3>Are you sure you want to delete driver: "{{ user.username }}"?</h3>
+  <div class="row">
+    <form action="" method="post">
+      {% csrf_token %}
+      <input class="btn btn-danger btn-lg m-lg-5" type="submit" value="Delete">
+    </form>
+    <form action="" method="post" onclick="history.back()">
+      {% csrf_token %}
+      <input class="btn btn-info btn-lg m-lg-5" type="button" value="Cancel">
+    </form>
+  </div>
+{% endblock %}

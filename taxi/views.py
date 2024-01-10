@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreateForm, DriverLicenseUpdateForm, CarCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,8 +66,8 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
     success_url = reverse_lazy("taxi:car-list")
+    form_class = CarCreationForm
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -87,3 +89,63 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreateForm
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_license_update.html"
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+def driver_license_delete(request: HttpRequest, pk: int) -> HttpResponse:
+    driver = Driver.objects.get(pk=pk)
+    return render(
+        request,
+        "taxi/driver_confirm_license_delete.html",
+        {"driver": driver}
+    )
+
+
+def driver_confirm_delete(
+        request: HttpRequest,
+        pk: int
+) -> HttpResponseRedirect:
+    driver = Driver.objects.get(pk=pk)
+    driver.license_number = ""
+    driver.save()
+    return HttpResponseRedirect(
+        reverse_lazy(
+            "taxi:driver-detail",
+            args=[driver.id]
+        )
+    )
+
+
+def update_driver_to_car_view(
+        request: HttpRequest,
+        pk_d: int,
+        pk_c: int
+) -> HttpResponseRedirect:
+    driver = Driver.objects.get(pk=pk_d)
+    car = Car.objects.get(pk=pk_c)
+    if driver not in car.drivers.all():
+        car.drivers.add(driver)
+        car.save()
+    else:
+        car.drivers.remove(driver)
+        car.save()
+    return HttpResponseRedirect(
+        reverse_lazy(
+            "taxi:car-detail", args=[car.id]
+        )
+    )
