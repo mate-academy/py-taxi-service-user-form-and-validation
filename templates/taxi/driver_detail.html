@@ -2,7 +2,12 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
-    <a class="btn btn-danger ml-lg-5" href="{% url 'taxi:driver-delete' user.id %}">Delete driver</a>
+    {% if user.id == driver.id %}
+      <a class="btn btn-danger ml-lg-5" 
+         href="{% url 'taxi:driver-delete' user.id %}"
+      >Delete driver
+      </a>
+    {% endif %}
   </h1>
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
@@ -15,7 +20,7 @@
     </a>
     <a
         class="btn btn-danger m l-3"
-        href="{% url 'taxi:driver-license-delete' user.id %}">
+        href="{% url 'taxi:driver-confirm-license-delete' user.id %}">
       Delete
     </a>
   </p>
