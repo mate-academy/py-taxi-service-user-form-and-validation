@@ -12,11 +12,11 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p><br>
   {% if user not in car.drivers.all %}
     <a class="btn btn-success"
-       href="{% url 'taxi:update-driver-to-car' pk_d=user.id pk_c=car.id %}">
+       href="{% url 'taxi:update-driver-to-car' driver_pk=user.id car_pk=car.id %}">
       Assign me to this car</a>
   {% else %}
     <a class="btn btn-danger"
-       href="{% url 'taxi:update-driver-to-car' pk_d=user.id pk_c=car.id %}">
+       href="{% url 'taxi:update-driver-to-car' driver_pk=user.id car_pk=car.id %}">
       Delete me from this car</a>
   {% endif %}
   <hr>

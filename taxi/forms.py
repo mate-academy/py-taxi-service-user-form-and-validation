@@ -21,7 +21,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self) -> None:
         license_number = self.cleaned_data["license_number"]
-        print(license_number)
         literal = license_number[:3]
         digits = license_number[3:]
         if (

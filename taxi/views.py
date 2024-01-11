@@ -135,10 +135,10 @@ class UpdateDriverCarView(LoginRequiredMixin, generic.UpdateView):
             *args,
             **kwargs
     ) -> HttpResponseRedirect:
-        pk_d = self.kwargs.get("pk_d")
-        pk_c = self.kwargs.get("pk_c")
-        driver = get_object_or_404(Driver, pk=pk_d)
-        car = get_object_or_404(Car, pk=pk_c)
+        driver_pk = self.kwargs.get("driver_pk")
+        car_pk = self.kwargs.get("car_pk")
+        driver = get_object_or_404(Driver, pk=driver_pk)
+        car = get_object_or_404(Car, pk=car_pk)
 
         if driver not in car.drivers.all():
             car.drivers.add(driver)
