@@ -1,13 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverForm, DriverLicenseUpdateForm, CarForm
-from .models import Car, Manufacturer
+from .models import Car, Manufacturer, Driver
 
 
 @login_required
@@ -110,15 +110,14 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-def assign_delete_driver(
-        request: HttpRequest, pk: int
-) -> HttpResponseRedirect:
-    car = get_object_or_404(Car, pk=pk)
-    driver = request.user
-    if driver in car.drivers.all():
-        car.drivers.remove(driver)
-    else:
-        car.drivers.add(driver)
-    return HttpResponseRedirect(
-        reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
-    )
+class AssignDeleteDriverView(LoginRequiredMixin, View):
+    def post(self, request, **kwargs):
+        driver = get_object_or_404(get_user_model(), id=request.user.id)
+        car = get_object_or_404(Car, id=kwargs["pk"])
+        if driver in car.drivers.all():
+            car.drivers.remove(driver)
+        else:
+            car.drivers.add(driver)
+        return HttpResponseRedirect(reverse_lazy(
+            "taxi:car-detail", kwargs={"pk": kwargs["pk"]})
+        )
