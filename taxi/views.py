@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
-from django.views import generic
+from django.urls import reverse_lazy, reverse
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverCreationForm, DriverLicenseUpdateForm
@@ -76,34 +76,36 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:car-list")
 
 
-@login_required
-def assign_me_to_car(
-    request: HttpRequest,
-    pk: int,
-) -> HttpResponseRedirect:
-    car = get_object_or_404(Car, pk=pk)
-    user = request.user
+class AddCurrentUserView(LoginRequiredMixin, View):
+    def post(
+        self,
+        request: HttpRequest,
+        *args,
+        **kwargs
+    ) -> HttpResponseRedirect:
+        car = get_object_or_404(Car, pk=kwargs["pk"])
+        user = request.user
 
-    if user not in car.drivers.all():
-        car.drivers.add(user)
-        car.save()
+        if user not in car.drivers.all():
+            car.drivers.add(user)
 
-    return redirect("taxi:car-detail", pk=pk)
+        return HttpResponseRedirect(reverse("taxi:car-detail", args=[car.pk]))
 
 
-@login_required
-def delete_me_from_car(
-    request: HttpRequest,
-    pk: int,
-) -> HttpResponseRedirect:
-    car = get_object_or_404(Car, pk=pk)
-    user = request.user
+class DeleteCurrentUserView(LoginRequiredMixin, View):
+    def post(
+        self,
+        request: HttpRequest,
+        *args,
+        **kwargs
+    ) -> HttpResponseRedirect:
+        car = get_object_or_404(Car, pk=kwargs["pk"])
+        user = request.user
 
-    if user in car.drivers.all():
-        car.drivers.remove(user)
-        car.save()
+        if user in car.drivers.all():
+            car.drivers.remove(user)
 
-    return redirect("taxi:car-detail", pk=pk)
+        return HttpResponseRedirect(reverse("taxi:car-detail", args=[car.pk]))
 
 
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
