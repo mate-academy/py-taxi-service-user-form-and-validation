@@ -24,8 +24,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 and license_number[:3].isupper()
                 and license_number[3:].isdigit()):
             return license_number
-        else:
-            raise ValidationError("Ensure the value")
+
+        raise ValidationError("Ensure the value")
 
 
 class CarForm(forms.ModelForm):
