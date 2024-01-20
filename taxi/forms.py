@@ -21,7 +21,7 @@ class DriverLicenseUpdateForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields.pop('password')
+        self.fields.pop("password")
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
