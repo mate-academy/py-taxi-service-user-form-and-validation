@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete driver?</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+
+    <input type="submit" value="Yes" class="btn btn-danger">
+    <h1><a href="{% url 'taxi:driver-detail' pk=driver.id%}" class="btn btn-primary link-to-page">
+  Canel
+  </a></h1>
+  </form>
+{% endblock %}
