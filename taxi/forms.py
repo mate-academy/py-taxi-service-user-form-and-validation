@@ -43,6 +43,7 @@ class DriverLicenseUpdateForm(forms.ModelForm, LicenseNumberMixin):
         model = get_user_model()
         fields = ("license_number",)
 
+
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
