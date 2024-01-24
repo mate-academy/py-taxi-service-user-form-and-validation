@@ -11,7 +11,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Driver
-        fields = ("first_name", "last_name", "username", "license_number", "password")
+        fields = (
+            "first_name",
+            "last_name",
+            "username",
+            "license_number",
+            "password"
+        )
 
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
