@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpRequest
 from django.urls import reverse_lazy
 from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import DriverLicenseUpdateForm, CarForm
+from .forms import DriverLicenseUpdateForm, CarForm, DriverCreationForm
 
 from .models import Driver, Car, Manufacturer
 
@@ -100,7 +100,7 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
-    form_class = DriverLicenseUpdateForm
+    form_class = DriverCreationForm
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
