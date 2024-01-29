@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverUpdateLicenseForm, CarForm
+from .forms import DriverLicenseUpdateForm, CarForm, DriverCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -31,9 +31,11 @@ def index(request):
 
 @login_required
 def add_current_user_to_car(request, pk):
-    car = get_object_or_404(Car, pk=pk)
-    car.drivers.add(request.user)
-    car.save()
+    driver = Driver.objects.get(pk=request.user.id)
+    if Car.objects.get(id=pk) in driver.cars.all():
+        driver.cars.remove(pk)
+    else:
+        driver.cars.add(pk)
     return redirect("taxi:car-detail", pk=pk)
 
 
@@ -100,12 +102,25 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DriverCreteView(LoginRequiredMixin, generic.CreateView):
     model = Driver
-    fields = "__all__"
+    form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverUpdateLicenseView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    form_class = DriverUpdateLicenseForm
-    success_url = reverse_lazy("taxi:driver-list")
+    form_class = DriverLicenseUpdateForm
+    success_url = reverse_lazy("taxi:driver-detail")
     template_name = "taxi/driver_update_license_form.html"
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_create_form.html"
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_delete_form.html"
