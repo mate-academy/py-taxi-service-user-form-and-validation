@@ -4,18 +4,20 @@ from .views import (
     index,
     CarListView,
     CarDetailView,
+    add_current_user_to_car,
     CarCreateView,
     CarUpdateView,
     CarDeleteView,
     DriverListView,
     DriverDetailView,
     DriverCreteView,
-
+    DriverUpdateView,
+    DriverDeleteView,
+    DriverUpdateLicenseView,
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    DriverUpdateLicenseView, add_current_user_to_car, DriverUpdateView, DriverDeleteView,
 )
 
 urlpatterns = [
