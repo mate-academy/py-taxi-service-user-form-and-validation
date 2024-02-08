@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Driver List
+    <h1 class="d-flex justify-content-between align-items-center">
+        Driver List
+        <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary">Create driver</a>
     </h1>
 
     {% if driver_list %}
