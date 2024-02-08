@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -26,6 +27,17 @@ class Driver(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+
+    def clean(self):
+        super().clean()
+        if (
+            len(self.license_number) != 8
+                or not self.license_number[:3].isalpha()
+                or not self.license_number[-5:].isdigit()
+        ):
+            raise ValidationError(
+                "Invalid license number"
+            )
 
 
 class Car(models.Model):
