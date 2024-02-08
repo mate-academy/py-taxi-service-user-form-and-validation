@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
+from django.views.generic.edit import CreateView
 
 
 class DriverForm(forms.ModelForm):
@@ -52,3 +53,9 @@ class CarCreationForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = ("model", "manufacturer", "drivers",)
+
+
+class CarCreateView(CreateView):
+    model = Car
+    fields = ["make", "model", "year", "color"]
+    template_name = "car_create.html"
