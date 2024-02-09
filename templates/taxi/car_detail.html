@@ -14,6 +14,17 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
   <hr>
+  {% if is_driver_of_car %}
+        <form method="post" action="" novalidate>
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger link-to-page" value="Delete me from this car">
+        </form>
+    {% else %}
+        <form method="post" action="" novalidate>
+            {% csrf_token %}
+            <input type="submit" class="btn btn-success link-to-page" value="Assign me to this car">
+        </form>
+    {% endif %}
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
