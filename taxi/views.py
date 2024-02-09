@@ -112,4 +112,5 @@ class AssignDriverView(View):
         else:
             car.drivers.add(request.user)
         car.save()
-        return HttpResponseRedirect(reverse_lazy("taxi:car-detail", kwargs={"pk": pk}))
+        return HttpResponseRedirect(reverse_lazy("taxi:car-detail",
+                                                 kwargs={"pk": pk}))
