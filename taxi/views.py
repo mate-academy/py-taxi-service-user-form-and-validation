@@ -131,7 +131,7 @@ def update_driver_license(request, pk):
         else:
             messages.error(
                 request, f"driver license {license_number}"
-                         f" is already in use"
+                         " is already in use"
             )
     else:
         messages.error(
@@ -145,6 +145,7 @@ def update_driver_license(request, pk):
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
+
 
 def driver_update(request, pk):
     license_number = request.POST.get("license_number")
