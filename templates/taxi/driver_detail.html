@@ -3,24 +3,56 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+    <a href="{% url 'taxi:driver-delete' driver.pk %}">
+      <button type="button" class="btn btn-danger">Delete the driver</button>
+    </a>
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <div>
+    <strong>License number:</strong> <span>{{ driver.license_number }}</span>
+    <form action="{% url 'taxi:update-driver-license' driver.pk %}" id="updateLicenseForm">
+      {% csrf_token %}
+      {{update_license_form}}
+      <button type="submit" class="btn btn-secondary">Save</button>
+      <button type="button" id="hideLicenseFormButton" class="btn btn-secondary">Cancel</button>
+    </form>
+    <button type="button" id="displayLicenseFormButton" class="btn btn-secondary">UpdateLicenseForm</button>
+    {% for message in messages %}
+      <p id="message">{{message}}</p>
+    {% endfor %}
+      
+  </div>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
     <h4>Cars</h4>
-
     {% for car in driver.cars.all %}
         <hr>
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
         <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
   </div>
+  
+  <script>
+    function displayLicenseForm(){
+      updateLicenseForm.setAttribute("style", "display:inline-block");
+      displayLicenseFormButton.setAttribute("style", "display:none");
+    }
+    if  (document.getElementById("message")){
+      displayLicenseForm()
+    }
+    displayLicenseFormButton.onclick = function (event) {
+        displayLicenseForm()
+    }
+    hideLicenseFormButton.onclick = function(){
+      updateLicenseForm.setAttribute("style", "display:none");
+      displayLicenseFormButton.setAttribute("style", "display:inline-block");
+      message.setAttribute("style", "display:none");
+    }
+  </script>
 {% endblock %}
