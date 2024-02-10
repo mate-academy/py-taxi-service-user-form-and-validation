@@ -4,7 +4,12 @@ from django.urls import reverse_lazy
 from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverCreateForm, DriverLicenseUpdateForm, DriverDeleteForm, DriverUpdateForm
+from .forms import (
+    DriverCreateForm,
+    DriverLicenseUpdateForm,
+    DriverDeleteForm,
+    DriverUpdateForm,
+)
 from .models import Driver, Car, Manufacturer
 
 
@@ -103,18 +108,22 @@ class DriverCreateView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('taxi:driver-list')
-        return render(request, self.template_name, {'form': form})
+            return redirect("taxi:driver-list")
+        return render(request, self.template_name, {"form": form})
 
 
 class DriverUpdateView(View):
-    template_name = 'taxi/update_driver.html'
+    template_name = "taxi/update_driver.html"
     form_class = DriverUpdateForm
 
     def get(self, request, pk):
         driver = get_object_or_404(Driver, pk=pk)
         form = self.form_class(instance=driver)
-        return render(request, self.template_name, {'driver': driver, 'form': form})
+        return render(
+            request,
+            self.template_name,
+            {"driver": driver, "form": form}
+        )
 
     def post(self, request, pk):
         driver = get_object_or_404(Driver, pk=pk)
@@ -122,42 +131,58 @@ class DriverUpdateView(View):
 
         if form.is_valid():
             form.save()
-            return redirect('taxi:driver-list')
+            return redirect("taxi:driver-list")
 
-        return render(request, self.template_name, {'driver': driver, 'form': form})
+        return render(
+            request,
+            self.template_name,
+            {"driver": driver, "form": form}
+        )
 
 
 class DriverLicenseUpdateView(View):
-    template_name = 'taxi/update_license.html'
+    template_name = "taxi/update_license.html"
     form_class = DriverLicenseUpdateForm
 
     def get(self, request, driver_id):
         driver = get_object_or_404(Driver, pk=driver_id)
         form = self.form_class(instance=driver)
-        return render(request, self.template_name, {'form': form, 'driver': driver})
+        return render(
+            request,
+            self.template_name,
+            {"form": form, "driver": driver}
+        )
 
     def post(self, request, driver_id):
         driver = get_object_or_404(Driver, pk=driver_id)
         form = self.form_class(request.POST, instance=driver)
         if form.is_valid():
             form.save()
-            return redirect('taxi:driver-detail', driver_id=driver_id)
-        return render(request, self.template_name, {'form': form, 'driver': driver})
+            return redirect("taxi:driver-detail", driver_id=driver_id)
+        return render(
+            request,
+            self.template_name,
+            {"form": form, "driver": driver}
+        )
 
 
 class DriverDeleteView(View):
-    template_name = 'taxi/delete_driver.html'
+    template_name = "taxi/delete_driver.html"
 
     def get(self, request, pk):
         driver = get_object_or_404(Driver, pk=pk)
-        return render(request, self.template_name, {'driver': driver})
+        return render(request, self.template_name, {"driver": driver})
 
     def post(self, request, pk):
         driver = get_object_or_404(Driver, pk=pk)
         form = DriverDeleteForm(request.POST)
 
-        if form.is_valid() and form.cleaned_data['confirm_delete']:
+        if form.is_valid() and form.cleaned_data["confirm_delete"]:
             driver.delete()
-            return redirect('taxi:driver-list')
+            return redirect("taxi:driver-list")
 
-        return render(request, self.template_name, {'driver': driver, 'form': form})
+        return render(
+            request,
+            self.template_name,
+            {"driver": driver, "form": form}
+        )
