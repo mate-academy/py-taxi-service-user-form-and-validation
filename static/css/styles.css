@@ -6,3 +6,15 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+#updateLicenseForm {
+    display: none;
+}
+
+#message{
+    color: red;
+}
+
+.btn.btn-secondary.link-to-page.float-none {
+    float:  none;
+}
