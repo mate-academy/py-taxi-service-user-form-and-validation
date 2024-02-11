@@ -75,7 +75,6 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-
         if request.user in self.object.drivers.all():
             self.object.drivers.remove(request.user)
         else:
@@ -120,26 +119,31 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "taxi/driver_form.html"
 
 
-def update_driver_license(request, pk):
-    license_number = request.POST.get("license_number")
-    license_number_form = DriverLicenseUpdateForm(
-        {"license_number": license_number}
-    )
-    if license_number_form.is_valid():
-        if not Driver.objects.filter(license_number=license_number):
-            Driver.objects.filter(pk=pk).update(license_number=license_number)
+class DriverLicenseUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+
+    def post(self, request, *args, **kwargs):
+        license_number = request.POST.get("license_number")
+        license_number_form = DriverLicenseUpdateForm(
+            {"license_number": license_number}
+        )
+        if license_number_form.is_valid():
+            if not Driver.objects.filter(license_number=license_number):
+                self.object = self.get_object()
+                self.object.license_number = license_number
+                self.object.save()
+            else:
+                messages.error(
+                    request, f"driver license {license_number}"
+                             " is already in use"
+                )
         else:
             messages.error(
-                request, f"driver license {license_number}"
-                         " is already in use"
+                request,
+                "Valid license number consists of 3 uppercase letters "
+                "and 5 digits",
             )
-    else:
-        messages.error(
-            request,
-            "Valid license number consists of 3 uppercase letters "
-            "and 5 digits",
-        )
-    return redirect(request.META.get("HTTP_REFERER"))
+        return redirect(request.META.get("HTTP_REFERER"))
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
