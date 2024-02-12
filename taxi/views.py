@@ -166,23 +166,7 @@ class DriverLicenseUpdateView(View):
         )
 
 
-class DriverDeleteView(View):
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     template_name = "taxi/delete_driver.html"
-
-    def get(self, request, pk):
-        driver = get_object_or_404(Driver, pk=pk)
-        return render(request, self.template_name, {"driver": driver})
-
-    def post(self, request, pk):
-        driver = get_object_or_404(Driver, pk=pk)
-        form = DriverDeleteForm(request.POST)
-
-        if form.is_valid() and form.cleaned_data["confirm_delete"]:
-            driver.delete()
-            return redirect("taxi:driver-list")
-
-        return render(
-            request,
-            self.template_name,
-            {"driver": driver, "form": form}
-        )
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
