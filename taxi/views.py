@@ -101,19 +101,6 @@ class DriverCreateView(FormView):
     template_name = "taxi/create_driver.html"
     form_class = DriverCreateForm
     success_url = reverse_lazy("taxi:driver-list")
-    # template_name = "taxi/create_driver.html"
-    # form_class = DriverCreateForm
-    #
-    # def get(self, request):
-    #     form = self.form_class()
-    #     return render(request, self.template_name, {"form": form})
-    #
-    # def post(self, request):
-    #     form = self.form_class(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect("taxi:driver-list")
-    #     return render(request, self.template_name, {"form": form})
 
 
 class DriverUpdateView(UpdateView):
@@ -125,31 +112,6 @@ class DriverUpdateView(UpdateView):
     def get_object(self, queryset=None):
         pk = self.kwargs.get("pk")
         return get_object_or_404(Driver, pk=pk)
-    # template_name = "taxi/update_driver.html"
-    # form_class = DriverUpdateForm
-    #
-    # def get(self, request, pk):
-    #     driver = get_object_or_404(Driver, pk=pk)
-    #     form = self.form_class(instance=driver)
-    #     return render(
-    #         request,
-    #         self.template_name,
-    #         {"driver": driver, "form": form}
-    #     )
-    #
-    # def post(self, request, pk):
-    #     driver = get_object_or_404(Driver, pk=pk)
-    #     form = self.form_class(request.POST, instance=driver)
-    #
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect("taxi:driver-list")
-    #
-    #     return render(
-    #         request,
-    #         self.template_name,
-    #         {"driver": driver, "form": form}
-    #     )
 
 
 class DriverLicenseUpdateView(View):
@@ -164,29 +126,6 @@ class DriverLicenseUpdateView(View):
     def get_object(self, queryset=None):
         driver_id = self.kwargs.get("driver_id")
         return get_object_or_404(Driver, pk=driver_id)
-    # template_name = "taxi/update_license.html"
-    # form_class = DriverLicenseUpdateForm
-    #
-    # def get(self, request, driver_id):
-    #     driver = get_object_or_404(Driver, pk=driver_id)
-    #     form = self.form_class(instance=driver)
-    #     return render(
-    #         request,
-    #         self.template_name,
-    #         {"form": form, "driver": driver}
-    #     )
-    #
-    # def post(self, request, driver_id):
-    #     driver = get_object_or_404(Driver, pk=driver_id)
-    #     form = self.form_class(request.POST, instance=driver)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect("taxi:driver-detail", driver_id=driver_id)
-    #     return render(
-    #         request,
-    #         self.template_name,
-    #         {"form": form, "driver": driver}
-    #     )
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
