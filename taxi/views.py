@@ -5,10 +5,9 @@ from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView, UpdateView
 
-from .forms import (
+from taxi.forms import (
     DriverCreateForm,
     DriverLicenseUpdateForm,
-    # DriverDeleteForm,
     DriverUpdateForm,
 )
 from .models import Driver, Car, Manufacturer
