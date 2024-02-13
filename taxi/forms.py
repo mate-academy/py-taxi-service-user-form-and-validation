@@ -37,14 +37,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         return license_number
 
 
-class DriverDeleteForm(forms.Form):
-    confirm_delete = forms.BooleanField(
-        required=True,
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
-        help_text="I confirm that I want to delete this driver.",
-    )
-
-
 class DriverUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
