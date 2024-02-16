@@ -9,18 +9,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
         fields = (
-            "password",
-            "last_login",
-            "is_superuser",
-            "groups",
-            "user_permissions",
-            "username",
-            "first_name",
-            "last_name",
-            "email",
-            "is_staff",
-            "is_active",
-            "date_joined",
             "license_number",
         )
 
@@ -32,10 +20,18 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 ValidationError("Your license number "
                                 "must be 8 characters long")
             )
+
+        if not license_number[:3].isalpha():
+            raise ValidationError(
+                "Your license number must "
+                "start with alpha letters"
+            )
+
         if not license_number[:3].isupper():
             raise ValidationError(
                 "Your license number must start with uppercase letters"
             )
+
         if not license_number[3:].isdigit():
             raise (
                 ValidationError("Your license number must "
