@@ -28,11 +28,19 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         license_number = self.cleaned_data["license_number"]
 
         if len(license_number) != 8:
-            raise ValidationError("Your license number must be 8 characters long")
+            raise (
+                ValidationError("Your license number "
+                                "must be 8 characters long")
+            )
         if not license_number[:3].isupper():
-            raise ValidationError("Your license number must start with uppercase letters")
+            raise ValidationError(
+                "Your license number must start with uppercase letters"
+            )
         if not license_number[3:].isdigit():
-            raise ValidationError("Your license number must contain 5 digit characters")
+            raise (
+                ValidationError("Your license number must "
+                                "contain 5 digit characters")
+            )
 
         return license_number
 
@@ -41,7 +49,7 @@ class CarForm(forms.ModelForm):
     drivers = forms.ModelChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
 
     class Meta:
