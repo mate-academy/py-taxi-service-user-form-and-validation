@@ -119,7 +119,9 @@ class DriverAssignView(LoginRequiredMixin, generic.UpdateView):
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
         return render(
-            request, "taxi/driver-assign-confirm.html", context={"driver_id": pk}
+            request,
+            "taxi/driver-assign-confirm.html",
+            context={"driver_id": pk}
         )
 
     def post(self, request, *args, **kwargs):
@@ -139,7 +141,9 @@ class DriverDisassignView(LoginRequiredMixin, generic.UpdateView):
     def get(self, request, *args, **kwargs):
         pk = kwargs.get("pk")
         return render(
-            request, "taxi/driver-disassign-confirm.html", context={"driver_id": pk}
+            request,
+            "taxi/driver-disassign-confirm.html",
+            context={"driver_id": pk}
         )
 
     def post(self, request, *args, **kwargs):
