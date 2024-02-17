@@ -1,9 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverForm, CarForm, DriverLicenseUpdateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,7 +67,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +90,61 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(generic.CreateView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    form_class = DriverForm
+
+
+class DriversLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver-license-update.html"
+
+
+class DriversDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    template_name = "taxi/driver-delete-confirm.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverAssignView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    template_name = "taxi/driver-assign-confirm.html"
+    success_url = reverse_lazy("taxi:car-detail", pk=get_user_model().id)
+    fields = "__all__"
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        return render(
+            request, "taxi/driver-assign-confirm.html", context={"driver_id": pk}
+        )
+
+    def post(self, request, *args, **kwargs):
+        car = Car.objects.get(pk=kwargs.get("pk"))
+        user = request.user
+        car.drivers.add(user)
+        car.save()
+        return redirect("taxi:car-detail", pk=kwargs.get("pk"))
+
+
+class DriverDisassignView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    template_name = "taxi/driver-assign-confirm.html"
+    success_url = reverse_lazy("taxi:car-detail", pk=get_user_model().id)
+    fields = "__all__"
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get("pk")
+        return render(
+            request, "taxi/driver-disassign-confirm.html", context={"driver_id": pk}
+        )
+
+    def post(self, request, *args, **kwargs):
+        car = Car.objects.get(pk=kwargs.get("pk"))
+        user = request.user
+        car.drivers.remove(user)
+        car.save()
+        return redirect("taxi:car-detail", pk=kwargs.get("pk"))
