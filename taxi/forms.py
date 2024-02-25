@@ -6,6 +6,15 @@ from django.contrib.auth import get_user_model
 from taxi.models import Driver, Car
 
 
+def validate_license_number(license_number):
+    if len(license_number) != 8:
+        raise ValidationError("License number must be 8 characters long.")
+    if not license_number[:3].isalpha() or not license_number[:3].isupper():
+        raise ValidationError("First 3 characters must be uppercase letters.")
+    if not license_number[3:].isdigit():
+        raise ValidationError("Last 5 characters must be digits.")
+
+
 class DriverCreationForm(UserCreationForm):
     class Meta:
         model = Driver
@@ -13,16 +22,7 @@ class DriverCreationForm(UserCreationForm):
 
     def clean_license_number(self) -> None:
         license_number = self.cleaned_data.get("license_number")
-        if len(license_number) != 8:
-            raise ValidationError("License number must be 8 characters long.")
-        if not license_number[:3].isalpha() or \
-                not license_number[:3].isupper():
-            raise ValidationError(
-                "First 3 characters must be uppercase letters."
-            )
-        if not license_number[3:].isdigit():
-            raise ValidationError("Last 5 characters must be digits.")
-
+        validate_license_number(license_number)
         return license_number
 
 
@@ -33,16 +33,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self) -> None:
         license_number = self.cleaned_data.get("license_number")
-        if len(license_number) != 8:
-            raise ValidationError("License number must be 8 characters long.")
-        if not license_number[:3].isalpha() or \
-                not license_number[:3].isupper():
-            raise ValidationError(
-                "First 3 characters must be uppercase letters."
-            )
-        if not license_number[3:].isdigit():
-            raise ValidationError("Last 5 characters must be digits.")
-
+        validate_license_number(license_number)
         return license_number
 
 
