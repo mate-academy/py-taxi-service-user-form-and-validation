@@ -64,9 +64,6 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
-    def post(self, pk: int):
-        print("post sent")
-
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
