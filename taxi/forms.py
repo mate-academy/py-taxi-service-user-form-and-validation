@@ -16,7 +16,8 @@ def validate_license_number(license_number):
         )
     if not license_number[:3].isalpha() or not license_number[:3].isupper():
         raise ValidationError(
-            f"First {start_letters_count} characters must be uppercase letters."
+            f"First {start_letters_count} "
+            f"characters must be uppercase letters."
         )
     if not license_number[3:].isdigit():
         raise ValidationError(
