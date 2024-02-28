@@ -13,7 +13,8 @@ class DriverCreationForm(forms.ModelForm):
         license_number = self.cleaned_data["license_number"]
         if len(license_number) != DriverCreationForm.LENGTH_OF_LICENSE:
             raise ValidationError(
-                f"License number must be {DriverCreationForm.LENGTH_OF_LICENSE}"
+                f"License number must be "
+                f"{DriverCreationForm.LENGTH_OF_LICENSE}"
                 f" characters length."
             )
         if (
@@ -31,7 +32,11 @@ class DriverCreationForm(forms.ModelForm):
 class DriverLicenseUpdateForm(UserChangeForm):
     class Meta:
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number")
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "license_number"
+        )
 
 
 class CarForm(forms.ModelForm):
