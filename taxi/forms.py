@@ -11,14 +11,23 @@ class DriverCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number")
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "license_number"
+        )
 
     def clean_license_number(self):
         license_number = self.cleaned_data.get("license_number")
         if len(license_number) != 8:
-            raise ValidationError(f"The license number must be {self.LICENCE_LEN} characters long.")
+            raise ValidationError(
+                f"The license number must be "
+                f"{self.LICENCE_LEN} characters long."
+            )
         if not license_number[:4].isupper():
-            raise ValidationError("The license number must start with 3 UPPER CASE LETTERS")
+            raise ValidationError(
+                "The license number must start with 3 UPPER CASE LETTERS"
+            )
         if not license_number[4:].isdigit():
             raise ValidationError("The license number must end with 5 NUMBERS")
         return license_number
@@ -27,7 +36,11 @@ class DriverCreationForm(UserCreationForm):
 class DriverLicenseUpdateForm(UserChangeForm):
     class Meta:
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number")
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "license_number"
+        )
 
 
 class CarForm(forms.ModelForm):
