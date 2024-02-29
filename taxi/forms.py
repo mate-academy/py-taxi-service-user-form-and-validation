@@ -38,7 +38,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = UserCreationForm.Meta.fields + ("license_number",)
+        fields = ("license_number",)
 
 
 class CarForm(forms.ModelForm):
