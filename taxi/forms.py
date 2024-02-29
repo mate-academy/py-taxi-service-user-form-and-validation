@@ -6,13 +6,13 @@ from django.core.validators import RegexValidator
 from taxi.models import Driver, Car
 
 
-def validate_license_number(value):
+def validate_license_number(license_number_input):
     license_validator = RegexValidator(
         regex=r"^[A-Z]{3}\d{5}$",
         message="License number must have next format -> 'ABC12345'",
         code="invalid_license_number"
     )
-    license_validator(value)
+    license_validator(license_number_input)
 
 
 class DriverCreationForm(UserCreationForm):
