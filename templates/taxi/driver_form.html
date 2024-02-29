@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>{{ object|yesno:"Update,Create" }} driver</h1>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+  </form>
+  <br>
+  <form action="{% url 'taxi:driver-list' %}" method="get">
+    <input type="submit" value="Cancel" class="btn btn-info">
+  </form>
+{% endblock %}
