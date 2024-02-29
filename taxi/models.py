@@ -24,7 +24,8 @@ class Driver(AbstractUser):
                 regex=r"^[A-Z]{3}\d{5}$",
                 message=(
                     "Input format is incorrect, "
-                    "please follow the example: `AAA12345`"
+                    "please follow the example: "
+                    "`AAA12345`"
                 ),
             )
         ],

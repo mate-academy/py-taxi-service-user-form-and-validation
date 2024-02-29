@@ -30,6 +30,7 @@ def index(request: HttpRequest) -> HttpResponse:
     return render(request, "taxi/index.html", context=context)
 
 
+@login_required
 def assign_driver_to_car(
     request: HttpRequest,
     pk: int
