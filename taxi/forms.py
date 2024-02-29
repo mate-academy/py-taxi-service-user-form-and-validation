@@ -42,10 +42,16 @@ class CarForm(forms.ModelForm):
 
 def validate_license_number(license_number: str) -> str | ValidationError:
     if len(license_number) != 8:
-        raise ValidationError("Length of license number should be 8.")
+        raise ValidationError(
+            "Length of license number should be 8."
+        )
     if not license_number[:3].isupper() or not license_number[:3].isalpha():
-        raise ValidationError("License number should start with 3 uppercase letters.")
+        raise ValidationError(
+            "License number should start with 3 uppercase letters."
+        )
     if not license_number[3:].isdigit():
-        raise ValidationError("License number should end with 5 digits.")
+        raise ValidationError(
+            "License number should end with 5 digits."
+        )
 
     return license_number
