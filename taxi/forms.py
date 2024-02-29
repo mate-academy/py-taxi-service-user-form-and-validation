@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator
 
 from taxi.models import Car
 
-VALIDATION_REGEX = r"^[A-Z]{3}[0-9]{5}"
+VALIDATION_REGEX = r"^[A-Z]{3}[0-9]{5}$"
 VALIDATION_MESSAGE = (
     "Consist only of 8 characters\n"
     "First 3 characters are uppercase letters\n"
