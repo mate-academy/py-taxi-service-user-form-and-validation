@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
 from taxi.models import Car
@@ -20,6 +21,26 @@ class DriverLicenseUpdateForm(ModelForm):
     class Meta:
         model = get_user_model()
         fields = ("license_number",)
+
+    def clean_license_number(self):
+        license_num = str(self.cleaned_data["license_number"])
+
+        if len(license_num) != 8:
+            raise ValidationError(
+                "License number should consist only of 8 characters"
+            )
+
+        if not license_num[:3].isalpha() or not license_num[:3].isupper():
+            raise ValidationError(
+                "First 3 characters should be uppercase letters"
+            )
+
+        if not license_num[-5:].isdigit():
+            raise ValidationError(
+                "Last 5 characters should be digits"
+            )
+
+        return license_num
 
 
 class CarForm(forms.ModelForm):
