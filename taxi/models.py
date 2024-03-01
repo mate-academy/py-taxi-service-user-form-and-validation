@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
-from django.core.validators import RegexValidator
 
 
 class Manufacturer(models.Model):
@@ -16,20 +15,7 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(
-        max_length=8,
-        unique=True,
-        validators=[
-            RegexValidator(
-                regex=r"^[A-Z]{3}\d{5}$",
-                message=(
-                    "Input format is incorrect, "
-                    "please follow the example: "
-                    "`AAA12345`"
-                ),
-            )
-        ],
-    )
+    license_number = models.CharField(max_length=255, unique=True)
 
     class Meta:
         verbose_name = "driver"
