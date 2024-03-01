@@ -4,11 +4,11 @@
   <h1>
     {{ car.model }}
     {% if user in car.drivers.all %}
-      <a href="{% url 'taxi:car-assign' pk=car.pk %}" class="btn btn-danger">
-        Exit from this car</a>
+      <a href="{% url 'taxi:car-assign' pk=car.pk %}" class="btn btn-danger link-to-page">
+        Delete me from this car</a>
     {% else %}
-      <a href="{% url 'taxi:car-assign' pk=car.pk %}" class="btn btn-primary">
-        Assign</a>
+      <a href="{% url 'taxi:car-assign' pk=car.pk %}" class="btn btn-primary link-to-page">
+        Assign me to this car</a>
     {% endif %}
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
