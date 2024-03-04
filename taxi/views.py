@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverLicenseUpdateForm, DriverCreateForm, CarCreateForm
 from .models import Driver, Car, Manufacturer
@@ -110,7 +110,7 @@ class DriverLicenceUpdateView(generic.UpdateView):
 
 
 def assign_driver_to_car_view(request: HttpRequest, pk: int) -> HttpResponse:
-    driver = Driver.objects.get(pk=request.user.id)
+    driver = request.user
 
     if driver.cars.filter(id=pk).exists():
         driver.cars.remove(pk)

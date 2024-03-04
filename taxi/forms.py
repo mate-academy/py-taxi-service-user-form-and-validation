@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from taxi.licence_validation import licence_number_validation
-
 from taxi.models import Driver, Car
 
 
