@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from taxi.models import Car
 
 
-class LicenseValidationMixin(forms.ModelForm):
+class LicenseValidationMixin:
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
