@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Driver List
+  {% csrf_token %}
+    <h1>Driver List    <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary link-to-page">
+      Create
+      </a>
     </h1>
 
     {% if driver_list %}
