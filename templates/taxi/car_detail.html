@@ -6,11 +6,11 @@
     {{ car.model }}
   
     {% if user in car.drivers.all %}
-      <a href="{% url 'taxi:remove-driver' pk=car.id %}" class="btn btn-danger link-to-page">
+      <a href="{% url 'taxi:manage-driver' pk=car.id %}" class="btn btn-danger link-to-page">
         Remove me from this car
       </a>
     {% else %}
-      <a href="{% url 'taxi:assign-driver' pk=car.id %}" class="btn btn-primary link-to-page">
+      <a href="{% url 'taxi:manage-driver' pk=car.id %}" class="btn btn-primary link-to-page">
         Assign me to this car
       </a>
     {% endif %}

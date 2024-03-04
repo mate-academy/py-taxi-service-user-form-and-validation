@@ -11,8 +11,8 @@ def validate_license_number(license_number):
         raise ValidationError("License number must be 8 characters long!")
 
     if not (
-        license_number[:3].isalpha()
-        and license_number[:3] == license_number[:3].upper()
+            license_number[:3].isalpha()
+            and license_number[:3] == license_number[:3].upper()
     ):
         raise ValidationError(
             "License number first 3 characters must be uppercase letters!"
@@ -24,7 +24,18 @@ def validate_license_number(license_number):
         )
 
 
-class DriverCreationForm(UserCreationForm):
+class LicenseNumberValidationMixin:
+
+    def clean_license_number(self):
+        license_number = self.cleaned_data["license_number"]
+        validate_license_number(license_number)
+        return license_number
+
+
+class DriverCreationForm(
+    LicenseNumberValidationMixin,
+    UserCreationForm
+):
     class Meta:
         model = Driver
         fields = [
@@ -35,21 +46,14 @@ class DriverCreationForm(UserCreationForm):
             "email",
         ]
 
-    def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-        validate_license_number(license_number)
-        return license_number
 
-
-class DriverLicenseUpdateForm(forms.ModelForm):
+class DriverLicenseUpdateForm(
+    LicenseNumberValidationMixin,
+    forms.ModelForm
+):
     class Meta:
         model = Driver
         fields = ["license_number"]
-
-    def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-        validate_license_number(license_number)
-        return license_number
 
 
 class CarCreationForm(forms.ModelForm):

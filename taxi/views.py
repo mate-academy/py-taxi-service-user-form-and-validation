@@ -107,20 +107,13 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def assign_driver_to_car(
+def manage_driver_and_car(
         request: HttpRequest,
         pk: int
 ) -> HttpResponseRedirect:
     car = Car.objects.get(pk=pk)
-    car.drivers.add(request.user)
-    return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
-
-
-@login_required
-def remove_driver_from_car(
-        request: HttpRequest,
-        pk: int
-) -> HttpResponseRedirect:
-    car = Car.objects.get(pk=pk)
-    car.drivers.remove(request.user)
+    if request.user in car.drivers.all():
+        car.drivers.remove(request.user)
+    else:
+        car.drivers.add(request.user)
     return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
