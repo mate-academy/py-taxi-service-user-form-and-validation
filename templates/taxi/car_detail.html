@@ -2,6 +2,11 @@
 
 {% block content %}
   <h1>
+    {% if car not in user.cars.all %}
+      <a class="btn btn-success" href="{% url "taxi:car-update" pk=car.id %}">Assign to car</a>
+    {% else %}
+      <a class="btn btn-danger" href="{% url "taxi:car-update" pk=car.id %}">Delete driver from car</a>
+    {% endif %}
     {{ car.model }}
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
       Delete
