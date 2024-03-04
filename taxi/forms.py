@@ -6,9 +6,11 @@ from django.core.exceptions import ValidationError
 from taxi.models import Car
 
 
-class DriverFormMixin(forms.ModelForm):
+class DriverFormMixin:
+
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
+
         if not len(license_number) == 8:
             raise ValidationError(
                 "License number must consist only of 8 characters"
@@ -29,7 +31,6 @@ class DriverFormMixin(forms.ModelForm):
 
 
 class DriverCreationForm(DriverFormMixin, UserCreationForm):
-    license_number = forms.CharField()
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
