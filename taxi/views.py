@@ -112,11 +112,10 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 def manage_driver_assignment(request, car_id):
     car = get_object_or_404(Car, pk=car_id)
 
-    if request.method == "POST":
-        if request.user not in car.drivers.all():
-            car.drivers.add(request.user)
-    elif request.method == "DELETE":
-        if request.user in car.drivers.all():
-            car.drivers.remove(request.user)
+    if request.user not in car.drivers.all():
+        car.drivers.add(request.user)
+
+    if request.user in car.drivers.all():
+        car.drivers.remove(request.user)
 
     return redirect("taxi:car-detail", car_id=car_id)
