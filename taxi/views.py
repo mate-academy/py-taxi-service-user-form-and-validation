@@ -5,7 +5,12 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverLicenseUpdateForm, CarForm, DriverForm
+from .forms import (
+    DriverLicenseUpdateForm,
+    CarForm,
+    DriverForm,
+    DriverSearchForm
+)
 from .models import Driver, Car, Manufacturer
 
 
@@ -36,7 +41,6 @@ def car_property_action(request: HttpRequest, pk: int) -> HttpResponse:
         car.drivers.remove(request.user)
     else:
         car.drivers.add(request.user)
-    car.save()
 
     return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
 
@@ -95,6 +99,14 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DriverListView(LoginRequiredMixin, generic.ListView):
     model = Driver
     paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(DriverListView, self).get_context_data(**kwargs)
+        username = self.request.GET.get("username", "")
+        context["search-form"] = DriverSearchForm(
+            initial={"username": username}
+        )
+        return context
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):

@@ -6,28 +6,19 @@ from django import forms
 from taxi.models import Driver, Car
 
 
-class DriverFormMixin(forms.ModelForm):
-    LENGTH_OF_LICENSE = 8
-
-    def clean_license_number(self) -> str:
+class DriverFormMixin:
+    def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
-        if len(license_number) != DriverFormMixin.LENGTH_OF_LICENSE:
-            raise ValidationError(
-                f"License number must be {DriverFormMixin.LENGTH_OF_LICENSE}"
-                f" characters length."
-            )
+        if len(license_number) != 8:
+            raise ValidationError("Should be consist only of 8 characters")
 
-        if (
-            not license_number[:3].isupper()
-            or not license_number[:3].isalpha()
-        ):
-            raise ValidationError(
-                "First 3 characters must be uppercase letters."
-            )
+        if (not license_number[:3].isalpha()
+                or not license_number[:3].isupper()):
+            raise ValidationError("First 3 characters are uppercase letters")
 
         if not license_number[-5:].isdigit():
-            raise ValidationError("Last 5 characters must be digits.")
+            raise ValidationError("Last 5 characters are digits")
 
         return license_number
 
@@ -44,8 +35,6 @@ class DriverForm(DriverFormMixin, UserCreationForm):
 
 
 class DriverLicenseUpdateForm(DriverFormMixin, UserChangeForm):
-    password = None
-
     class Meta(UserChangeForm.Meta):
         model = Driver
         fields = ("license_number",)
@@ -61,3 +50,16 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
+
+
+class DriverSearchForm(forms.Form):
+    username = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search by username"
+            }
+        )
+    )
