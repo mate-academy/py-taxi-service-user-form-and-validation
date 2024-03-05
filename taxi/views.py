@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpRequest, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,7 +11,7 @@ from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
-@login_required
+
 def index(request):
     """View function for the home page of the site."""
 
@@ -108,17 +108,12 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-class CarDriversUpdateView(LoginRequiredMixin, generic.UpdateView):
-    def assign_driver_to_car(
-            self,
-            request: HttpRequest,
-            *args,
-            **kwargs
-    ) -> HttpResponseRedirect:
-        car = Car.objects.get(id=self.kwargs["pk"])
-        driver = get_user_model().objects.get(id=request.user.id)
-        if request.user in car.drivers.all():
-            car.drivers.remove(driver)
-        else:
-            car.drivers.add(driver)
-        return redirect("taxi:car-detail", pk=self.kwargs["pk"])
+@login_required
+def assign_or_remove_driver(request, pk):
+    car = get_object_or_404(Car, id=pk)
+    user = request.user
+    if user in car.drivers.all():
+        car.drivers.remove(user)
+    else:
+        car.drivers.add(user)
+    return redirect("taxi:car-detail", pk=pk)
