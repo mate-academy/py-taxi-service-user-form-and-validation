@@ -9,11 +9,17 @@ from taxi.models import Driver, Car
 
 def driver_license_validator(value):
     if len(value) != 8:
-        raise ValidationError("License number must consist of exactly 8 characters")
+        raise ValidationError(
+            "License number must consist of exactly 8 characters"
+        )
     if not value[:3].isupper():
-        raise ValidationError("First 3 characters must be uppercase letters")
+        raise ValidationError(
+            "First 3 characters must be uppercase letters"
+        )
     if not value[3:].isdigit():
-        raise ValidationError("Last 5 characters must be digits")
+        raise ValidationError(
+            "Last 5 characters must be digits"
+        )
 
 
 class DriverCreateForm(UserCreationForm):
