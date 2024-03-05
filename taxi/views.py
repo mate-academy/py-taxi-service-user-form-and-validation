@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -111,7 +111,7 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def car_driver_update(
+def toggle_assign_to_car(
         request: HttpRequest,
         pk: int
 ) -> HttpResponse:
