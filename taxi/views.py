@@ -110,11 +110,9 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 @login_required
 def driver_assign_view(request: HttpRequest, pk: int) -> HttpResponse:
-    driver = Driver.objects.get(pk=request.user.id)
-
-    if driver.cars.filter(id=pk).exists():
-        driver.cars.remove(pk)
+    if request.user.cars.filter(id=pk).exists():
+        request.user.cars.remove(pk)
     else:
-        driver.cars.add(pk)
+        request.user.cars.add(pk)
 
     return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
