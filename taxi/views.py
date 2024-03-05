@@ -11,7 +11,6 @@ from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
-
 def index(request):
     """View function for the home page of the site."""
 
