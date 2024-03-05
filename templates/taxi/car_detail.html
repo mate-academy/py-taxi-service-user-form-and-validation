@@ -11,9 +11,8 @@
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
-    <form action="{% url "taxi:driver-update" pk=car.id %}" method="post" novalidate>
+    <form action="{% url "taxi:driver-car-update" pk=car.id %}" method="post" novalidate>
       {% csrf_token %}
-      {{ form|crispy }}
       {% if user in car.drivers.all %}
         <input type="submit" value="Delete me from this car" class="btn btn-danger">
       {% else %}

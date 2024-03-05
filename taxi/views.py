@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverLicenseUpdateForm, CarCreateForm
+from .forms import DriverLicenseUpdateForm, CarCreateForm, DriverCreateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -88,8 +88,13 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
-    form_class = DriverLicenseUpdateForm
+    form_class = DriverCreateForm
     success_url = reverse_lazy("taxi:driver-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action"] = "Create"
+        return context
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -107,6 +112,11 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["action"] = "Update"
+        return context
+
 
 @login_required
 def driver_update(request: HttpRequest, pk: int) -> HttpResponse:
@@ -123,3 +133,19 @@ def driver_update(request: HttpRequest, pk: int) -> HttpResponse:
     else:
         form = DriverLicenseUpdateForm(instance=driver)
     return HttpResponse("This page is for updating a driver's license number.")
+
+
+@login_required
+def driver_car_update(request: HttpRequest, pk: int) -> HttpResponse:
+    car = Car.objects.get(pk=pk)
+    if request.method == "POST":
+        user = request.user
+        if user in car.drivers.all():
+            car.drivers.remove(user)
+        else:
+            car.drivers.add(user)
+        return HttpResponseRedirect(
+            reverse_lazy("taxi:car-detail", kwargs={"pk": car.pk})
+        )
+    else:
+        return HttpResponse("This page is for updating a car's drivers.")
