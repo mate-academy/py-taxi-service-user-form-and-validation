@@ -110,7 +110,7 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def car_assignment(request, pk):
+def car_assignment(request: HttpRequest, pk) -> HttpResponse:
     car = get_object_or_404(Car, pk=pk)
 
     if request.method == "POST":
