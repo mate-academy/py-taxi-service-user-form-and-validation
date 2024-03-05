@@ -2,24 +2,19 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 
 from taxi.models import Driver, Car
 
 
 def driver_license_validator(value):
     if len(value) != 8:
-        raise ValidationError(
-            "License number must consist of exactly 8 characters"
-        )
-    if not value[:3].isupper():
-        raise ValidationError(
-            "First 3 characters must be uppercase letters"
-        )
-    if not value[3:].isdigit():
-        raise ValidationError(
-            "Last 5 characters must be digits"
-        )
+        raise ValidationError("License number should consist of 8 characters")
+    elif not value[:3].isupper() or not value[:3].isalpha():
+        raise ValidationError("First 3 characters should be uppercase letters")
+    elif not value[3:].isdigit():
+        raise ValidationError("Last 5 characters should be digits")
+
+    return value
 
 
 class DriverCreateForm(UserCreationForm):
