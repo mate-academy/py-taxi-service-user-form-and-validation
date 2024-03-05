@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -63,14 +64,14 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
+    template_name = "taxi/car_form.html"
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +88,32 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_creation.html"
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_confirm_delete.html"
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_license_update.html"
+
+
+@login_required
+def assign_or_remove_driver(request, pk):
+    car = get_object_or_404(Car, id=pk)
+    user = request.user
+    if user in car.drivers.all():
+        car.drivers.remove(user)
+    else:
+        car.drivers.add(user)
+    return redirect("taxi:car-detail", pk=pk)
