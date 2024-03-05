@@ -14,13 +14,17 @@
     <h4>Cars</h4>
 
     {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
+      <hr>
+      <p><strong>Model:</strong> {{ car.model }}</p>
+      <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
+      <p class="text-muted"><strong>Id:</strong> {{ car.id }}</p>
 
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+    <div>
+      <a href="{% url "taxi:driver-delete" pk=driver.id %}" class="btn btn-danger float-left mr-2">Delete</a>
+      <a href="{% url "taxi:driver-update" pk=driver.id %}" class="btn btn-info float-left mr-2">Update</a>
+    </div>
   </div>
 {% endblock %}
