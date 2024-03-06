@@ -118,7 +118,6 @@ class DriverUpdateLicenseView(generic.UpdateView):
 
 
 def manage_driver_view(request, pk):
-    print(request.user)
     obj = get_object_or_404(Car, id=pk)
 
     if request.method == "POST":

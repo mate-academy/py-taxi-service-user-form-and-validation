@@ -23,8 +23,6 @@ class BaseForm(forms.ModelForm):
         return license_number
 
 
-# not license_number[0:3].isupper():
-
 class DriverLicenseUpdateForm(BaseForm):
     class Meta:
         model = Driver
