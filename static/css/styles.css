@@ -5,4 +5,22 @@ body {
 .link-to-page {
     float: right;
     margin: 0 2px 0 2px;
+
 }
+
+.button_style{
+    text-decoration: none;
+    color: white;
+}
+.button_style:hover{
+    text-decoration: none;
+    color: white;
+}
+.driver-info {
+  margin-bottom: 30px; /* Добавляем отступ между каждым водителем */
+}
+
+
+
+
+
