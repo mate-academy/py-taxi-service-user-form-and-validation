@@ -59,9 +59,10 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     def post(self, request, *args, **kwargs):
         car = self.get_object()
         if "assign-driver" in request.POST:
-            car.drivers.add(request.user)
-        elif "delete-driver" in request.POST:
-            car.drivers.remove(request.user)
+            if request.user in car.drivers.all():
+                car.drivers.remove(request.user)
+            else:
+                car.drivers.add(request.user)
         return redirect("taxi:car-detail", pk=car.pk)
 
 
