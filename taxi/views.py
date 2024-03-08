@@ -1,14 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import UpdateView
 
-from taxi.forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
-from taxi.models import Driver, Car, Manufacturer
+from taxi.forms import CarForm, DriverCreationForm, DriverLicenseUpdateForm
+from taxi.models import Car, Driver, Manufacturer
 
 
 @login_required
