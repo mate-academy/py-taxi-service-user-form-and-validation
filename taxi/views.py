@@ -110,15 +110,9 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def car_assignment(request: HttpRequest, pk) -> HttpResponse:
-    car = get_object_or_404(Car, pk=pk)
-
-    if request.method == "POST":
-        if "assign" in request.POST:
-            if request.user not in car.drivers.all():
-                car.drivers.add(request.user)
-        elif "remove" in request.POST:
-            if request.user in car.drivers.all():
-                car.drivers.remove(request.user)
-
+def car_assignment(request: HttpRequest, pk: int) -> HttpResponse:
+    car = Car.objects.get(id=pk)
+    if request.user in car.drivers.all():
+        car.drivers.remove(request.user)
+    car.drivers.add(request.user)
     return redirect("taxi:car-detail", pk=pk)
