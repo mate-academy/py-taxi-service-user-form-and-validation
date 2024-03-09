@@ -29,7 +29,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 f"License must be exactly {length_} characters long."
             )
 
-        if not (license[:num_of_letters].isupper() and license[:num_of_letters].isalpha()):
+        if not (license[:num_of_letters].isupper() and
+                license[:num_of_letters].isalpha()):
             raise forms.ValidationError(
                 f"First {num_of_letters} characters must be uppercase letters."
             )
