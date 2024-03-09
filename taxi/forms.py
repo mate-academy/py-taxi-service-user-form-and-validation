@@ -21,26 +21,26 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         license_number = self.cleaned_data.get("license_number")
-        length_ = 8
+        length = 8
         num_of_letters = 3
 
-        if len(license_number) != length_:
+        if len(license_number) != length:
             raise forms.ValidationError(
-                f"License must be exactly {length_} characters long."
+                f"License must be exactly {length} characters long."
             )
 
-        if not (license[:num_of_letters].isupper()
-                and license[:num_of_letters].isalpha()):
+        if not (license_number[:num_of_letters].isupper()
+                and license_number[:num_of_letters].isalpha()):
             raise forms.ValidationError(
                 f"First {num_of_letters} characters must be uppercase letters."
             )
 
-        if not license[num_of_letters:].isdigit():
+        if not license_number[num_of_letters:].isdigit():
             raise forms.ValidationError(
-                f"Last {length_ - num_of_letters} characters must be digits."
+                f"Last {length - num_of_letters} characters must be digits."
             )
 
-        return license
+        return license_number
 
 
 class CarForm(forms.ModelForm):
