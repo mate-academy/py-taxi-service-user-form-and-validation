@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.http import require_POST
 
+from .forms import DriverForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,13 +67,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -92,13 +95,18 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
+    form_class = DriverForm
 
 
-class DriverUpdateView(LoginRequiredMixin, generic.CreateView):
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    success_url = reverse_lazy("taxi:driver-list")
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/license_form.html"
+
+    def get_success_url(self):
+        return reverse_lazy("taxi:driver-detail", kwargs={'pk': self.object.pk})
 
 
-class DriverDeleteView(LoginRequiredMixin, generic.CreateView):
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
