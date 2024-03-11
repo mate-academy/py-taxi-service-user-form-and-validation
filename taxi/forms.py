@@ -24,25 +24,25 @@ def validate_license_number(self):
 
 
 class DriverCreationForm(UserCreationForm):
+    def clean_license_number(self):
+        return validate_license_number(self)
+
     class Meta(UserCreationForm.Meta):
-        model = Driver
+        model = get_user_model()
         fields = UserCreationForm.Meta.fields + (
             "license_number",
             "first_name",
             "last_name",
         )
 
-    def clean_license_number(self):
-        return validate_license_number(self)
-
 
 class DriverLicenseUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Driver
-        fields = ["license_number", ]
-
     def clean_license_number(self):
         return validate_license_number(self)
+
+    class Meta:
+        model = get_user_model()
+        fields = ["license_number", ]
 
 
 class CarForm(forms.ModelForm):
