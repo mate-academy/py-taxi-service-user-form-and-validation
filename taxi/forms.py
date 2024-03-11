@@ -13,9 +13,7 @@ def validate_license_number(self):
         raise ValidationError("License number should be 8 characters long")
 
     if not license_number[:3].isalpha():
-        raise ValidationError(
-            "License number should start with 3 uppercase letters"
-        )
+        raise ValidationError("License number should start with 3 uppercase letters")
 
     if not license_number[3:].isnumeric():
         raise ValidationError("5 last characters should be digits")
@@ -42,14 +40,16 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ["license_number", ]
+        fields = [
+            "license_number",
+        ]
 
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
 
     class Meta:
