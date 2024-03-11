@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>Delete driver</h1>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete driver?</button>
+    <a href="{% url "taxi:driver-detail" pk=driver.id %}" class="btn btn-primary">Cancel</a>
+  </form>
+{% endblock %}

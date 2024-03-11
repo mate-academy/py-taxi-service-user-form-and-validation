@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <a href="{% url "taxi:driver-update" pk=driver.id %}" class="btn btn-info">Update driver</a>
+  <a href="{% url "taxi:driver-delete" pk=driver.id %}" class="btn btn-danger">Delete driver</a>
   <h1>
     Username: {{ driver.username }}
   </h1>
@@ -12,7 +14,7 @@
 
   <div class="ml-3">
     <h4>Cars</h4>
-
+    
     {% for car in driver.cars.all %}
         <hr>
         <p><strong>Model:</strong> {{ car.model }}</p>
