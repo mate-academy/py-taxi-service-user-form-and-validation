@@ -10,9 +10,13 @@
       Update
     </a>
     {% if user not in car.drivers.all %}
-      <a href="#">Assign me to this car</a>
+      <a href="{% url 'taxi:car-driver-add-delete' pk=car.id %}" class="btn btn-primary link-to-page">
+        Assign me to this car
+      </a>
     {% else %}
-      <a href="#">Delete me from this car</a>
+      <a href="{% url 'taxi:car-driver-add-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+        Delete me from this car
+      </a>
     {% endif %}
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
