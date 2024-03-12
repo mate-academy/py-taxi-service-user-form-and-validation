@@ -14,8 +14,8 @@ class LicenseNumberMixin:
             )
         if not (
             all(element.isalpha() for element in license_number[:3])
-            or (license_number[:3] != license_number[:3].upper()
-            ):
+            or (license_number[:3] != license_number[:3].upper())
+        ):
             raise ValidationError(
                 "First 3 characters must be uppercase letters"
             )
