@@ -133,7 +133,7 @@ class CarDriverAddDeleteView(
             }
         )
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         car = self.get_object()
         if request.user in car.drivers.all():
             car.drivers.remove(request.user)
