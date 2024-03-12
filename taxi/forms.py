@@ -20,7 +20,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     license_number = forms.CharField(
         max_length=8,
         required=True,)
-    #     validators=[validate_license_number])
 
     class Meta:
         model = Driver
@@ -33,11 +32,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise ValidationError(
                 "License number must be 8 characters long"
             )
-        elif not license_number[:3].isupper():
-            raise ValidationError(
-                "First 3 characters should be uppercase letters"
-            )
-        elif not license_number[:3].isalpha():
+        elif (not license_number[:3].isupper()
+              or not license_number[:3].isalpha()):
             raise ValidationError(
                 "First 3 characters should be uppercase letters"
             )
