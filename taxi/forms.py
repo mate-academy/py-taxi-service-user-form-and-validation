@@ -12,13 +12,12 @@ class LicenseNumberMixin:
             raise ValidationError(
                 "license number must consist only 8 characters"
             )
-        if license_number[:3] != license_number[:3].upper():
+        if not (
+            all(element.isalpha() for element in license_number[:3])
+            or (license_number[:3] != license_number[:3].upper()
+            ):
             raise ValidationError(
                 "First 3 characters must be uppercase letters"
-            )
-        if not all(element.isalpha() for element in license_number[:3]):
-            raise ValidationError(
-                "First 3 character must be letters"
             )
         if not all(element.isdigit() for element in license_number[3:]):
             raise ValidationError(
