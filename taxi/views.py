@@ -82,7 +82,6 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
     queryset = Driver.objects.prefetch_related("cars__manufacturer")
 
 
@@ -105,7 +104,7 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def assign_car(request, pk):
+def car_assignment(request, pk):
     car = get_object_or_404(Car, pk=pk)
 
     if request.method == "POST":

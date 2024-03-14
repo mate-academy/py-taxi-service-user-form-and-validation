@@ -15,7 +15,7 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    assign_car,
+    car_assignment,
 )
 
 urlpatterns = [
@@ -92,7 +92,7 @@ urlpatterns = [
     ),
     path(
         "cars/<int:pk>/assign-car/",
-        assign_car,
+        car_assignment,
         name="assign-car"
     ),
 ]
