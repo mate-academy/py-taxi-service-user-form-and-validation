@@ -24,7 +24,7 @@
         {% endfor %}
     </div>
     <div>
-        <a href="{% url 'taxi:driver-update-license-number' pk=driver.id %}"
+        <a href="{% url 'taxi:driver-update' pk=driver.id %}"
            class="btn btn-sm btn-warning">UPDATE License Number</a>
         <a href="{% url 'taxi:driver-delete' pk=driver.id %}"
            class="btn btn-sm btn-danger">
