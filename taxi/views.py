@@ -77,10 +77,10 @@ def car_detail(request, pk: int) -> HttpResponse:
 
     if request.method == "POST":
         driver = get_user_model().objects.get(pk=request.user.pk)
-        if "assign" in request.POST:
-            car.drivers.add(driver)
-        if "remove" in request.POST:
+        if car in driver.cars.all():
             car.drivers.remove(driver)
+        else:
+            car.drivers.add(driver)
 
     return render(request, "taxi/car_detail.html", context=context)
 
@@ -125,19 +125,3 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
-
-
-class CarDriverAction(LoginRequiredMixin, generic.FormView):
-    def form_valid(self, form):
-        car_id = self.kwargs["pk"]
-        car = Car.objects.get(pk=car_id)
-        driver = Driver.objects.get(pk=self.request.user.pk)
-
-        if "assign" in self.request.POST:
-            car.drivers.add(driver)
-        if "remove" in self.request.POST:
-            car.drivers.remove(driver)
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy("taxi:car-list")

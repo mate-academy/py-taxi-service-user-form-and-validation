@@ -8,19 +8,19 @@ from taxi.models import Driver, Car
 
 def validate_license_number(license_number):
     license_number_size = 8
-    seria_size = 3
     if len(license_number) != license_number_size:
         raise ValidationError(
             f"License number must be at {license_number_size} chars"
         )
-    seria = license_number[:seria_size]
-    number = license_number[seria_size:]
-    if not seria.isalpha() or seria != seria.upper():
+    if (not license_number[:3].isalpha()
+            or license_number[:3] != license_number[:3].upper()):
         raise ValidationError(
-            f"License number must start with {seria_size} uppercase letters"
+            f"License number must start with {3} uppercase letters"
         )
-    if not number.isdigit():
-        raise ValidationError(f"Last {len(number)} char must be digit")
+    if not license_number[3:].isdigit():
+        raise ValidationError(
+            f"Last {len(license_number[3:])} char must be digit"
+        )
 
 
 class CustomDriverCreateForm(UserCreationForm):
