@@ -18,7 +18,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         license_number = self.cleaned_data["license_number"]
         length = 8
 
-        if len(license_number) < length:
+        if len(license_number) <= length:
             raise ValidationError(
                 f"License number must be {length} characters long"
             )
