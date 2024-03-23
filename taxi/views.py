@@ -33,6 +33,7 @@ def index(request):
 
 class AssignDriverToCar(LoginRequiredMixin, View):
     model = Car
+
     def post(self, request: HttpRequest, pk: int) -> HttpResponse:
         car = get_object_or_404(self.model, pk=pk)
 
