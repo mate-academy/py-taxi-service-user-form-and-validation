@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View
 
 from .forms import CarForm, DriverCreationForm, DriverLicenseUpdateForm
 from .models import Driver, Car, Manufacturer
@@ -30,18 +31,20 @@ def index(request):
     return render(request, "taxi/index.html", context=context)
 
 
-def assign_driver_to_car(request: HttpRequest, pk: int) -> HttpResponse:
-    car = get_object_or_404(Car, pk=pk)
+class AssignDriverToCar(LoginRequiredMixin, View):
+    model = Car
+    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
+        car = get_object_or_404(self.model, pk=pk)
 
-    if request.user in car.drivers.all():
-        car.drivers.remove(request.user)
-    else:
-        car.drivers.add(request.user)
-    car.save()
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
+        else:
+            car.drivers.add(request.user)
+        car.save()
 
-    return HttpResponseRedirect(
-        reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
-    )
+        return HttpResponseRedirect(
+            reverse_lazy("taxi:car-detail", kwargs={"pk": pk})
+        )
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
