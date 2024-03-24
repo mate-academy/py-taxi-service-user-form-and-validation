@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
@@ -106,11 +106,13 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-def assign(request: HttpRequest, pk) -> HttpResponse:
-    car = get_object_or_404(Car, pk=pk)
-    if request.method == "POST":
+class AssignCarView(View):
+
+    def post(self, request, pk):
+        car = get_object_or_404(Car, pk=pk)
         if "assign" in request.POST:
             car.drivers.add(request.user)
-        if "remove" in request.POST:
+        elif "remove" in request.POST:
             car.drivers.remove(request.user)
-    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[car.id]))
+        return HttpResponseRedirect(reverse_lazy("taxi:car-detail",
+                                                 args=[car.id]))
