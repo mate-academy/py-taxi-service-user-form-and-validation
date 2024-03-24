@@ -25,7 +25,7 @@
   </div>
 
   <div>
-    <a href="{% url "taxi:driver-update-license" pk=driver.pk %}" class="btn btn-warning">Update license</a>
+    <a href="{% url "taxi:driver-update" pk=driver.pk %}" class="btn btn-warning">Update license</a>
     <a href="{% url "taxi:driver-delete" pk=driver.pk %}" class="btn btn-danger">Delete</a>
   </div>
 {% endblock %}
