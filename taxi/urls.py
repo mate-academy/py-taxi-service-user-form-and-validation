@@ -16,8 +16,7 @@ from taxi.views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    assign_driver_to_car,
-    remove_driver_from_car,
+    manage_driver_for_car,
 )
 
 
@@ -64,14 +63,9 @@ urlpatterns = [
         name="driver-update"
     ),
     path(
-        "car/<int:pk>/assign-driver/",
-        assign_driver_to_car,
-        name="assign-driver"
-    ),
-    path(
-        "car/<int:pk>/remove-driver/",
-        remove_driver_from_car,
-        name="remove-driver"
+        "car/<int:pk>/manage-driver/",
+        manage_driver_for_car,
+        name="manage-driver"
     ),
 ]
 

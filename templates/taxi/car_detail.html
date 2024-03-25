@@ -22,12 +22,12 @@
 
   {% if user.is_authenticated %}
     {% if user not in car.drivers.all %}
-      <form action="{% url 'taxi:assign-driver' car.id %}" method="post">
+      <form action="{% url 'taxi:manage-driver' car.id %}" method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary">Assign me to this car</button>
       </form>
     {% else %}
-      <form action="{% url 'taxi:remove-driver' car.id %}" method="post">
+      <form action="{% url 'taxi:manage-driver' car.id %}" method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Delete me from this car</button>
       </form>
