@@ -1,10 +1,14 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Driver, Car, Manufacturer
+from taxi.models import Driver, Car, Manufacturer
+from taxi.forms import (CarCreationForm,
+                        DriverCreationForm,
+                        DriverLicenseUpdateForm)
 
 
 @login_required
@@ -26,6 +30,17 @@ def index(request):
     }
 
     return render(request, "taxi/index.html", context=context)
+
+
+@login_required()
+def change_driver(request: HttpRequest, pk: int) -> HttpResponse:
+    car = Car.objects.get(id=pk)
+    driver = Driver.objects.get(id=request.user.id)
+    if driver.cars.contains(car):
+        driver.cars.remove(car)
+    else:
+        driver.cars.add(car)
+    return render(request, "taxi/car_detail.html", context={"car": car})
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -64,7 +79,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -84,6 +99,21 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
 
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+
+
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
