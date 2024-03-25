@@ -5,7 +5,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 
-from taxi.forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
+from taxi.forms import DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -93,7 +93,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
-    form_class = DriverCreationForm
+    form_class = DriverLicenseUpdateForm
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -106,27 +106,27 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-@login_required
-def car_assign_driver(request, pk):
-    driver = request.user
-    car = get_object_or_404(Car, pk=pk)
+class CarAssignDriver(LoginRequiredMixin, generic.View):
+    def post(self, request, pk):
+        driver = request.user
+        car = get_object_or_404(Car, pk=pk)
 
-    car.drivers.add(driver)
+        car.drivers.add(driver)
 
-    return HttpResponseRedirect(
-        reverse_lazy(
-            "taxi:car-detail", kwargs={"pk": car.id}
+        return HttpResponseRedirect(
+            reverse_lazy(
+                "taxi:car-detail", kwargs={"pk": car.id}
+            )
         )
-    )
 
 
-@login_required
-def car_delete_driver(request, pk):
-    driver = request.user
-    car = get_object_or_404(Car, pk=pk)
+class CarDeleteDriver(LoginRequiredMixin, generic.View):
+    def post(self, request, pk):
+        driver = request.user
+        car = get_object_or_404(Car, pk=pk)
 
-    car.drivers.remove(driver)
+        car.drivers.remove(driver)
 
-    return HttpResponseRedirect(reverse_lazy(
-        "taxi:car-detail", kwargs={"pk": car.id})
-    )
+        return HttpResponseRedirect(reverse_lazy(
+            "taxi:car-detail", kwargs={"pk": car.id})
+        )

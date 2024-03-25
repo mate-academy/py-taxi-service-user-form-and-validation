@@ -6,9 +6,15 @@
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   {% if user in car.drivers.all %}
-    <a href="{% url 'taxi:car-delete-driver' car.pk%}" class="btn btn-danger link-to-page">Delete me from this car</a>
+    <form action="{% url 'taxi:car-delete-driver' pk=car.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger link-to-page">Delete me from this car</button>
+    </form>
   {% else %}
-    <a href="{% url 'taxi:car-assign-driver' car.pk%}" class="btn btn-success link-to-page">Assign me to this car</a>
+    <form action="{% url 'taxi:car-assign-driver' pk=car.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success link-to-page">Assign me to this car</button>
+    </form>
   {% endif %}
   <h3>Drivers</h3>
   <hr>
