@@ -10,6 +10,7 @@ from taxi.forms import (DriverCreationForm,
                         DriverLicenseUpdateForm,
                         CarCreationForm)
 
+
 @login_required
 def index(request):
     """View function for the home page of the site."""
@@ -80,6 +81,7 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Car
     success_url = reverse_lazy("taxi:car-list")
+
 
 @login_required
 def user_add_to_car(request: HttpRequest, pk) -> HttpResponse:
