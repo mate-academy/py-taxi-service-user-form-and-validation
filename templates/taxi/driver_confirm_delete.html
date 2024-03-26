@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>DELETING</h1>
+
+<form action="" method="post">{% csrf_token %}
+  <p><strong>Are you sure you want to delete "{{ object }}"?</strong></p>
+  <div class="row">
+    <div class="col-">
+      <a href="{% url 'taxi:driver-detail' pk=object.id %}" class="btn btn-danger link-to-page">
+      NO DELETE
+      </a>
+    </div>
+
+    <div class="col-">
+      <input type="submit" class="btn btn-secondary" value="    Submit    ">
+    </div>
+  </div>
+
+</form>
+
+{% endblock %}
