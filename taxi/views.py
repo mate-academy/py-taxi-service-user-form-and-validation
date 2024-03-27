@@ -85,13 +85,13 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class UserCarUpdateView(View):
     def post(self, request, pk):
-       car = get_object_or_404(Car, pk=pk)
-       if "assign" in request.POST:
-           car.drivers.add(request.user)
-       elif "remove" in request.POST:
-           car.drivers.remove(request.user)
-       return HttpResponseRedirect(reverse_lazy("taxi:car-detail",
-                                                args=[car.id]))
+        car = get_object_or_404(Car, pk=pk)
+        if "assign" in request.POST:
+            car.drivers.add(request.user)
+        elif "remove" in request.POST:
+            car.drivers.remove(request.user)
+        return HttpResponseRedirect(reverse_lazy("taxi:car-detail",
+                                                 args=[car.id]))
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
