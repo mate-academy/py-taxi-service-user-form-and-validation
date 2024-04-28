@@ -1,9 +1,11 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -60,17 +62,18 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
+    template_name = "taxi/car_detail.html"
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +90,33 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    fields = "__all__"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_license_update_form.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+def assign_or_delete_driver_to_car(request, pk):
+    car = Car.objects.get(id=pk)
+    driver = get_user_model()
+    driver = driver.objects.get(id=request.user.id)
+
+    if car in driver.cars.all():
+        driver.cars.remove(car)
+    else:
+        driver.cars.add(car)
+    return render(request, "taxi/car_detail.html", context={"car": car})
