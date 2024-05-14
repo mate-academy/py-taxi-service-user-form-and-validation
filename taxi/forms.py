@@ -9,9 +9,11 @@ from .models import Driver, Car
 def validate_license_number(value):
     if len(value) != 8:
         raise ValidationError("License number must have 8 characters!")
-    if not value[0:3].isupper():
+    elif not value[0:3].isalpha():
+        raise ValidationError("First 3 characters must be letters!")
+    elif not value[0:3].isupper():
         raise ValidationError("First 3 characters must be uppercase letters!")
-    if not value[-5:].isdigit():
+    elif not value[-5:].isdigit():
         raise ValidationError("Last 5 characters must be digits!")
 
 
