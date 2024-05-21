@@ -1,9 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreateForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -55,7 +58,7 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
 class CarListView(LoginRequiredMixin, generic.ListView):
     model = Car
     paginate_by = 5
-    queryset = Car.objects.all().select_related("manufacturer")
+    queryset = Car.objects.select_related("manufacturer")
 
 
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
@@ -64,13 +67,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -86,4 +89,32 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = Driver.objects.prefetch_related("cars__manufacturer")
+
+
+class DriverCreate(LoginRequiredMixin, generic.CreateView):
+    form_class = DriverCreateForm
+    model = Driver
+
+
+class DriverLicenseUpdateForm(LoginRequiredMixin, generic.UpdateView):
+    form_class = DriverLicenseUpdateForm
+    model = Driver
+
+
+class DriverDelete(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class ManageDriverView(LoginRequiredMixin, generic.ListView):
+    def post(self, request, car_id):
+        driver = get_user_model().objects.get(id=request.user.id)
+        if Car.objects.get(id=car_id) in driver.cars.all():
+            driver.cars.remove(car_id)
+        else:
+            driver.cars.add(car_id)
+        return HttpResponseRedirect(reverse_lazy(
+            "taxi:car-detail",
+            args=[car_id])
+        )
