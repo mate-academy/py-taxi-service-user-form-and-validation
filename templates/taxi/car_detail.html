@@ -7,9 +7,16 @@
       Delete
     </a>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
+
+      {% if user not in car.drivers.all %}
+      <a href="{% url 'taxi:manage-my-car' pk=car.id %}?action=assign" class="btn btn-primary">
+        Assign me to this car
+      </a>
+    {% else %}
+      <a href="{% url 'taxi:manage-my-car' pk=car.id %}?action=remove" class="btn btn-danger">
+        Delete me from this car
+      </a>
+    {% endif %}
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>

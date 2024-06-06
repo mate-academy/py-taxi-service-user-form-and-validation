@@ -23,4 +23,12 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+
+  <a href="{% url 'taxi:driver-update' pk=driver.pk %}" class="btn btn-primary mt-3">Update License</a>
+
+  <form action="{% url 'taxi:driver-delete' pk=driver.pk %}" method="post" class="d-inline">
+    {% csrf_token %}
+    <input type="hidden" name="method" value="DELETE">
+    <button type="submit" class="btn btn-danger mt-3">Delete Driver</button>
+  </form>
 {% endblock %}
