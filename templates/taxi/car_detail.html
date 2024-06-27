@@ -1,22 +1,44 @@
 {% extends "base.html" %}
-
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
-
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
+  <div><h1>
+    Model: {{ car.model }}
   </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+    <br>
+    <p><strong>Manufacturer</strong>: {{ car.manufacturer.name }}
+      ({{ car.manufacturer.country }})</p>
+    <br>
+    <div style="padding-left: 10px">
+      <h4>Drivers
+        {% if user.is_authenticated %}
+          {% if user not in car.drivers.all %}
+            <a href="{% url 'taxi:assign-driver'  car.id %}"
+               class="btn btn-success link-to-page">
+              Assign me to this car
+            </a>
+          {% else %}
+            <a href="{% url 'taxi:unassign-driver' pk=car.id %}"
+               class="btn btn-danger link-to-page">
+              Delete me from this car
+            </a>
+          {% endif %}
+        {% endif %}
+      </h4>
+      {% for driver in car.drivers.all %}
+        <hr>
+        <p><strong>Username: </strong>{{ driver.username }}</p>
+        <p><strong>Full
+          name: </strong>{{ driver.first_name }} {{ driver.last_name }}</p>
+        <p><strong>License number: </strong>{{ driver.license_number }}</p>
+      {% empty %}
+        No drivers assigned.
+      {% endfor %}
+    </div>
+  </div>
+  <br>
+  <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">
+    Delete
+  </a>
+  <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">
+    Update
+  </a>
 {% endblock %}
