@@ -107,7 +107,7 @@ class DriverLicenceUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-def driver_delete_or_add_from_car(
+def toggle_car_assign(
         request: HttpRequest,
         driver_id: int,
         car_id: int
