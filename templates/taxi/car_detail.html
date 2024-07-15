@@ -1,22 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+   <div>
+    <h1>Model: {{ car.model }}</h1>
+    <div>
+      {% if user in car.drivers.all %}
+        <form action="" method="POST" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" name="remove_driver" class="btn btn-warning">Delete me from this car</button>
+        </form>
+      {% else %}
+        <form action="" method="POST" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" name="assign_driver" class="btn btn-success">Assign me to this car</button>
+        </form>
+      {% endif %}
+    </div>
+    <p>Manufacturer: {{ car.manufacturer.name }} ({{ car.manufacturer.country }})</p>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+    <h4>Drivers</h4>
+    <hr>
+    <div>
+      {% for driver in car.drivers.all %}
+        <div class="driver-info">
+          <p><strong>Username:</strong> {{ driver.username }}</p>
+          <p><strong>Full name:</strong> {{ driver.first_name }} {{ driver.last_name }}</p>
+          <p><strong>License number:</strong> {{ driver.license_number }}</p>
+        </div>
+        <hr>
+      {% empty %}
+        <p>No drivers assigned to this car.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <div class="btn-group" role="group" style="margin-top: 20px;">
+    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">Update</a>
+    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">Delete</a>
+  </div>
 {% endblock %}
