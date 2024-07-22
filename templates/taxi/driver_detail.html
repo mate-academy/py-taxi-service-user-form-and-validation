@@ -12,15 +12,20 @@
 
   <div class="ml-3">
     <h4>Cars</h4>
-
     {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
+      <hr>
+      <p><strong>Model:</strong> {{ car.model }}</p>
+      <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
+      <p class="text-muted"><strong>Id:</strong> {{ car.id }}</p>
 
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+    <a href="{% url 'taxi:driver-update' pk=driver.pk%}" class="btn btn-outline-primary link-to-page">
+      Update
+    </a>
+      <a href="{% url 'taxi:driver-delete' pk=driver.pk%}" class="btn btn-outline-danger link-to-page">
+      Delete
+    </a>
   </div>
 {% endblock %}
