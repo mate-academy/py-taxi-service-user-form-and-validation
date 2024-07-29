@@ -1,22 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
+  <h1><strong>Model:</strong>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
   </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <p><strong>Manufacturer:</strong>{{ car.manufacturer.name }}, ({{ car.manufacturer.country }})</p>
+  <h1>Drivers
+  <form method="post" action="{% url 'taxi:assign-driver' pk=car.id %}">
+    {% csrf_token %}
+    {% if car in user.cars.all %}
+      <input type="submit" value="Delete me from this car" class="btn btn-danger">
+    {% else %}
+      <input type="submit" value="Assign me to this car" class="btn btn-success">
+    {% endif %}
+  </form>
+  </h1>
   <hr>
-  <ul>
+  <ul style="list-style-type: none">
     {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+      <li><strong>Username: </strong>{{ driver.username }}</li>
+      <li><strong>Full name: </strong> {{ driver.first_name }} {{ driver.last_name }}</li>
+      <li><strong>License number: </strong>{{ driver.license_number }}</li>
+      <hr>
     {% endfor %}
+    <li>
+      <a style="float: left" href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
+        Update
+      </a>
+      <a style="float: left" href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+        Delete
+      </a>
+    </li>
   </ul>
 {% endblock %}
