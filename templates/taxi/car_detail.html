@@ -3,20 +3,39 @@
 {% block content %}
   <h1>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+    
+    {% if is_driver %}
+      <form action="{% url 'taxi:add-driver' car.id %}" method="post" novalidate>
+        {% csrf_token %}
+      <input type="submit" value="Delete me from this car" class="btn btn-danger link-to-page">
+    {% else %}
+      <form action="{% url 'taxi:add-driver' car.id %}" method="post" novalidate>
+        {% csrf_token %}
+      <input type="submit" value="Add me to this car" class="btn btn-success link-to-page">
+    {% endif %}
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
+
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
   <hr>
-  <ul>
+  <ul class="list-group">
     {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+      <li class="list-group-item"> 
+        <p><strong>Username:</strong>{{ driver.username }} </p>
+        <p><strong>Full name:</strong>
+          {{ driver.first_name }} {{ driver.last_name }}
+        </p>
+        <p><strong>License number:</strong> {{ driver.license_number }}</p>
+      </li>
     {% endfor %}
   </ul>
+  <h1>
+    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">
+      Update car
+    </a>
+    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">
+      Delete car
+    </a>
+  </h1>
 {% endblock %}
