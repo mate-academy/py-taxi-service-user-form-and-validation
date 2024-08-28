@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>Create New Driver</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Create Driver</button>
+    </form>
+
+    <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary mt-3">Back to Driver List</a>
+{% endblock %}

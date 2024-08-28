@@ -10,7 +10,17 @@
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
-  <div class="ml-3">
+  <!-- Добавляем кнопки для обновления и удаления -->
+  <div class="mt-3">
+    <a href="{% url 'taxi:driver-update' driver.pk %}" class="btn btn-warning">
+      Update License
+    </a>
+    <a href="{% url 'taxi:driver-delete' driver.pk %}" class="btn btn-danger">
+      Delete Driver
+    </a>
+  </div>
+
+  <div class="ml-3 mt-3">
     <h4>Cars</h4>
 
     {% for car in driver.cars.all %}
@@ -18,7 +28,6 @@
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
         <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
     {% empty %}
       <p>No cars!</p>
     {% endfor %}

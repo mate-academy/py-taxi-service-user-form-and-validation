@@ -15,7 +15,7 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(max_length=8, unique=True)
 
     class Meta:
         verbose_name = "driver"
@@ -35,3 +35,15 @@ class Car(models.Model):
 
     def __str__(self):
         return self.model
+
+    def add_driver(self, driver):
+        """Adds the specified driver to the car."""
+        self.drivers.add(driver)
+
+    def remove_driver(self, driver):
+        """Removes the specified driver from the car."""
+        self.drivers.remove(driver)
+
+    def is_driver_assigned(self, driver):
+        """Checks if the driver is already assigned to the car."""
+        return self.drivers.filter(pk=driver.pk).exists()
