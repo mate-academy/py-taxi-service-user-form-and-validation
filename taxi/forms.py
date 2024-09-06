@@ -42,15 +42,6 @@ class DriverCreateForm(forms.ModelForm):
         return check_license_number(self.cleaned_data["license_number"])
 
 
-class DriverUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Driver
-        fields = "__all__"
-
-    def clean_license_number(self):
-        return check_license_number(self.cleaned_data["license_number"])
-
-
 class CarCreateForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.all(),
