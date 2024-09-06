@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from taxi.forms import DriverLicenseUpdateForm, CarCreateForm
@@ -107,22 +107,24 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-def car_delete_driver(request: HttpRequest, pk: int) -> HttpResponse:
-    car = Car.objects.get(pk=pk)
-    car.drivers.remove(request.user)
-    context = {
-        "car": car,
-    }
-    return render(request, "taxi/car_detail.html", context=context)
+class CarAddDriverView(View):
+    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
+        car = get_object_or_404(Car, pk=pk)
+        car.drivers.add(request.user)
+        context = {
+            "car": car,
+        }
+        return render(request, "taxi/car_detail.html", context=context)
 
 
-def car_add_driver(request: HttpRequest, pk: int) -> HttpResponse:
-    car = Car.objects.get(pk=pk)
-    car.drivers.add(request.user)
-    context = {
-        "car": car,
-    }
-    return render(request, "taxi/car_detail.html", context=context)
+class CarDeleteDriverView(View):
+    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
+        car = get_object_or_404(Car, pk=pk)
+        car.drivers.remove(request.user)
+        context = {
+            "car": car,
+        }
+        return render(request, "taxi/car_detail.html", context=context)
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
