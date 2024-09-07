@@ -107,20 +107,15 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-class CarAddDriverView(View):
+class CarToggleDriverView(View):
     def post(self, request: HttpRequest, pk: int) -> HttpResponse:
         car = get_object_or_404(Car, pk=pk)
-        car.drivers.add(request.user)
-        context = {
-            "car": car,
-        }
-        return render(request, "taxi/car_detail.html", context=context)
 
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
+        else:
+            car.drivers.add(request.user)
 
-class CarDeleteDriverView(View):
-    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
-        car = get_object_or_404(Car, pk=pk)
-        car.drivers.remove(request.user)
         context = {
             "car": car,
         }
