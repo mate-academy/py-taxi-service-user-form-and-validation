@@ -22,5 +22,13 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+
+    <a style="margin:0 10px" href="{% url 'taxi:driver-update' pk=driver.id %}">
+        <button class="btn btn-outline-primary" type="button">Edit</button>
+    </a>
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}">
+        <button class="btn btn-outline-danger" type="button">Delete</button>
+    </a>
   </div>
+
 {% endblock %}
