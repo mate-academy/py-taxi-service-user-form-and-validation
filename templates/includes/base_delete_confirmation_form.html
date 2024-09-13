@@ -1,0 +1,7 @@
+{% load crispy_forms_filters %}
+<form action="" method="post">
+  {% csrf_token %}
+
+  <input type="submit" value="Yes" class="btn btn-danger">
+  <a href="javascript:history.back()" class="btn btn-primary">No</a>
+</form>

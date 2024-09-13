@@ -2,9 +2,5 @@
 
 {% block content %}
   <h1>Delete car?</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-
-    <input type="submit" value="Yes" class="btn btn-danger">
-  </form>
+  {% include "includes/base_delete_confirmation_form.html" %}
 {% endblock %}
