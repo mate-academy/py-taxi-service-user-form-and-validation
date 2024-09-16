@@ -1,6 +1,20 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+
+
+def validator_license_number(value):
+    if len(value) != 8:
+        raise ValidationError(
+            "The length of license number must be 8 symbols")
+    if not (value[:3].isupper() and value[:3].isalpha()):
+        raise ValidationError(
+            "First 3 symbols must be uppercase letters")
+    if not value[3:].isdigit():
+        raise ValidationError(
+            "Last 5 symbols must be digits")
+    return value
 
 
 class Manufacturer(models.Model):
@@ -15,7 +29,9 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(max_length=255,
+                                      unique=True,
+                                      validators=[validator_license_number])
 
     class Meta:
         verbose_name = "driver"
