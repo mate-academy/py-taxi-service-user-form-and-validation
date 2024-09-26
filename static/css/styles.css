@@ -1,5 +1,8 @@
 body {
+    font-family: 'Poppins', sans-serif;;
+    background-color: #EDEEF0;
     margin-top: 20px;
+    padding: 0;
 }
 
 .link-to-page {
