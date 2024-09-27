@@ -2,7 +2,9 @@
 
 {% block content %}
   <h1>
-    Username: {{ driver.username }}
+    Username: {{ driver.username }} 
+    <a href="{% url 'taxi:driver-update' driver.pk %}" class="btn btn-warning">Update License</a>
+    <a href="{% url 'taxi:driver-delete' driver.pk %}" class="btn btn-danger">Delete Driver</a>
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
@@ -18,7 +20,6 @@
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
         <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
