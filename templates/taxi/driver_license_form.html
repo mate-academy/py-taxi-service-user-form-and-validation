@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>Update License for {{ driver.first_name }} {{ driver.last_name }}</h1>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Update License" class="btn btn-primary">
+    <a href="{% url 'taxi:driver-detail' driver.id %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
