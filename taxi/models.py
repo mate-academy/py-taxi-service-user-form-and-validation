@@ -25,7 +25,7 @@ class Driver(AbstractUser):
         return f"{self.username} ({self.first_name} {self.last_name})"
 
     def get_absolute_url(self):
-        return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+        return reverse("taxi:driver-detail", kwargs={"pk": self.id})
 
 
 class Car(models.Model):
@@ -35,3 +35,6 @@ class Car(models.Model):
 
     def __str__(self):
         return self.model
+
+    def get_absolute_url(self):
+        return reverse("taxi:car-detail", kwargs={"pk": self.pk})

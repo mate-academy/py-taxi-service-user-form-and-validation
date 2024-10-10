@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>Licence update for driver: <i>{{ driver }}</i></h1>
+  <p>The current license number: <b>{{ driver.license_number }}</b></p>
+  <br>
+  <form action="{% url 'taxi:driver-update' pk=driver.id %}" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Update" class="btn btn-success">
+    <a href="{% url 'taxi:driver-detail' pk=driver.id %}" class="btn btn-primary">
+      Cancel
+    </a>
+  </form>
+{% endblock %}
