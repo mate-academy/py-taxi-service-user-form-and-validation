@@ -6,3 +6,12 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.car-detail-list {
+    list-style: none;
+    padding-left: 20px;
+}
+
+.car-detail-h3 {
+    padding-left: 20px
+}
