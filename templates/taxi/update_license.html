@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    
+    <div>
+      {{ form.license_number.label }}
+      {{ form.license_number }}
+      {{ form.license_number.errors }}
+    </div>
+    <br>
+    <button type="submit">Update License</button>
+  </form>
+{% endblock %}

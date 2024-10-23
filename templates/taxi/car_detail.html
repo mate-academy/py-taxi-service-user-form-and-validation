@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+  
   <h1>
     {{ car.model }}
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
@@ -19,4 +20,16 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+  {% if request.user in car.drivers.all %}
+    <form method="post" action="{% url 'taxi:remove-driver' car.id %}/">
+      {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Видалити мене з цього автомобіля</button>
+    </form>
+  {% else %}
+    <form method="post" action="{% url 'taxi:assign-driver' car.id %}/">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Призначити мене на цей автомобіль</button>
+    </form>
+
+  {% endif %}
 {% endblock %}
