@@ -12,8 +12,23 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h1>Drivers</h1>
+    <div>
+        {% if request.user in object.drivers.all %}
+            <form method="post" action="{% url 'taxi:car-detail' car.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete me from this car</button>
+            </form>
+        {% else %}
+            <form method="post" action="{% url 'taxi:car-detail' car.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Assign me to this car</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+<hr>
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
