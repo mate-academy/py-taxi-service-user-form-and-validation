@@ -35,7 +35,7 @@ class Validator:
         return license_number
 
 
-class DriverCreationForm(UserCreationForm, Validator):
+class DriverCreationForm(UserChangeForm, Validator):
     class Meta(UserCreationForm.Meta):
         model = Driver
         fields = UserCreationForm.Meta.fields + (
