@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Disarrange {{ car.model }} from {{ request.user }}?</h1>
+  <a href="{% url "taxi:car-detail" pk=car.id %}" class="btn btn-danger">Yes</a>
+{% endblock %}

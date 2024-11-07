@@ -1,10 +1,19 @@
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from .models import Driver, Car, Manufacturer
+from .forms import (
+    DriverCreationForm,
+    DriverLicenseUpdateForm,
+    CarCreationForm
+)
+from .models import (
+    Driver,
+    Car,
+    Manufacturer
+)
 
 
 @login_required
@@ -64,13 +73,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +96,38 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return render(request, "registration/logged_out.html")
+
+
+@login_required
+def car_assign(request, pk: int):
+    car = Car.objects.get(id=pk)
+    car.drivers.add(request.user)
+    return render(request, "taxi/car_assign.html", {"car": car})
+
+
+@login_required
+def car_disarrange(request, pk: int):
+    car = Car.objects.get(id=pk)
+    car.drivers.remove(request.user)
+    return render(request, "taxi/car_disarrange.html", {"car": car})
