@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Update Driver's License</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Update License</button>
+  </form>
+
+  <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary">Back to Driver List</a>
+{% endblock %}
