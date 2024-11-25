@@ -8,11 +8,15 @@ from .views import (
     CarUpdateView,
     CarDeleteView,
     DriverListView,
+    DriverCreateView,
     DriverDetailView,
+    driver_license_update,
+    DriverDeleteView,
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+    car_toggle
 )
 
 urlpatterns = [
@@ -42,10 +46,23 @@ urlpatterns = [
     path("cars/create/", CarCreateView.as_view(), name="car-create"),
     path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
     path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
+    path(
+        "cars/<int:pk>/toggle/", car_toggle, name="car-toggle"),
     path("drivers/", DriverListView.as_view(), name="driver-list"),
+    path(
+        "drivers/create/", DriverCreateView.as_view(), name="driver-create"
+    ),
     path(
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
     ),
+    path(
+        "drivers/<int:pk>/update/",
+        driver_license_update,
+        name="driver-update"
+    ),
+    path(
+        "driver/<int:pk>/", DriverDeleteView.as_view(), name="driver-delete"
+    )
 ]
 
 app_name = "taxi"
