@@ -1,4 +1,4 @@
-# Taxi service user form and validation
+    # Taxi service user form and validation
 
 Read [the guideline](https://github.com/mate-academy/py-task-guideline/blob/main/README.md) before starting.
 - Make sure that you change the settings for [html-files](https://github.com/mate-academy/py-task-guideline/blob/main/html_settings/README.MD).
