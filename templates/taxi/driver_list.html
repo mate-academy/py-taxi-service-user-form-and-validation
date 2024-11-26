@@ -22,8 +22,10 @@
         <td>{{ driver.license_number }}</td>
       </tr>
     {% endfor %}
-
     </table>
+      <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary link-to-page">
+        Driver creation page
+      </a>
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
