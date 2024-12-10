@@ -65,7 +65,6 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         user = request.user
-        print(user)
         if "add_driver" in request.POST:
             self.object.drivers.add(user)
 
