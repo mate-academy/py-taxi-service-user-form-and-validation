@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+  <h1>Driver deleting confirmation</h1>
+  <hr>
+  <p><strong>WARNING!</strong> You're going to delete a diver: <strong>{{ driver.username }}</strong>.
+    <br>
+    To confirm this action press <strong>"Delete"</strong> button below.
+  </p>
+  <form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete" class="btn btn-danger">
+  </form>
+{% endblock %}

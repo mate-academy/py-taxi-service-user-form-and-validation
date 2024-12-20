@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+  <h1>Update drive licence:</h1>
+  <form action="?next={% url 'taxi:driver-list' %}" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Update" class="btn btn-info">
+  </form>
+{% endblock %}
