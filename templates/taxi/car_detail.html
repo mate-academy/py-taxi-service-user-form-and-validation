@@ -1,22 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
-
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+  <h1>Model: {{ car.model }}</h1>
+  <p><b>Manufacturer: </b>({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+  <div>
+    {% if user in car.drivers.all %}
+      <form action="{% url "taxi:toggle-driver" car.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete me from this car</button>
+      </form>
+    {% else %}
+      <form action="{% url "taxi:toggle-driver" car.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Assign me to this car</button>
+      </form>
+    {% endif %}
+  </div>
   <h1>Drivers</h1>
   <hr>
-  <ul>
+  
     {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+      <p><b>Username: </b>{{ driver.username }}</p>
+      <p><b>Full name: </b>({{ driver.first_name }} {{ driver.last_name }})</p>
+      <p><b>License number: </b>{{ driver.license_number }}</p>
+      <hr>
     {% endfor %}
-  </ul>
+  
+  <div class="d-flex justify-content-start">
+    <a href="{% url "taxi:car-delete" pk=car.id %}" class="btn btn-danger link-to-page">Delete</a>
+    <a href="{% url "taxi:car-update" pk=car.id %}" class="btn btn-secondary link-to-page">Update</a>
+  </div> 
 {% endblock %}

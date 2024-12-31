@@ -1,5 +1,8 @@
+import re
+
+from django.core.exceptions import ValidationError
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 from django.urls import reverse
 
 
@@ -15,7 +18,13 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(max_length=8, unique=True)
+
+    def clean_number(self):
+        if not re.match(r"^[A-Z]{3}\d{5}$", self.license_number):
+            raise ValidationError(
+                "License number must consist of 3 "
+                "uppercase letters followed by 5 digits.")
 
     class Meta:
         verbose_name = "driver"
