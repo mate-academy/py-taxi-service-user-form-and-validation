@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete this driver?</h1>
+  <p>Are you sure you want to delete the driver: {{ driver }}?</p>
+  <p><i>All details with this car will be also deleted!</i></p>
+  <form action="" method="post">
+    {% csrf_token %}
+    <div class="d-inline-block">
+      <input type="submit" value="Yes" class="btn btn-danger link-to-page">
+      <a href="{% url 'taxi:driver-list' %}" class="btn btn-primary link-to-page">
+      No
+      </a>
+    </div>
+
+  </form>
+{% endblock %}
