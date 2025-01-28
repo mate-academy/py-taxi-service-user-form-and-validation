@@ -1,6 +1,8 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views import generic
 
 
 class Manufacturer(models.Model):
@@ -26,6 +28,18 @@ class Driver(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+
+
+class DriverCreateView(generic.CreateView):
+    form_class = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_forms.html"
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    template_name = "taxi/driver_format_confirm_delete.html"
+    success_url = reverse_lazy("taxi:driver-delete")
 
 
 class Car(models.Model):
