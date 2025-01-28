@@ -30,18 +30,6 @@ class Driver(AbstractUser):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
 
 
-class DriverCreateView(generic.CreateView):
-    form_class = Driver
-    success_url = reverse_lazy("taxi:driver-list")
-    template_name = "taxi/driver_forms.html"
-
-
-class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Driver
-    template_name = "taxi/driver_format_confirm_delete.html"
-    success_url = reverse_lazy("taxi:driver-delete")
-
-
 class Car(models.Model):
     model = models.CharField(max_length=255)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)

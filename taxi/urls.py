@@ -1,6 +1,5 @@
 from django.urls import path
 
-from .models import DriverCreateView, DriverDeleteView
 from .views import (
     index,
     CarListView,
@@ -13,7 +12,7 @@ from .views import (
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
-    ManufacturerDeleteView,
+    ManufacturerDeleteView, DriverCreateView, DriverDeleteView,
 )
 
 
