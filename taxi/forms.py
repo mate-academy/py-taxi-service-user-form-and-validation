@@ -12,7 +12,7 @@ def validate_license_number(value):
     if len(value) != license_length:
         raise ValidationError(f"Must be {license_length} characters long")
     if not value[:3].isupper() or not value[:3].isalpha():
-        raise ValidationError("First 3 symbols should be alphanumeric")
+        raise ValidationError("First 3 symbols should be alphabetic")
     if not value[3:].isdigit():
         raise ValidationError("Last 5 symbols should be digit.")
 
