@@ -15,12 +15,12 @@
   <h1>Drivers</h1>
   <hr>
   {% if user in car.drivers.all %}
-    <form action="{% url 'taxi:car-driver-delete' pk=car.id %}">
+    <form action="{% url 'taxi:car-driver-delete' pk=car.id %}" method="POST">
       {% csrf_token %}
       <input type="submit" value="Delete me from this car" class="btn btn-danger">
     </form>
   {% else %}
-    <form action="{% url 'taxi:car-driver-add' pk=car.id %}">
+    <form action="{% url 'taxi:car-driver-add' pk=car.id %}" method="POST">
       {% csrf_token %}
       <input type="submit" value="Assign me to this car" class="btn btn-success">
     </form>

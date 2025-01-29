@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.http import require_POST
 
 from .forms import DriverCreateForm, DriverLicenseUpdateForm, CarForm
 from .models import Driver, Car, Manufacturer
@@ -30,6 +31,7 @@ def index(request):
 
 
 @login_required
+@require_POST
 def car_add_driver(request, pk):
     car = get_object_or_404(Car, pk=pk)
 
@@ -40,6 +42,7 @@ def car_add_driver(request, pk):
 
 
 @login_required
+@require_POST
 def car_delete_driver(request, pk):
     car = get_object_or_404(Car, pk=pk)
 
@@ -86,7 +89,6 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = CarForm
     model = Car
-    fields = "__all__"
     success_url = reverse_lazy("taxi:car-list")
 
 
