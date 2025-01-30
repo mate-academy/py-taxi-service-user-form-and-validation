@@ -1,0 +1,12 @@
+{# driver_create.html #}
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2>Create driver</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% crispy form %}
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+{% endblock %}
