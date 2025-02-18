@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Update Driver License</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Uses default Django form rendering -->
+
+        <button type="submit" class="btn btn-success">Update</button>
+        <a href="{% url 'taxi:driver-detail' pk=object.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}
