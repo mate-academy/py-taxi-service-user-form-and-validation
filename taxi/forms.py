@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.forms import CheckboxSelectMultiple
 
@@ -33,3 +34,10 @@ class CarCreateForm(forms.ModelForm):
         widgets = {
             "drivers": CheckboxSelectMultiple(),
         }
+
+class DriverCreateForm(UserCreationForm):
+    license_number = forms.CharField(max_length=8, required=True, label="License Number")
+
+    class Meta:
+        model = Driver
+        fields = ['username', 'first_name', 'last_name', 'email', 'license_number']
