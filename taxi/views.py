@@ -109,12 +109,12 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def car_driver_switch(request: HttpRequest, car_id: int) -> HttpResponse:
-    car = Car.objects.get(id=car_id)
+def car_driver_switch(request: HttpRequest, pk: int) -> HttpResponse:
+    car = Car.objects.get(id=pk)
     driver = request.user
 
     if driver in car.drivers.all():
         car.drivers.remove(driver)
     else:
         car.drivers.add(driver)
-    return redirect("taxi/car_list.html")
+    return redirect("taxi:car-detail", pk=car.id)
