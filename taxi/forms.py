@@ -9,8 +9,9 @@ class DriverCreationForm(UserCreationForm):
         max_length=8,
         validators=[
             RegexValidator(
-                regex=r'^[A-Z]{3}\d{5}$',
-                message="License must be 3 uppercase letters followed by 5 digits"
+                regex=r"^[A-Z]{3}\d{5}$",
+                message="License must be 3 "
+                        "uppercase letters followed by 5 digits"
             )
         ],
         help_text="Format: 3 uppercase letters + 5 digits (e.g., ABC12345)"
@@ -20,7 +21,11 @@ class DriverCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = UserCreationForm.Meta.fields + ("license_number", "first_name", "last_name")
+        fields = UserCreationForm.Meta.fields + (
+            "license_number",
+            "first_name",
+            "last_name"
+        )
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -28,8 +33,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         max_length=8,
         validators=[
             RegexValidator(
-                regex=r'^[A-Z]{3}\d{5}$',
-                message="License must be 3 uppercase letters followed by 5 digits"
+                regex=r"^[A-Z]{3}\d{5}$",
+                message="License must be 3 uppercase"
+                        " letters followed by 5 digits"
             )
         ]
     )
