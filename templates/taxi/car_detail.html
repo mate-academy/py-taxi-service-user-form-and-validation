@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_field %}
 
 {% block content %}
   <h1>
@@ -19,4 +20,12 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+  <form method="post" action="{% url 'taxi:car-assign-me' pk=car.id %}" novalidate>
+    {% csrf_token %}
+    {% if not user_is_driver %}
+      <button type="submit" class="btn btn-success">Assign me to this car</button>
+    {% else %}
+      <button type="submit" class="btn btn-danger">Delete me from this car</button>
+    {% endif %}
+  </form>
 {% endblock %}
