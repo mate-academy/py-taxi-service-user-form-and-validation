@@ -113,7 +113,8 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     def get_success_url(self):
         return reverse_lazy(
             "taxi:driver-detail",
-            kwargs={"pk": self.object.pk})
+            kwargs={"pk": self.object.pk}
+        )
 
 
 @login_required
