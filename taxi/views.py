@@ -121,7 +121,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 @login_required()
 def update_car_to_driver(request, pk):
     if not isinstance(request.user, Driver):
-        return redirect('taxi:index')
+        return redirect("taxi:index")
 
     driver = request.user
     car = get_object_or_404(Car, pk=pk)
