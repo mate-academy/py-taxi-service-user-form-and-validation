@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from crispy_forms.helper import FormHelper
@@ -33,7 +34,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ["license_number"]
 
 
-class DriverCreationForm(forms.ModelForm):
+class DriverCreationForm(UserCreationForm):
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
         if len(license_number) != 8:
