@@ -12,11 +12,30 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+
+  <h2>Drivers</h2>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+    {% empty %}
+      <li>No drivers assigned yet.</li>
     {% endfor %}
   </ul>
+
+  <hr>
+
+  {% if user.is_authenticated %}
+    {% if is_user_assigned %}
+      <form method="post" action="{% url 'taxi:car-unassign' car.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning">Delete me from this car</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'taxi:car-assign' car.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Assign me to this car</button>
+      </form>
+    {% endif %}
+  {% endif %}
 {% endblock %}
