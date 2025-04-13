@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 
 
 class Manufacturer(models.Model):
@@ -15,11 +16,24 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(max_length=8, unique=True)
 
     class Meta:
         verbose_name = "driver"
         verbose_name_plural = "drivers"
+
+    def clean(self):
+        super().clean()
+        license_number = self.license_number
+
+        if len(license_number) != 8:
+            raise ValidationError({'license_number': "License number must be exactly 8 characters long."})
+
+        if not license_number[:3].isalpha() or not license_number[:3].isupper():
+            raise ValidationError({'license_number': "First 3 characters must be uppercase letters."})
+
+        if not license_number[3:].isdigit():
+            raise ValidationError({'license_number': "Last 5 characters must be digits."})
 
     def __str__(self):
         return f"{self.username} ({self.first_name} {self.last_name})"
