@@ -126,11 +126,11 @@ def update_car_to_driver(request, pk):
     driver = request.user
     car = get_object_or_404(Car, pk=pk)
 
-    if car in driver.cars.all():
-        driver.cars.remove(car)
+    if driver in car.drivers.all():
+        car.drivers.remove(driver)
     else:
-        driver.cars.add(car)
+        car.drivers.add(driver)
 
-    driver.save()
+    car.save()
 
     return redirect("taxi:car-detail", pk=car.id)
