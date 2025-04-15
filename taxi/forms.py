@@ -40,7 +40,6 @@ class DriverCreationForm(UserCreationForm):
     license_number = forms.CharField(max_length=8, min_length=8)
 
     class Meta:
-        model = Driver
         fields = ("username", "first_name", "last_name", "license_number",)
 
     def clean_license_number(self):

@@ -9,7 +9,6 @@ venv/
 db.sqlite3
 .venv/
 static/
-taxi/migrations/
 taxi/__init__.py
 taxi/admin.py
 taxi/apps.py
