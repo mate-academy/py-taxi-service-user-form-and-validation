@@ -48,7 +48,7 @@ class DriverCreationForm(UserCreationForm):
         return validate_license_number(license_number)
 
 
-class DriverLicenseUpdateForm (forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     license_number = forms.CharField(max_length=8, min_length=8)
 
     class Meta:

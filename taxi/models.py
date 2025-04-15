@@ -14,7 +14,7 @@ class Manufacturer(models.Model):
         return f"{self.name} {self.country}"
 
 
-class Driver(AbstractUser, models.Model):
+class Driver(AbstractUser):
     license_number = models.CharField(max_length=255, unique=True)
 
     class Meta:

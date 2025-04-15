@@ -64,7 +64,7 @@ urlpatterns = [
         name="driver-delete"
     ),
     path(
-        "cars/<int:pk>/update-car-to-user",
+        "cars/<int:pk>/update-car-to-user/",
         update_car_to_driver,
         name="update-car-to-driver"
     ),

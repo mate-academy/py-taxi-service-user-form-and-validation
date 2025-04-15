@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -91,20 +92,12 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Driver
     success_url = reverse_lazy("taxi:driver-list")
     form_class = DriverCreationForm
 
     def form_valid(self, form):
-        driver = form.save(commit=False)
-
-        driver.username = form.cleaned_data["username"]
-        driver.first_name = form.cleaned_data["first_name"]
-        driver.last_name = form.cleaned_data["last_name"]
-
-        driver.save()
-
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        return response
 
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -120,7 +113,8 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 @login_required()
 def update_car_to_driver(request, pk):
-    if not isinstance(request.user, Driver):
+    driver = get_user_model()
+    if not isinstance(request.user, driver):
         return redirect("taxi:index")
 
     driver = request.user
