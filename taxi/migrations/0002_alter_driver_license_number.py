@@ -1,0 +1,17 @@
+import django.core.validators
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('taxi', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.AlterField(
+            model_name='driver',
+            name='license_number',
+            field=models.CharField(max_length=8, validators=[django.core.validators.MinLengthValidator(8, message='License number must be 8'), django.core.validators.RegexValidator(message='License number must have 3 uppercase letters followed by 5 digits.', regex='^[A-Z]{3}\\d{5}$')]),
+        ),
+    ]
