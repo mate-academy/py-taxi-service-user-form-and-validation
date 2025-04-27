@@ -6,3 +6,11 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.update_delete_button {
+    margin-top: 30px;
+}
+
+.detail_about_driver {
+    border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 15px;
+}

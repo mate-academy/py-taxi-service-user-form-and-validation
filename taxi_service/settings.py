@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "crispy_forms",
     "taxi",
+    "crispy_bootstrap5"
 ]
 
 MIDDLEWARE = [
@@ -76,7 +77,9 @@ TEMPLATES = [
     },
 ]
 
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = ["bootstrap5"]
+
 
 WSGI_APPLICATION = "taxi_service.wsgi.application"
 
