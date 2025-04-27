@@ -1,22 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+  <h1>{{ car.model }} ({{ car.manufacturer }})</h1>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Car Information</h5>
+      <p class="card-text"><strong>Model:</strong> {{ car.model }}</p>
+      <p class="card-text"><strong>Manufacturer:</strong> {{ car.manufacturer }}</p>
+
+      <h5 class="card-title mt-3">Drivers:</h5>
+      {% if car.drivers.all %}
+        <ul>
+          {% for driver in car.drivers.all %}
+            <li>{{ driver.get_full_name }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No drivers assigned to this car</p>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+        {% if user in car.drivers.all %}
+          <button type="submit" name="remove" class="btn btn-danger">
+            Delete me from this car
+          </button>
+        {% else %}
+          <button type="submit" name="assign" class="btn btn-success">
+            Assign me to this car
+          </button>
+        {% endif %}
+      </form>
+    </div>
+  </div>
 {% endblock %}
