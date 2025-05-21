@@ -1,5 +1,7 @@
 from django.urls import path
+from django.views.generic import UpdateView
 
+from .models import Driver
 from .views import (
     index,
     CarListView,
@@ -13,7 +15,11 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+    remove_driver_from_car,
+    assign_driver_to_car,
+    DriverLicenseUpdateView, toggle_assign_to_car, DriverDeleteView,
 )
+
 
 urlpatterns = [
     path("", index, name="index"),
@@ -39,6 +45,21 @@ urlpatterns = [
     ),
     path("cars/", CarListView.as_view(), name="car-list"),
     path("cars/<int:pk>/", CarDetailView.as_view(), name="car-detail"),
+    path(
+        "cars/<int:pk>/toggle-assign/",
+        toggle_assign_to_car,
+        name="toggle-assign-car"
+    ),
+    path(
+        "cars/<int:pk>/assign/",
+        assign_driver_to_car,
+        name="car-assign-driver"
+    ),
+    path(
+        "cars/<int:pk>/remove/",
+        remove_driver_from_car,
+        name="car-remove-driver"
+    ),
     path("cars/create/", CarCreateView.as_view(), name="car-create"),
     path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
     path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
@@ -46,6 +67,24 @@ urlpatterns = [
     path(
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
     ),
+    path(
+        "drivers/<int:pk>/update-license/",
+        DriverLicenseUpdateView.as_view(),
+        name="driver-update-license"
+    ),
+    path(
+        "drivers/<int:pk>/delete/",
+        DriverDeleteView.as_view(),
+        name="driver-delete"
+    ),
+    path("drivers/<int:pk>/update/",
+         UpdateView.as_view(
+             model=Driver,
+             fields=["license_number"],
+             template_name="taxi/driver_form.html",
+             success_url="/drivers/"
+         ),
+         name="driver-update"),
 ]
 
 app_name = "taxi"
