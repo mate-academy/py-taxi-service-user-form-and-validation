@@ -17,7 +17,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         ]
     )
 
-    class Meta(forms.ModelForm):
+    class Meta():
         model = Driver
         fields = ["license_number", ]
 
@@ -33,7 +33,7 @@ class DriverCreateForm(forms.ModelForm):
         ]
     )
 
-    class Meta(forms.ModelForm):
+    class Meta():
         model = Driver
         fields = "__all__"
 
