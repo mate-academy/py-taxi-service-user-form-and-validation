@@ -1,5 +1,3 @@
-from idlelib.debugobj_r import remote_object_tree_item
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -110,7 +108,6 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DriverAddDeleteView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    success_url = reverse_lazy("taxi:car-detail")
 
     def post(self, request, *args, **kwargs):
         pk = self.kwargs["pk"]
