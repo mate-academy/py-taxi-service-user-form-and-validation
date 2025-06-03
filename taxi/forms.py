@@ -36,15 +36,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         model = Driver
         fields = ["license_number"]
 
-    def clean_license_number(self):
-        value = self.cleaned_data["license_number"]
-        if not re.fullmatch(r"[A-Z]{3}\d{5}", value):
-            raise ValidationError(
-                "License must have 3 "
-                "uppercase letters followed by 5 digits."
-            )
-        return value
-
 
 class CarForm(forms.ModelForm):
     class Meta:

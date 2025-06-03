@@ -96,7 +96,7 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = DriverCreationForm
 
 
-class DriverLicenseUpdateView(UpdateView):
+class DriverLicenseUpdateView(LoginRequiredMixin, UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
     template_name = "taxi/driver_update.html"
@@ -121,7 +121,7 @@ def add_driver_to_car(request, pk):
 def remove_driver_from_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
     car.drivers.remove(request.user)
-    return redirect("car-detail", pk=pk)
+    return redirect("taxi:car-detail", pk=pk)
 
 
 class DriverDeleteView(LoginRequiredMixin, DeleteView):
