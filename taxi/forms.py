@@ -13,6 +13,7 @@ class DriverForm(UserCreationForm):
             "last_name",
         )
 
+
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
