@@ -2,8 +2,6 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import RegexValidator
-from django.db.models.lookups import Regex
-from django.shortcuts import redirect
 
 from taxi.models import Driver, Car
 
@@ -23,12 +21,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         ]
     )
 
-    class Meta(UserCreationForm.Meta):
+    class Meta(forms.ModelForm):
         model = Driver
         fields = ["license_number"]
-
-    def form_valid(self):
-        return redirect(self.get_success_url())
 
 
 class CarCreationForm(forms.ModelForm):

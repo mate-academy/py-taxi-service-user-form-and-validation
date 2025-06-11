@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -36,14 +36,17 @@ def index(request):
 
 def toggle_car_assignment(request, pk):
     car = get_object_or_404(Car, pk=pk)
+
+    if not hasattr(request.user, "driver"):
+        messages.error(request, "You must be a driver to perform this action")
+        return redirect("taxi:car-list")
+
     if request.user.driver in car.drivers.all():
         car.drivers.remove(request.user.driver)
-        messages.success(request, "You have successfully unassigned this car.")
     else:
         car.drivers.add(request.user.driver)
-        messages.success(request, "You have successfully assigned this car.")
 
-    return redirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
+    return redirect("taxi:car-list")
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
