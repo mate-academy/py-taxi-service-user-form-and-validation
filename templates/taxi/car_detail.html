@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+% extends "base.html" %}
 
 {% block content %}
   <h1>
@@ -19,4 +19,13 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+
+  {% if user.is_authenticated and user.driver %}
+    <form action="{% url 'taxi:toggle-car-assignment' car.pk %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn {% if user.driver in car.drivers.all %}btn-danger{% else %}btn-success{% endif %}">
+        {% if user.driver in car.drivers.all %}Delete me from this car{% else %}Assign me to this car{% endif %}
+      </button>
+    </form>
+  {% endif %}
 {% endblock %}
