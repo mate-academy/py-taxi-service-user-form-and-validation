@@ -24,6 +24,10 @@
     {% endfor %}
 
     </table>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1>Drivers</h1>
+      <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary">Create Driver</a>
+    </div>
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
