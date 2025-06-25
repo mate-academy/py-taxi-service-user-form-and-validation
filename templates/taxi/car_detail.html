@@ -25,7 +25,7 @@
     {% for driver in car.drivers.all %}
       <b>Username: </b>{{ driver.username }}
       <br><b>Full name: </b>{{ driver.first_name }} {{ driver.last_name }}
-      <br><b>License number: {{ driver.license_number }}</b></li>
+      <br><b>License number: {{ driver.license_number }}</b>
       <hr>
     {% endfor %}
 
