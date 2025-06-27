@@ -31,10 +31,10 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
 
-        if not license_number[:3].isupper():
+        if not license_number[:3].isalpha() and license_number[:3].isupper():
             raise forms.ValidationError("First three symbols "
                                         "must be uppercase letters")
-        elif not license_number[4:].isdigit():
+        elif not license_number[3:].isdigit():
             raise forms.ValidationError("Last five symbols must be digits")
         return license_number
 

@@ -100,16 +100,7 @@ class CarRemoveDriverView(LoginRequiredMixin, generic.DetailView):
 
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Car
-    success_url = reverse_lazy("taxi:car-detail")
-
-    def post(self, request, *args, **kwargs):
-        car = self.get_object()
-        car.drivers.add(request.user.id)
-        car.save()
-        return HttpResponseRedirect(reverse("taxi:car-detail", args=(car.id,)))
-
-    def get_success_url(self):
-        return reverse("taxi:car-detail", kwargs={"pk": self.object.id})
+    success_url = reverse_lazy("taxi:car-list")
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
