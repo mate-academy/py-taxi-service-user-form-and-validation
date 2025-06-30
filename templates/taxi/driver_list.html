@@ -24,8 +24,9 @@
           <td>{{ driver.first_name }}</td>
           <td>{{ driver.last_name }}</td>
           <td>{{ driver.license_number }}
-            <a href="{% url 'taxi:driver-license-update' %}"> (Update L.N.)</a>
-
+            {% if user == driver %}
+              <a href="{% url 'taxi:driver-license-update' %}"> (Update L.N.)</a>
+            {% endif %}
           </td>
           <td>
             <a style="color: blue"
