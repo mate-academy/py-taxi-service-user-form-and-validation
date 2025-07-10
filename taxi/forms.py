@@ -54,8 +54,6 @@ class DriverForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
         fields = UserCreationForm.Meta.fields + (
-            "username",
-            "email",
             "first_name",
             "last_name",
             "license_number"
