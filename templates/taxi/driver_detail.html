@@ -3,6 +3,14 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+    {% if user == driver or user.is_superuser %}
+      <a href="{% url 'taxi:driver-license-update' pk=driver.id %}" class="btn btn-secondary">
+        Update License
+      </a>
+      <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger">
+        Delete
+      </a>
+    {% endif %}
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
@@ -18,7 +26,6 @@
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
         <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
     {% empty %}
       <p>No cars!</p>
     {% endfor %}

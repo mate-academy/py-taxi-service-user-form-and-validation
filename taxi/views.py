@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
+from .forms import DriverLicenseUpdateForm, DriverCreationForm, CarForm
 
 from .models import Driver, Car, Manufacturer
 
@@ -68,12 +70,6 @@ class CarCreateView(LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("taxi:car-list")
 
 
-class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Car
-    fields = "__all__"
-    success_url = reverse_lazy("taxi:car-list")
-
-
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Car
     success_url = reverse_lazy("taxi:car-list")
@@ -87,3 +83,44 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+    template_name = "taxi/driver_form.html"
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_license_update.html"
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_confirm_delete.html"
+
+
+class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    form_class = CarForm
+    success_url = reverse_lazy("taxi:car-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        car = self.get_object()
+        context["is_user_driver"] = (
+            car.drivers.filter(id=self.request.user.id).exists())
+        return context
+
+
+def assign_or_delete_driver(request, pk):
+    car = Car.objects.get(id=pk)
+    driver = request.user
+    if car.drivers.filter(id=driver.id).exists():
+        car.drivers.remove(driver)
+    else:
+        car.drivers.add(driver)
+    return redirect("taxi:car-detail", pk=pk)
