@@ -20,7 +20,8 @@ class DriverCreationForm (UserCreationForm):
             raise ValidationError("Ensure that length of license_number is 8")
 
         if not (license_number[:3].isalpha() and license_number[:3].isupper()):
-            raise ValidationError("Ensure that first 3 letters of license_number are uppercase letters")
+            raise ValidationError("Ensure that first 3 letters of "
+                                  "license_number are uppercase letters")
 
         if not license_number[3:].isdigit():
             raise ValidationError("Ensure that last 5 characters are digits")
