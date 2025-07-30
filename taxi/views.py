@@ -20,6 +20,7 @@ def toggle_assign_to_car(request, pk):
 
     return redirect(reverse("taxi:car-detail", kwargs={"pk": car.pk}))
 
+
 @login_required
 def index(request):
     """View function for the home page of the site."""
@@ -108,9 +109,11 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "taxi/driver_form.html"
     success_url = reverse_lazy("taxi:driver-list")
 
+
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
+
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
