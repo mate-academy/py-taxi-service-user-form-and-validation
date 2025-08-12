@@ -17,17 +17,17 @@ class CarToggleDriverView(generic.View):
 
 
 # Create and Delete views for Driver
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse
-from .forms import DriverLicenseUpdateForm
-from .car_forms import CarForm
-from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Driver  # Ensure Driver is imported before use
+from .forms import DriverLicenseUpdateForm, DriverCreationForm
+from .car_forms import CarForm
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user_model
+from .models import Car, Manufacturer
 
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
+    model = get_user_model()
     form_class = DriverLicenseUpdateForm
     template_name = "taxi/driver_license_form.html"
 
@@ -40,7 +40,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Driver, Car, Manufacturer
+from .models import Car, Manufacturer
+from django.contrib.auth import get_user_model
 from .forms import DriverLicenseUpdateForm
 
 
@@ -48,7 +49,7 @@ from .forms import DriverLicenseUpdateForm
 def index(request):
     """View function for the home page of the site."""
 
-    num_drivers = Driver.objects.count()
+    num_drivers = get_user_model().objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
 
@@ -117,24 +118,18 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = get_user_model()
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
-
-
-# Create and Delete views for Driver
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse
-from .forms import DriverLicenseUpdateForm
+    model = get_user_model()
+    queryset = get_user_model().objects.all().prefetch_related("cars__manufacturer")
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Driver
-    form_class = UserCreationForm
+    model = get_user_model()
+    form_class = DriverCreationForm
     template_name = "taxi/driver_form.html"
 
     def get_success_url(self):
@@ -142,6 +137,6 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Driver
+    model = get_user_model()
     template_name = "taxi/driver_confirm_delete.html"
     success_url = reverse_lazy("taxi:driver-list")
