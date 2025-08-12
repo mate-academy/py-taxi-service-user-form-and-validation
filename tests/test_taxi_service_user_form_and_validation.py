@@ -8,9 +8,7 @@ from taxi.forms import DriverLicenseUpdateForm
 class ValidLicenseNumberFormTests(TestCase):
     @staticmethod
     def create_form(test_license_number):
-        return DriverLicenseUpdateForm(
-            data={"license_number": test_license_number}
-        )
+        return DriverLicenseUpdateForm(data={"license_number": test_license_number})
 
     def test_validation_license_number_with_valid_data(self):
         self.assertTrue(self.create_form("TES12345").is_valid())
@@ -42,7 +40,7 @@ class DriverViewsTest(TestCase):
     def test_update_driver_license_number_with_valid_data(self):
         test_license_number = "ADM22345"
         response = self.client.post(
-            reverse("taxi:driver-update", kwargs={"pk": self.user.id}),
+            reverse("taxi:driver-license-update", kwargs={"pk": self.user.pk}),
             data={"license_number": test_license_number},
         )
         self.assertEqual(response.status_code, 302)
@@ -50,7 +48,7 @@ class DriverViewsTest(TestCase):
     def test_update_driver_license_number_with_not_valid_data(self):
         test_license_number = "a5"
         response = self.client.post(
-            reverse("taxi:driver-update", kwargs={"pk": self.user.id}),
+            reverse("taxi:driver-license-update", kwargs={"pk": self.user.pk}),
             data={"license_number": test_license_number},
         )
         self.assertEqual(response.status_code, 200)
@@ -63,10 +61,9 @@ class DriverViewsTest(TestCase):
             last_name="User",
             password="1qazcde3",
         )
+        driver.save()  # Ensure the driver is saved and has an id
         response = self.client.post(
-            reverse("taxi:driver-delete", kwargs={"pk": driver.id})
+            reverse("taxi:driver-delete", kwargs={"pk": driver.pk})
         )
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(
-            get_user_model().objects.filter(id=driver.id).exists()
-        )
+        self.assertFalse(get_user_model().objects.filter(pk=driver.pk).exists())
