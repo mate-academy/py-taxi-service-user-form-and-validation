@@ -15,7 +15,8 @@ class DriverCreationForm(UserCreationForm):
         validators=[
             RegexValidator(
                 regex=r"^[A-Z]{3}\d{5}$",
-                message="License number must be 8 characters: 3 uppercase letters and 5 digits.",
+                message="License number must be 8 characters: "
+                        "3 uppercase letters and 5 digits.",
             )
         ],
     )
@@ -31,7 +32,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         validators=[
             RegexValidator(
                 regex=r"^[A-Z]{3}\d{5}$",
-                message="License number must be 8 characters: 3 uppercase letters and 5 digits.",
+                message="License number must be 8 characters: "
+                        "3 uppercase letters and 5 digits.",
             )
         ],
     )

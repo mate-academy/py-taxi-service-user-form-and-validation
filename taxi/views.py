@@ -102,7 +102,10 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = "taxi/driver_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("taxi:driver-detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy(
+            "taxi:driver-detail",
+            kwargs={"pk": self.object.pk}
+        )
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
@@ -116,7 +119,10 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/driver_license_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("taxi:driver-detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy(
+            "taxi:driver-detail",
+            kwargs={"pk": self.object.pk}
+        )
 
 
 class AssignMeToCarView(LoginRequiredMixin, View):
