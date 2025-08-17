@@ -1,10 +1,9 @@
 asgiref==3.9.1
 black==25.1.0
 click==8.2.1
-crispy-bootstrap4==2025.6
 Django==4.1
-django-crispy-forms==1.14.0
 crispy-bootstrap4==2022.1
+django-crispy-forms==1.14.0
 django-debug-toolbar==3.2.4
 flake8==5.0.4
 flake8-quotes==3.3.1
