@@ -9,6 +9,7 @@ from taxi.models import Driver, Car
 
 User = get_user_model()
 
+
 class CleanLicenseNumberMixin(forms.Form):
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
