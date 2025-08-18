@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block content %}
   <h1>
     {{ car.model }}
@@ -14,12 +15,12 @@
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers
     {% if user not in car.drivers.all %}
-        <form action="{% url 'taxi:driver-update' pk=car.id %}" method="post">
+        <form action="{% url 'taxi:driver-assign' pk=car.id %}" method="post">
         {% csrf_token %}
             <input class="btn btn-primary" type="submit" value="Assign me to this car">
         </form>
      {% else %}
-        <form action="{% url 'taxi:driver-delete' pk=car.id %}" method="post">
+        <form action="{% url 'taxi:driver-remove' pk=car.id %}" method="post">
         {% csrf_token %}
             <input class="btn btn-primary" type="submit" value="Delete me from this car">
         </form>
