@@ -4,12 +4,15 @@ from django.contrib.auth.forms import UserCreationForm
 
 from taxi.models import Car
 
+
 def validate_license_number(number, instance=None):
     if len(number) != 8:
         raise forms.ValidationError("License number must be 8 characters.")
     letters, digits = number[:3], number[3:]
     if not letters.isupper() or not letters.isalpha():
-        raise forms.ValidationError("First 3 characters must be uppercase letters.")
+        raise forms.ValidationError(
+            "First 3 characters must be uppercase letters."
+        )
     if not digits.isdigit():
         raise forms.ValidationError("Last 5 characters must be digits.")
     qs = get_user_model().objects.filter(license_number=number)
@@ -17,6 +20,7 @@ def validate_license_number(number, instance=None):
         qs = qs.exclude(pk=instance.pk)
     if qs.exists():
         raise forms.ValidationError("This license number is already in use.")
+
 
 class DriverCreationForm(UserCreationForm):
     license_number = forms.CharField(max_length=8, required=True)
@@ -29,6 +33,7 @@ class DriverCreationForm(UserCreationForm):
         number = self.cleaned_data["license_number"]
         validate_license_number(number, instance=None)
         return number
+
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
