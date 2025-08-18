@@ -3,7 +3,9 @@
 {% block content %}
     <h1>Driver List
     </h1>
-
+    <form>
+        <input type="button" value="Add Driver" onclick="location.href='{% url "taxi:driver-create" %}'" class="btn btn-primary">
+    </form>
     {% if driver_list %}
     <table class="table">
       <tr>
