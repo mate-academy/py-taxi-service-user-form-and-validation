@@ -82,7 +82,7 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class CarAssignView(LoginRequiredMixin, generic.View):
-    def post(self, request: HttpRequest, pk:int) -> HttpResponse:
+    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
         car = get_object_or_404(Car, pk=pk)
         car.drivers.add(request.user)
         return redirect("taxi:car-detail", pk=pk)
@@ -118,4 +118,3 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
-
