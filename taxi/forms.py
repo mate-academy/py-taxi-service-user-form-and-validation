@@ -24,7 +24,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 pk=self.instance.pk).exists():
             raise ValidationError("This license number is already in use.")
         if len(license_number) != 8:
-            raise ValidationError("License number must be 8 digits.")
+            raise ValidationError("License number must be 8 characters.")
 
         prefix, suffix = license_number[:3], license_number[3:]
 
@@ -36,8 +36,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 
 class CarForm(forms.ModelForm):
-    drivers = forms.ModelChoiceField(
-        queryset=get_user_model().objects.all(),
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=Driver.objects.all(),
         widget=forms.CheckboxSelectMultiple, required=False)
 
     class Meta:
