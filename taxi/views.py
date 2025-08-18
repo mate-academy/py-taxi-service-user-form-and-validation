@@ -8,8 +8,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import UpdateView
 
 from .forms import DriverCreationForm, CarForm, DriverLicenseUpdateForm
-from .models import Driver, Car, Manufacturer
+from .models import Car, Manufacturer
 
+Driver = get_user_model()
 
 @login_required
 def index(request):
