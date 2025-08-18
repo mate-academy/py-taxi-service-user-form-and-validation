@@ -4,7 +4,12 @@
   <h1>
     Username: {{ driver.username }}
   </h1>
-
+  <form style="display: inline" action="{% url 'taxi:driver-delete' pk=driver.id %}" method="post">
+  {% csrf_token %}
+  <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger">Delete driver</a>
+  </form>
+  <a href="{% url 'taxi:driver-license-update' pk=driver.id %}" class="btn btn-secondary">Update driver's license</a>
+  <hr>
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
