@@ -38,7 +38,7 @@ class DriverLicenseUpdateForm(UserChangeForm):
         fields = ("license_number", )
 
 
-class CarUpdateForm(forms.ModelForm):
+class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),
         widget=forms.CheckboxSelectMultiple
