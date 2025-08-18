@@ -6,6 +6,6 @@
   <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">Confirm</button>
-    <a href="{{ object.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
   </form>
 {% endblock %}
