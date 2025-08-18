@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -72,7 +73,8 @@ class CarDetailView(LoginRequiredMixin, generic.View):
 
     def post(self, request, *args, **kwargs):
         car = get_object_or_404(Car, pk=kwargs["pk"])
-        if request.user in car.drivers.all():
+        if (get_user_model().objects.filter(pk=request.user.pk)
+                and request.user in car.drivers.all()):
             car.drivers.remove(request.user)
         else:
             car.drivers.add(request.user)
@@ -81,7 +83,7 @@ class CarDetailView(LoginRequiredMixin, generic.View):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
     success_url = reverse_lazy("taxi:car-list")
 
 
