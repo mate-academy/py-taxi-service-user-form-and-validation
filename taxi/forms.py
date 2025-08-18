@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from taxi.models import Driver, Car
+from taxi.models import Car
 
-User = get_user_model()
+Driver = get_user_model()
 
 
 def validate_license(value):
