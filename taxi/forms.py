@@ -8,7 +8,7 @@ from django.core.validators import RegexValidator
 from taxi.models import Driver, Car
 
 licence_regex = RegexValidator(
-    regex=re.compile(r'^[A-Z]{3}\d{5}$'),
+    regex=re.compile(r"^[A-Z]{3}\d{5}$"),
     message="Please open your eyes and see how it must be: ABC12345",
 )
 

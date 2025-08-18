@@ -120,7 +120,10 @@ class AssignMeToCarView(LoginRequiredMixin, generic.View):
     def post(request, pk):
         car = get_object_or_404(Car, pk=pk)
         car.drivers.add(request.user)
-        messages.success(request, "You have been added to the drivers of this car")
+        messages.success(
+            request,
+            "You have been added to the drivers of this car"
+        )
         return redirect("taxi:car-detail", pk=car.pk)
 
 
@@ -129,5 +132,8 @@ class RemoveMeFromCarView(LoginRequiredMixin, generic.View):
     def post(request, pk):
         car = get_object_or_404(Car, pk=pk)
         car.drivers.remove(request.user)
-        messages.success(request, "You have been removed from the list of drivers of this car")
+        messages.success(
+            request,
+            "You have been removed from the list of drivers of this car"
+        )
         return redirect("taxi:car-detail", pk=car.pk)
