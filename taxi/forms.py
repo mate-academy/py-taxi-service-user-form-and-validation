@@ -51,7 +51,7 @@ class DriverCreateForm(UserCreationForm):
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=Driver.objects.all(),
+        queryset=User.objects.all(),
         required=False,
         widget=forms.CheckboxSelectMultiple
     )
