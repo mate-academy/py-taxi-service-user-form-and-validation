@@ -29,7 +29,8 @@ class DriverCreationForm(UserCreationForm):
         fields = ("username", "first_name", "last_name", "license_number", )
 
 
-class DriverLicenseUpdateForm(forms.ModelForm):
+class DriverLicenseUpdateForm(UserChangeForm):
+    password = None
     license_number = forms.CharField(
         required=True,
         help_text=help_text,
