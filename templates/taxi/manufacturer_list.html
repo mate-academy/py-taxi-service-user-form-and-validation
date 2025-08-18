@@ -21,18 +21,18 @@
       {% for manufacturer in manufacturer_list %}
         <tr>
           <td>
-              {{ manufacturer.id }}
+            {{ manufacturer.id }}
           </td>
           <td>
-              {{ manufacturer.name }}
+            {{ manufacturer.name }}
           </td>
           <td>
-              {{ manufacturer.country }}
+            {{ manufacturer.country }}
           </td>
           <td>
-              <a href="{% url 'taxi:manufacturer-update' pk=manufacturer.id %}">
-                Update
-              </a>
+            <a href="{% url 'taxi:manufacturer-update' pk=manufacturer.id %}">
+              Update
+            </a>
             </td>
             <td>
               <a style="color: red"
@@ -45,6 +45,6 @@
     </table>
 
   {% else %}
-      <p>There are no manufacturers in the service.</p>
+    <p>There are no manufacturers in the service.</p>
   {% endif %}
 {% endblock %}
