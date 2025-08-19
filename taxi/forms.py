@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-class DriverLicenseForm(forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     license_number = forms.CharField(
         required=True,
         max_length=8,
