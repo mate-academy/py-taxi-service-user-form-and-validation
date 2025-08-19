@@ -3,6 +3,12 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+    <a href="{% url 'taxi:driver-license-update' pk=driver.id %}" class="btn btn-secondary ms-2">
+      Update License
+    </a>
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger ms-2">
+      Delete Driver
+    </a>
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
@@ -10,17 +16,19 @@
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
-  <div class="ml-3">
-    <h4>Cars</h4>
-
+  <h4 class="mt-4">Cars</h4>
+  <hr>
+  <ul>
     {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
+      <li>
+        <strong>Model:</strong> {{ car.model }} |
+        <strong>Manufacturer:</strong> {{ car.manufacturer.name }} |
+        <span class="text-muted">ID: {{ car.id }}</span>
+      </li>
     {% empty %}
-      <p>No cars!</p>
+      <li>No cars assigned.</li>
     {% endfor %}
-  </div>
+  </ul>
+
+  <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary mt-3">Back to driver list</a>
 {% endblock %}
