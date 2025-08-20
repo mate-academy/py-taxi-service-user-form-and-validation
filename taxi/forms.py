@@ -40,9 +40,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = (
-                UserCreationForm.Meta.fields +
-                ("first_name", "last_name", "license_number"))
+        fields = UserCreationForm.Meta.fields + (
+            "first_name", "last_name", "license_number")
 
 
 class CarForm(forms.ModelForm):
