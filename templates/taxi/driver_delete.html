@@ -5,6 +5,6 @@
   <p><i>This good man be delete!</i></p>
   <form action="" method="post">
     {% csrf_token %}
-    <input type="submit" value="Yes, delete" class="btn btn-danger"/> <a href="{% url 'taxi:driver-detail' pk=object %}" class="btn btn-secondary">Cancel</a>
+    <input type="submit" value="Yes, delete" class="btn btn-danger"/> <a href="{% url 'taxi:driver-detail' pk=object.id %}" class="btn btn-secondary">Cancel</a>
   </form>
 {% endblock %}

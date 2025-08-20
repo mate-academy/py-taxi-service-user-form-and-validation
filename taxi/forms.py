@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 from taxi.models import Driver, Car
@@ -34,6 +35,12 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise ValidationError("This license number already exists")
 
         return license_number
+
+
+class DriverCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = Driver
+        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number")
 
 
 class CarForm(forms.ModelForm):
