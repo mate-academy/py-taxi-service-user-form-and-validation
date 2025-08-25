@@ -8,17 +8,16 @@ from .models import Driver, Car, Manufacturer
 UserModel = get_user_model()
 
 
-class DriverCreationForm(UserCreationForm):
-
+class DriverLicenseUpdateForm(forms.ModelForm):
     LICENCE_NUMBER_LENGTH = 8
 
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = UserModel
-        fields = UserCreationForm.Meta.fields + ("license_number",)
+        fields = ("license_number",)
 
     def clean_license_number(self):
         license_number = self.cleaned_data.get("license_number")
-        if not len(license_number) == self.LICENCE_NUMBER_LENGTH:
+        if len(license_number) != self.LICENCE_NUMBER_LENGTH:
             raise forms.ValidationError(
                 f"License number must be exactly "
                 f"{self.LICENCE_NUMBER_LENGTH} characters long."
