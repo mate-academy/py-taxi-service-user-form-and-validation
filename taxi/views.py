@@ -1,18 +1,21 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverLicenseUpdateForm, CarForm
-from .models import Driver, Car, Manufacturer
+from .forms import DriverCreationForm, CarForm
+from .models import Car, Manufacturer
+
+UserModel = get_user_model()
 
 
 @login_required
 def index(request):
     """View function for the home page of the site."""
 
-    num_drivers = Driver.objects.count()
+    num_drivers = UserModel.objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
 
@@ -81,32 +84,32 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = UserModel
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    model = UserModel
+    queryset = UserModel.objects.all().prefetch_related("cars__manufacturer")
     template_name = "taxi/driver_detail.html"
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Driver
-    fields = "__all__"
+    model = UserModel
+    form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:driver-list")
     template_name = "taxi/driver_form.html"
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Driver
+    model = UserModel
     success_url = reverse_lazy("taxi:driver-list")
     template_name = "taxi/driver_confirm_delete.html"
 
 
-class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
-    form_class = DriverLicenseUpdateForm
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = UserModel
+    form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:driver-list")
     template_name = "taxi/driver_form.html"
 

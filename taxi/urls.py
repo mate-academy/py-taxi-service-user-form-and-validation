@@ -1,5 +1,4 @@
 from django.urls import path
-from jinja2.nodes import Assign
 
 from .views import (
     index,
@@ -11,7 +10,7 @@ from .views import (
     DriverListView,
     DriverDetailView,
     DriverDeleteView,
-    DriverLicenseUpdateView,
+    DriverUpdateView,
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
@@ -21,7 +20,8 @@ from .views import (
 )
 
 
-app_name = 'taxi'
+app_name = "taxi"
+
 
 urlpatterns = [
     path("", index, name="index"),
@@ -73,7 +73,7 @@ urlpatterns = [
     ),
     path(
         "drivers/<int:pk>/update-license/",
-        DriverLicenseUpdateView.as_view(),
+        DriverUpdateView.as_view(),
         name="driver-update",
     ),
 ]
