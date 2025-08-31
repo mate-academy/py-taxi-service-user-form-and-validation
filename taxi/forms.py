@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
 from taxi.models import Car
+from .constants import LICENSE_RE, LICENSE_MESSAGE
 
 User = get_user_model()
 
@@ -33,13 +34,9 @@ class DriverCreationForm(UserCreationForm):
         )
 
     def clean_license_number(self):
-        value = self.cleaned_data.get("license_number", "")
-        import re
-        if not re.fullmatch(LICENSE_PATTERN, value):
-            raise ValidationError(
-                "License must be 8 chars: 3 uppercase "
-                "letters + 5 digits (e.g. ABC12345)."
-            )
+        value = (self.cleaned_data.get("license_number") or "").strip().upper()
+        if not LICENSE_RE.fullmatch(value):
+            raise ValidationError(LICENSE_MESSAGE)
         return value
 
 
@@ -49,11 +46,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ["license_number"]
 
     def clean_license_number(self):
-        value = self.cleaned_data.get("license_number", "")
-        import re
-        if not re.fullmatch(LICENSE_PATTERN, value):
-            raise ValidationError(
-                "License must be 8 chars: 3 uppercase"
-                " letters + 5 digits (e.g. ABC12345)."
-            )
+        value = (self.cleaned_data.get("license_number") or "").strip().upper()
+        if not LICENSE_RE.fullmatch(value):
+            raise ValidationError(LICENSE_MESSAGE)
         return value

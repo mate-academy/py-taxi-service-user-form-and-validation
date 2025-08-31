@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.core.validators import RegexValidator
+from .constants import LICENSE_PATTERN, LICENSE_MESSAGE
 
 
 class Manufacturer(models.Model):
@@ -19,14 +20,9 @@ class Driver(AbstractUser):
     license_number = models.CharField(
         max_length=8,
         unique=True,
-        help_text="Exactly 3 uppercase"
-                  " letters followed by 5 digits (e.g. ABC12345).",
+        help_text="3 uppercase letters followed by 5 digits (e.g. ABC12345).",
         validators=[
-            RegexValidator(
-                regex=r"^[A-Z]{3}\d{5}$",
-                message="Must be exactly 3 uppercase"
-                        " letters followed by 5 digits (e.g. ABC12345).",
-            )
+            RegexValidator(regex=LICENSE_PATTERN, message=LICENSE_MESSAGE),
         ],
     )
 
