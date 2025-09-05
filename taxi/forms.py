@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from taxi.models import Car, Driver
+from taxi.models import Car
 from django import forms
 
 
@@ -11,14 +12,15 @@ def validate_license_number(license_number):
     if not license_number[:3].isupper() or not license_number[:3].isalpha():
         raise ValidationError("First 3 characters must be uppercase letters.")
     if not license_number[3:].isdigit():
-        raise ValidationError("First 5 characters must be digits.")
+        raise ValidationError("Last 5 characters must be digits.")
+
+Driver = get_user_model()
 
 
-class DriverCreateForm(forms.ModelForm):
-    class Meta:
+class DriverCreateForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = ("username", "first_name", "last_name",
-                  "email", "password", "license_number")
+        fields = UserCreationForm.Meta.fields + ("license_number",)
 
     license_number = forms.CharField(validators=[validate_license_number])
 
@@ -32,7 +34,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
+        queryset=Driver.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False
     )
