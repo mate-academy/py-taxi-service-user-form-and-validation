@@ -3,7 +3,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from matplotlib.pyplot import plasma
 
 from .forms import DriverLicenseUpdateForm, DriverCreationForm, CarCreationForm
 from .models import Driver, Car, Manufacturer
