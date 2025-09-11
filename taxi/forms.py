@@ -15,7 +15,8 @@ class DriverCreationForm(UserCreationForm):
             raise forms.ValidationError(
                 "License number must be 8 characters long"
             )
-        if not license_number[:3].isupper():
+        if (not license_number[:3].isupper()
+                or not license_number[:3].isalpha()):
             raise forms.ValidationError(
                 "First three characters must be uppercase"
             )
@@ -36,7 +37,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise forms.ValidationError(
                 "License number must be 8 characters long"
             )
-        if not license_number[:3].isupper():
+        if (not license_number[:3].isupper()
+                or not license_number[:3].isalpha()):
             raise forms.ValidationError(
                 "First three characters must be uppercase"
             )
