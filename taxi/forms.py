@@ -1,12 +1,16 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from taxi.models import Driver, Car
+from taxi.models import Car
+
+
+User = get_user_model()
 
 
 class DriverCreationForm(UserCreationForm):
     class Meta:
-        model = Driver
+        model = User
         fields = ("username", "first_name", "last_name", "license_number",)
 
     def clean_license_number(self):
@@ -15,8 +19,7 @@ class DriverCreationForm(UserCreationForm):
             raise forms.ValidationError(
                 "License number must be 8 characters long"
             )
-        if (not license_number[:3].isupper()
-                or not license_number[:3].isalpha()):
+        if not (license_number[:3].isupper() and license_number[:3].isalpha()):
             raise forms.ValidationError(
                 "First three characters must be uppercase"
             )
@@ -28,7 +31,7 @@ class DriverCreationForm(UserCreationForm):
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
-        model = Driver
+        model = User
         fields = ("license_number",)
 
     def clean_license_number(self):
@@ -50,7 +53,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 class CarCreationForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=Driver.objects.all(),
+        queryset=User.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
     )
 
