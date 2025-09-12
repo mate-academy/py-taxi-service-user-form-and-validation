@@ -93,6 +93,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = User.objects.all().prefetch_related("cars__manufacturer")
     context_object_name = "driver"
 
+
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = User
     form_class = DriverCreationForm
