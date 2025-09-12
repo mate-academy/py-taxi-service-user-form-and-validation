@@ -6,7 +6,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import DriverLicenseUpdateForm, DriverCreationForm, CarCreationForm
-from .models import Driver, Car, Manufacturer
+from .models import Car, Manufacturer
 
 User = get_user_model()
 
@@ -91,7 +91,7 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = User
     queryset = User.objects.all().prefetch_related("cars__manufacturer")
-
+    context_object_name = "driver"
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = User
