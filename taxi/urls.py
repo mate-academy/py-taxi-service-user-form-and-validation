@@ -69,8 +69,7 @@ urlpatterns = [
         views.DriverCreateView.as_view(),
         name="driver-create",
     ),
-
-    path("drivers/<int:pk>/update/",#2 copy
+    path("drivers/<int:pk>/update/",
         views.driver_update, name="driver-update"
     ),
     path(

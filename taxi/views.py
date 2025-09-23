@@ -4,7 +4,6 @@ from .models import Manufacturer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Driver
 from .forms import DriverCreationForm
 from django.contrib import messages
 from .models import Car
@@ -16,6 +15,7 @@ from .forms import CarCreateForm
 
 
 Driver = get_user_model()
+
 
 @login_required
 def index(request):
@@ -145,6 +145,7 @@ def driver_update(request, pk):
     else:
         form = DriverLicenseUpdateForm(instance=driver)
     return render(request, "taxi/update_license.html", {"form": form})
+
 
 @login_required
 def assign_me_to_car(request, car_id):

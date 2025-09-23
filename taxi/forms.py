@@ -6,13 +6,16 @@ from django.contrib.auth import get_user_model
 
 Driver = get_user_model()
 
+
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
         fields = ["license_number"]
 
     def clean_license_number(self):
-        license_number = self.cleaned_data.get("license_number", "").upper().strip()
+        license_number = self.cleaned_data.get(
+            "license_number", ""
+        ).upper().strip()
         if not re.fullmatch(r"[A-Z]{3}[0-9]{5}", license_number):
             raise forms.ValidationError(
                 "License number must be 3"
@@ -24,7 +27,12 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 class DriverCreationForm(forms.ModelForm):
     class Meta:
         model = Driver
-        fields = ["first_name", "last_name", "license_number", "username", "password"]
+        fields = ["first_name",
+                  "last_name",
+                  "license_number",
+                  "username",
+                  "password"
+        ]
 
     def clean_license_number(self):
         license_number = self.cleaned_data.get("license_number", "").upper()
