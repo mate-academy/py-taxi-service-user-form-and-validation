@@ -2,6 +2,7 @@ from django import forms
 import re
 from .models import Car
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
 
 Driver = get_user_model()
@@ -24,8 +25,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         return license_number
 
 
-class DriverCreationForm(forms.ModelForm):
-    class Meta:
+class DriverCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
         model = Driver
         fields = [
             "first_name",

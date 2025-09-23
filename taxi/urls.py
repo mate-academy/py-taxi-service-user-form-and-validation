@@ -85,8 +85,8 @@ urlpatterns = [
         name="driver-delete",
     ),
     path(
-        "car/<int:car_id>/remove-me/",
-        views.remove_me_from_car,
-        name="remove_me_from_car",
+        "car/<int:pk>/remove-me/",
+        views.remove_car,
+        name="remove-car",
     ),
 ]

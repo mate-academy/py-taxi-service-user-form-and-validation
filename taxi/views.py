@@ -148,19 +148,20 @@ def driver_update(request, pk):
 
 
 @login_required
-def assign_me_to_car(request, car_id):
-    car = get_object_or_404(Car, id=car_id)
-    car.drivers.add(request.user)
-    messages.success(request, "You have been assigned to this car!")
-    return redirect("car_detail", car_id=car.id)
-
+def assign_car(request, pk):
+    if request.method == "POST":
+        car = get_object_or_404(Car, pk=pk)
+        car.drivers.add(request.user)
+        return redirect("taxi:car-detail", pk=pk)
+    return redirect("taxi:car-detail", pk=pk)
 
 @login_required
-def remove_me_from_car(request, car_id):
-    car = get_object_or_404(Car, id=car_id)
-    car.drivers.remove(request.user)
-    messages.success(request, "You have been removed from this car!")
-    return redirect("car_detail", car_id=car.id)
+def remove_car(request, pk):
+    if request.method == "POST":
+        car = get_object_or_404(Car, pk=pk)
+        car.drivers.remove(request.user)
+        return redirect("taxi:car-detail", pk=pk)
+    return redirect("taxi:car-detail", pk=pk)
 
 
 class DriverUpdateView(LoginRequiredMixin, UpdateView):

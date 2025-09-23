@@ -36,10 +36,3 @@ class Car(models.Model):
 
     def __str__(self):
         return self.model
-
-
-drivers = models.ManyToManyField(
-    settings.AUTH_USER_MODEL,
-    blank=True,
-    related_name="cars"
-)
