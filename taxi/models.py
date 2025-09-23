@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+from django.conf import settings
+
+
 
 
 class Manufacturer(models.Model):
@@ -37,3 +40,8 @@ class Car(models.Model):
         return self.model
 
 
+drivers = models.ManyToManyField(
+    settings.AUTH_USER_MODEL,
+    blank=True,
+    related_name="cars"
+)

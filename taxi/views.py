@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.views import generic
-from .models import Driver, Car, Manufacturer
+from .models import Manufacturer
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DeleteView
 from django.urls import reverse_lazy
@@ -11,7 +11,11 @@ from .models import Car
 from django.views.generic import UpdateView
 from .forms import DriverLicenseUpdateForm
 from django.shortcuts import redirect, get_object_or_404, render
+from django.contrib.auth import get_user_model
+from .forms import CarCreateForm
 
+
+Driver = get_user_model()
 
 @login_required
 def index(request):
@@ -68,9 +72,10 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
 
-class CarCreateView(LoginRequiredMixin, generic.CreateView):
+class CarCreateView(CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreateForm
+    template_name = "taxi/car_form.html"
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -128,22 +133,28 @@ class DriverDeleteView(LoginRequiredMixin, DeleteView):
 def driver_update(request, pk):
     driver = get_object_or_404(Driver, pk=pk)
     if request.method == "POST":
-        form = DriverLicenseUpdateForm(request.POST)
+        print(f"POST data: {request.POST}")
+        form = DriverLicenseUpdateForm(request.POST, instance=driver)
+        print(f"Form is valid: {form.is_valid()}")
         if form.is_valid():
-            driver.license_number = form.cleaned_data["license_number"]
-            driver.save()
+            print("Saving form and redirecting...")
+            form.save()
             return redirect("taxi:driver-detail", pk=driver.pk)
+        else:
+            print(f"Form errors: {form.errors}")
     else:
-        form = DriverLicenseUpdateForm(initial={"license_number": driver.license_number})
+        form = DriverLicenseUpdateForm(instance=driver)
     return render(request, "taxi/update_license.html", {"form": form})
 
-
+@login_required
 def assign_me_to_car(request, car_id):
     car = get_object_or_404(Car, id=car_id)
     car.drivers.add(request.user)
     messages.success(request, "You have been assigned to this car!")
     return redirect("car_detail", car_id=car.id)
 
+
+@login_required
 def remove_me_from_car(request, car_id):
     car = get_object_or_404(Car, id=car_id)
     car.drivers.remove(request.user)
