@@ -69,8 +69,10 @@ urlpatterns = [
         views.DriverCreateView.as_view(),
         name="driver-create",
     ),
-    path("drivers/<int:pk>/update/",
-        views.driver_update, name="driver-update"
+    path(
+        "drivers/<int:pk>/update/",
+        views.driver_update,
+        name="driver-update",
     ),
     path(
         "drivers/<int:pk>/delete/",
@@ -78,9 +80,9 @@ urlpatterns = [
         name="driver-delete",
     ),
     path(
-        "car/<int:car_id>/assign-me/",
-        views.assign_me_to_car,
-        name="assign_me_to_car",
+        "drivers/<int:pk>/delete/",
+        views.DriverDeleteView.as_view(),
+        name="driver-delete",
     ),
     path(
         "car/<int:car_id>/remove-me/",

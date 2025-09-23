@@ -27,11 +27,12 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 class DriverCreationForm(forms.ModelForm):
     class Meta:
         model = Driver
-        fields = ["first_name",
-                  "last_name",
-                  "license_number",
-                  "username",
-                  "password"
+        fields = [
+            "first_name",
+            "last_name",
+            "license_number",
+            "username",
+            "password",
         ]
 
     def clean_license_number(self):
