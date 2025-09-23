@@ -1,10 +1,20 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.urls import reverse_lazy
 from django.views import generic
+from .models import Manufacturer
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import CreateView, DeleteView
+from django.urls import reverse_lazy
+from .forms import DriverCreationForm
+from django.contrib import messages
+from .models import Car
+from django.views.generic import UpdateView
+from .forms import DriverLicenseUpdateForm
+from django.shortcuts import redirect, get_object_or_404, render
+from django.contrib.auth import get_user_model
+from .forms import CarCreateForm
 
-from .models import Driver, Car, Manufacturer
+
+Driver = get_user_model()
 
 
 @login_required
@@ -62,9 +72,10 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
 
-class CarCreateView(LoginRequiredMixin, generic.CreateView):
+class CarCreateView(CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreateForm
+    template_name = "taxi/car_form.html"
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +98,79 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+    template_name = "taxi/driver_form.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Driver created successfully!")
+        return super().form_valid(form)
+
+
+class DriverDeleteView(LoginRequiredMixin, DeleteView):
+    model = Driver
+    template_name = "taxi/driver_confirm_delete.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = self.request.META.get(
+            "HTTP_REFERER",
+            reverse_lazy("taxi:driver-list")
+        )
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Driver deleted successfully!")
+        return super().delete(request, *args, **kwargs)
+
+
+@login_required
+def driver_update(request, pk):
+    driver = get_object_or_404(Driver, pk=pk)
+    if request.method == "POST":
+        print(f"POST data: {request.POST}")
+        form = DriverLicenseUpdateForm(request.POST, instance=driver)
+        print(f"Form is valid: {form.is_valid()}")
+        if form.is_valid():
+            print("Saving form and redirecting...")
+            form.save()
+            return redirect("taxi:driver-detail", pk=driver.pk)
+        else:
+            print(f"Form errors: {form.errors}")
+    else:
+        form = DriverLicenseUpdateForm(instance=driver)
+    return render(request, "taxi/update_license.html", {"form": form})
+
+
+@login_required
+def assign_car(request, pk):
+    if request.method == "POST":
+        car = get_object_or_404(Car, pk=pk)
+        car.drivers.add(request.user)
+        return redirect("taxi:car-detail", pk=pk)
+    return redirect("taxi:car-detail", pk=pk)
+
+
+@login_required
+def remove_car(request, pk):
+    if request.method == "POST":
+        car = get_object_or_404(Car, pk=pk)
+        car.drivers.remove(request.user)
+        return redirect("taxi:car-detail", pk=pk)
+    return redirect("taxi:car-detail", pk=pk)
+
+
+class DriverUpdateView(LoginRequiredMixin, UpdateView):
+    model = Driver
+    form_class = DriverCreationForm
+    template_name = "taxi/driver_form.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Driver updated successfully!")
+        return super().form_valid(form)

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add New Driver{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Add New Driver</h1>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <form method="post">
+      {% csrf_token %}
+      {% crispy form %}
+    </form>
+
+    <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary mt-3">Cancel</a>
+  </div>
+</div>
+{% endblock %}
