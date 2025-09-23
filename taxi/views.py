@@ -155,6 +155,7 @@ def assign_car(request, pk):
         return redirect("taxi:car-detail", pk=pk)
     return redirect("taxi:car-detail", pk=pk)
 
+
 @login_required
 def remove_car(request, pk):
     if request.method == "POST":
