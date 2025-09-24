@@ -22,14 +22,6 @@ class Driver(AbstractUser):
         verbose_name = "driver"
         verbose_name_plural = "drivers"
 
-    def clean(self):
-        import re
-        pattern = r"^[A-Z]{3}\d{5}$"
-        if not re.match(pattern, self.license_number):
-            raise ValidationError(
-                {"license_number": "License must be 3 uppercase letters + 5 digits"}
-            )
-
     def __str__(self):
         return f"{self.username} ({self.first_name} {self.last_name})"
 
