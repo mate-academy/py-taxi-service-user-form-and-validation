@@ -9,7 +9,7 @@ from .forms import (DriverCreationForm,
                     CarForm,
                     DriverLicenseUpdateForm,
                     DriverUpdateForm)
-from .models import Driver,Car, Manufacturer
+from .models import Driver, Car, Manufacturer
 
 
 @login_required
