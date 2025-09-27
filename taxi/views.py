@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views import generic
@@ -11,13 +13,15 @@ from .forms import (
     DriverLicenseUpdateForm,
     CarForm,
 )
-from .models import Driver, Car, Manufacturer
+from .models import Car, Manufacturer
+
+User = get_user_model()
 
 
 @login_required
 def index(request):
     """View function for the home page of the site."""
-    num_drivers = Driver.objects.count()
+    num_drivers = User.objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
 
@@ -66,6 +70,14 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        # check eficiente de associação do usuário logado ao carro
+        ctx["is_driver"] = self.object.drivers.filter(
+            pk=self.request.user.pk
+        ).exists()
+        return ctx
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
@@ -85,30 +97,30 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = User
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    model = User
+    queryset = User.objects.all().prefetch_related("cars__manufacturer")
 
 
 # ===== Fase 1 =====
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Driver
+    model = User
     form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Driver
+    model = User
     success_url = reverse_lazy("taxi:driver-list")
 
 
 # ===== Fase 2: update de licença =====
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
+    model = User
     form_class = DriverLicenseUpdateForm
     template_name = "taxi/driver_license_update_form.html"
 
@@ -116,9 +128,16 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
         return reverse("taxi:driver-detail", kwargs={"pk": self.object.pk})
 
 
-# ===== Fase 3: assign/remove driver do carro =====
+class DriverUpdateView(DriverLicenseUpdateView):
+    """Alias exigido pelos testes; mesmo da DriverLicenseUpdateView."""
+    pass
+
+
+# ===== Fase 3: assign/remove driver do carro (POST-only) =====
 @login_required
 def assign_me_to_car(request, pk: int):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
     car = get_object_or_404(Car, pk=pk)
     car.drivers.add(request.user)  # idempotente
     return redirect("taxi:car-detail", pk=car.pk)
@@ -126,6 +145,8 @@ def assign_me_to_car(request, pk: int):
 
 @login_required
 def remove_me_from_car(request, pk: int):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
     car = get_object_or_404(Car, pk=pk)
     car.drivers.remove(request.user)  # idempotente
     return redirect("taxi:car-detail", pk=car.pk)

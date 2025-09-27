@@ -14,16 +14,20 @@
   </h1>
 
   <div class="mb-3">
-    {% if user in car.drivers.all %}
-      <a class="btn btn-outline-danger"
-         href="{% url 'taxi:car-remove-me' car.pk %}">
-        Delete me from this car
-      </a>
+    {% if is_driver %}
+      <form method="post" action="{% url 'taxi:car-remove-me' car.pk %}" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger">
+          Delete me from this car
+        </button>
+      </form>
     {% else %}
-      <a class="btn btn-outline-primary"
-         href="{% url 'taxi:car-assign-me' car.pk %}">
-        Assign me to this car
-      </a>
+      <form method="post" action="{% url 'taxi:car-assign-me' car.pk %}" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-primary">
+          Assign me to this car
+        </button>
+      </form>
     {% endif %}
   </div>
 

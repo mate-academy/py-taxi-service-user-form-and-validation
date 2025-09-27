@@ -18,3 +18,8 @@ venv/
 # IDE/Editor
 .idea/
 .vscode/
+
+# DBs adicionais
+*.db
+*.db3
+*.sqlite
