@@ -5,7 +5,10 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverCreationForm, CarForm, DriverLicenseUpdateForm, DriverUpdateForm
+from .forms import (DriverCreationForm,
+                    CarForm,
+                    DriverLicenseUpdateForm,
+                    DriverUpdateForm)
 from .models import Driver, Car, Manufacturer
 
 
@@ -88,7 +91,8 @@ class CarDriverToggleView(LoginRequiredMixin, generic.UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_driver_assigned'] = self.request.user in self.object.drivers.all()
+        context["is_driver_assigned"] = \
+            (self.request.user in self.object.drivers.all())
         return context
 
     def form_valid(self, form):
@@ -135,7 +139,9 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/driver_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("taxi:driver-detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy(
+            "taxi:driver-detail", kwargs={"pk": self.object.pk}
+        )
 
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -144,4 +150,6 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/driver_license_update_form.html"
 
     def get_success_url(self):
-        return reverse_lazy("taxi:driver-detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy(
+            "taxi:driver-detail", kwargs={"pk": self.object.pk}
+        )
