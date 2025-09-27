@@ -1,12 +1,13 @@
+from django.contrib.auth import get_user_model
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from taxi.models import Driver, Car
+from taxi.models import Car
 
 
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model = Driver
+        model = get_user_model()
         fields = (UserCreationForm.Meta.fields + (
             "license_number",
             "first_name",
@@ -39,7 +40,7 @@ class DriverCreationForm(UserCreationForm):
 
         if check_unique:
             existing_drivers =\
-                Driver.objects.filter(license_number=license_number)
+                get_user_model().objects.filter(license_number=license_number)
             if self.instance.pk:
                 existing_drivers = (
                     existing_drivers.exclude(pk=self.instance.pk))
@@ -53,7 +54,7 @@ class DriverCreationForm(UserCreationForm):
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
-        model = Driver
+        model = get_user_model()
         fields = ["license_number"]
 
     def clean_license_number(self):
@@ -64,7 +65,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 class DriverUpdateForm(forms.ModelForm):
     class Meta:
-        model = Driver
+        model = get_user_model()
         fields = ["license_number"]
 
     def clean_license_number(self):
