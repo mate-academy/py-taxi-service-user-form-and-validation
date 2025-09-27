@@ -1,9 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.log
+
+# Django
+db.sqlite3
+*.sqlite3
+staticfiles/
+media/
+
+# Env
+.venv/
+venv/
+.env
+.env.*
+
+# IDE/Editor
 .idea/
 .vscode/
-*.iml
-.env
-.DS_Store
-venv/
-.pytest_cache/
-**__pycache__/
-db.sqlite3
+
+# DBs adicionais
+*.db
+*.db3
+*.sqlite
