@@ -9,7 +9,7 @@
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p>
     <strong>License number:</strong> {{ driver.license_number }}
-    <a href="{% url 'taxi:driver-update' pk=driver.id %}">
+    <a href="{% url 'taxi:license-update' pk=driver.id %}">
       Update
     </a>
   </p>
