@@ -12,14 +12,18 @@ class DriverCreationForm(UserCreationForm):
         min_length=8,
         validators=[
             RegexValidator(
-                regex=r'^[A-Z]{3}[0-9]{5}$',
+                regex=r"^[A-Z]{3}[0-9]{5}$",
             )
         ]
     )
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = UserCreationForm.Meta.fields + ("first_name", "last_name", "license_number",)
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "license_number",
+        )
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -29,7 +33,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         min_length=8,
         validators=[
             RegexValidator(
-                regex=r'^[A-Z]{3}[0-9]{5}$',
+                regex=r"^[A-Z]{3}[0-9]{5}$",
             )
         ]
     )
