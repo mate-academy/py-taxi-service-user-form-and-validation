@@ -6,11 +6,15 @@ from django.core.exceptions import ValidationError
 from taxi.models import Driver, Car
 
 
-def validate_license_number(value):
+def validate_license_number(value) -> None:
     if len(value) != 8:
-        raise ValidationError("The license number must consist of exactly 8 characters.")
+        raise ValidationError(
+            "The license number must consist of exactly 8 characters."
+        )
     if not (value[:3].isalpha()) or not (value[:3].isupper()):
-        raise ValidationError("The first 3 characters must be uppercase letters.")
+        raise ValidationError(
+            "The first 3 characters must be uppercase letters."
+        )
     if not (value[3:].isdigit()):
         raise ValidationError("The last 5 characters must be digits.")
 
@@ -23,7 +27,7 @@ class DriverCreateForm(UserCreationForm):
         fields = UserCreationForm.Meta.fields + ("license_number",)
 
 
-class DriverUpdateLicenseForm(forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     license_number = forms.CharField(validators=[validate_license_number])
 
     class Meta:

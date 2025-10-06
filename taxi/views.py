@@ -6,7 +6,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from taxi.models import Driver, Car, Manufacturer
-from taxi.forms import DriverCreateForm, DriverUpdateLicenseForm, CarForm
+from taxi.forms import DriverCreateForm, CarForm, DriverLicenseUpdateForm
 
 
 @login_required
@@ -77,7 +77,10 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 @login_required
-def car_add_or_remove_driver(request: HttpRequest, car_id: int) -> HttpResponse:
+def car_add_or_remove_driver(
+        request: HttpRequest,
+        car_id: int
+) -> HttpResponse:
     car = get_object_or_404(Car, pk=car_id)
     user = request.user
     if request.method == "POST":
@@ -112,7 +115,7 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    form_class = DriverUpdateLicenseForm
+    form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
