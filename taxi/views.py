@@ -80,11 +80,11 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
 def car_add_or_remove_driver(request: HttpRequest, car_id: int) -> HttpResponse:
     car = get_object_or_404(Car, pk=car_id)
     user = request.user
-
-    if user in car.drivers.all():
-        car.drivers.remove(user)
-    else:
-        car.drivers.add(user)
+    if request.method == "POST":
+        if user in car.drivers.all():
+            car.drivers.remove(user)
+        else:
+            car.drivers.add(user)
 
     return redirect("taxi:car-detail", pk=car_id)
 
