@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -107,10 +106,11 @@ class DriverLicenceUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
+@login_required
 def assign_delete_car(request: HttpRequest, pk: int) -> HttpResponseRedirect:
     car = Car.objects.get(id=pk)
     if car in request.user.cars.all():
         request.user.cars.remove(car)
-        return HttpResponseRedirect(reverse("taxi:car-list"))
+        return HttpResponseRedirect(reverse("taxi:car-detail", args=[pk]))
     request.user.cars.add(car)
-    return HttpResponseRedirect(reverse("taxi:car-list"))
+    return HttpResponseRedirect(reverse("taxi:car-list", args=[pk]))
