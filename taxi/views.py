@@ -1,7 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -106,13 +107,10 @@ class DriverLicenceUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
 
 
-def assign_delete_car(request: HttpRequest, pk: int) -> HttpResponse:
+def assign_delete_car(request: HttpRequest, pk: int) -> HttpResponseRedirect:
     car = Car.objects.get(id=pk)
-    user = Driver.objects.get(id=request.user.id)
     if car in request.user.cars.all():
-        user.cars.remove(car)
-        user.save()
-        return render(request, "taxi/car_detail.html", {"car" : car})
-    user.cars.add(car)
-    user.save()
-    return render(request, "taxi/car_detail.html", {"car" : car})
+        request.user.cars.remove(car)
+        return HttpResponseRedirect(reverse("taxi:car-list"))
+    request.user.cars.add(car)
+    return HttpResponseRedirect(reverse("taxi:car-list"))
