@@ -1,52 +1,88 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 
-from .models import Car
-
-
-UserModel = get_user_model()
+from taxi.models import Car
 
 
-class LicenseValidationMixin:
-    LICENCE_NUMBER_LENGTH = 8
+def validate_license_number(license_number, check_unique=False, instance=None):
+    """Shared license number validation function"""
+    license_number = license_number.strip()
+
+    if len(license_number) != 8:
+        raise (ValidationError
+               ("License number must be exactly 8 characters long"))
+
+    first_three = license_number[:3]
+    last_five = license_number[3:]
+
+    if not (first_three.isalpha() and first_three.isupper()):
+        raise ValidationError("First 3 characters must be uppercase letters")
+
+    if not (len(last_five) == 5 and last_five.isdigit()):
+        raise ValidationError("Last 5 characters must be digits")
+
+    if check_unique:
+        existing_drivers = get_user_model().objects.filter(
+            license_number=license_number
+        )
+
+        if instance and instance.pk:
+            existing_drivers = existing_drivers.exclude(pk=instance.pk)
+
+        if existing_drivers.exists():
+            raise (ValidationError
+                   ("Driver with this license number already exists"))
+
+    return license_number
+
+
+class DriverCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = get_user_model()
+        fields = UserCreationForm.Meta.fields + (
+            "license_number",
+            "first_name",
+            "last_name",
+        )
 
     def clean_license_number(self):
-        license_number = self.cleaned_data.get("license_number")
-
-        if not len(license_number) == self.LICENCE_NUMBER_LENGTH:
-            raise forms.ValidationError(
-                f"License number must be exactly "
-                f"{self.LICENCE_NUMBER_LENGTH} characters long."
-            )
-        if not (license_number[:3].isalpha() and license_number[:3].isupper()):
-            raise forms.ValidationError(
-                "The first three characters must be uppercase letters."
-            )
-        if not license_number[3:].isdigit():
-            raise forms.ValidationError(
-                "The last five characters must be digits."
-            )
-        return license_number
+        license_number = self.cleaned_data.get("license_number", "")
+        return validate_license_number(
+            license_number, check_unique=True, instance=self.instance
+        )
 
 
-class DriverCreationForm(LicenseValidationMixin, UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = UserModel
-        fields = UserCreationForm.Meta.fields + ("license_number",)
-
-
-class DriverLicenseUpdateForm(LicenseValidationMixin, forms.ModelForm):
+class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
-        model = UserModel
-        fields = ("license_number",)
+        model = get_user_model()
+        fields = ["license_number"]
+
+    def clean_license_number(self):
+        license_number = self.cleaned_data.get("license_number", "")
+        return validate_license_number(
+            license_number, check_unique=True, instance=self.instance
+        )
+
+
+class DriverUpdateForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ["license_number"]
+
+    def clean_license_number(self):
+        license_number = self.cleaned_data.get("license_number", "")
+        return validate_license_number(
+            license_number, check_unique=True, instance=self.instance
+        )
 
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=UserModel.objects.all(),
+        queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        required=False
+        required=False,
     )
 
     class Meta:
