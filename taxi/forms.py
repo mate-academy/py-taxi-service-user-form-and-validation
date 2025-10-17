@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class DriverCreationForm(UserCreationForm):
-    class Meta(UserCreationForm):
+    class Meta:
         model = User
         fields = (
             "username",
@@ -38,4 +38,4 @@ class CarCreateForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = ["model", "manufacturer", "drivers"]
-        widgets = {"drivers": CheckboxSelectMultiple}
+        widgets = {"drivers": CheckboxSelectMultiple()}

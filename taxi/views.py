@@ -1,5 +1,5 @@
 from .forms import DriverLicenseUpdateForm, CarCreateForm, DriverCreationForm
-from .models import Driver, Car, Manufacturer
+from .models import Car, Manufacturer
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -13,7 +13,7 @@ User = get_user_model()
 def index(request):
     """View function for the home page of the site."""
 
-    num_drivers = Driver.objects.count()
+    num_drivers = User.objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
 
@@ -117,4 +117,5 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = User
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = User.objects.all().prefetch_related("cars__manufacturer")
+    context_object_name = "driver"
