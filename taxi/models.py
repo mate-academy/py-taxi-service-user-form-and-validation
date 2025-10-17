@@ -15,7 +15,11 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(
+        max_length=8,
+        unique=True,
+        help_text="Format: 3 wielkie litery i 5 cyfr, np. 'ABC12345'"
+    )
 
     class Meta:
         verbose_name = "driver"
