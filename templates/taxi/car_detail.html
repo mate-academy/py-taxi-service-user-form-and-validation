@@ -12,7 +12,21 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <h1>Drivers
+    {% if user.is_authenticated %}
+      {% if is_assigned %}
+        <form method="post" action="{% url 'taxi:remove-from-car' pk=car.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Delete me from this car</button>
+        </form>
+      {% else %}
+        <form method="post" action="{% url 'taxi:assign-to-car' pk=car.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success">Assign me to this car</button>
+        </form>
+      {% endif %}
+    {% endif %}
+  </h1>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
