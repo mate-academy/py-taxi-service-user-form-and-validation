@@ -28,19 +28,6 @@ class Driver(AbstractUser):
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
 
-    def clean(self):
-        license_number = self.license_number
-        validators = [
-            len(license_number) == 8,
-            license_number[:3].isalpha(),
-            license_number[:3].isupper(),
-            license_number[3:].isdigit(),
-        ]
-        for validator in validators:
-            if not validator:
-                raise ValidationError("Enter correct license number")
-        return super().clean()
-
 
 class Car(models.Model):
     model = models.CharField(max_length=255)

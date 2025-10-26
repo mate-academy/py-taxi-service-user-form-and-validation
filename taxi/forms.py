@@ -1,33 +1,37 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from taxi.models import Driver, Car
+from taxi.models import Car
 
 
-class DriverCreateForm(UserCreationForm):
+class LicenseValidationMixin:
+    def clean(self):
+        cleaned_data = super().clean()
+        license_number = cleaned_data.get("license_number")
+        if (
+            license_number
+            and (
+                len(license_number) != 8
+                or not license_number[:3].isalpha()
+                or not license_number[:3].isupper()
+                or not license_number[3:].isdigit()
+            )
+        ):
+            raise ValidationError("Enter correct license number")
+        return cleaned_data
+
+
+class DriverCreateForm(LicenseValidationMixin, UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model = Driver
+        model = get_user_model()
         fields = UserCreationForm.Meta.fields + ("license_number",)
 
-    # def clean(self):
-    #     license_number = self.cleaned_data["license_number"]
-    #     validators = [
-    #         len(license_number) == 8,
-    #         license_number[:3].isupper(),
-    #         license_number[3:].isdigit()
-    #     ]
-    #     for validator in validators:
-    #         if not validator:
-    #             raise ValidationError(
-    #                 "Enter correct license number"
-    #             )
-    #     return license_number
 
-
-class DriverLicenseUpdateForm(forms.ModelForm):
+class DriverLicenseUpdateForm(LicenseValidationMixin, forms.ModelForm):
     class Meta:
-        model = Driver
+        model = get_user_model()
         fields = ["license_number"]
 
 
