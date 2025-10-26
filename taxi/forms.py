@@ -10,14 +10,11 @@ class LicenseValidationMixin:
     def clean(self):
         cleaned_data = super().clean()
         license_number = cleaned_data.get("license_number")
-        if (
-            license_number
-            and (
-                len(license_number) != 8
-                or not license_number[:3].isalpha()
-                or not license_number[:3].isupper()
-                or not license_number[3:].isdigit()
-            )
+        if license_number and (
+            len(license_number) != 8
+            or not license_number[:3].isalpha()
+            or not license_number[:3].isupper()
+            or not license_number[3:].isdigit()
         ):
             raise ValidationError("Enter correct license number")
         return cleaned_data
