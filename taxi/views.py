@@ -1,9 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,7 +67,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -80,10 +83,41 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = get_user_model()
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
+    model = get_user_model()
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = get_user_model()
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+    form_class = DriverLicenseUpdateForm
+
+    def get_success_url(self):
+        return reverse("taxi:driver-detail", kwargs={"pk": self.object.pk})
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = get_user_model()
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+def car_toggle_button(request: HttpRequest, pk: int) -> HttpResponse:
+    car = Car.objects.get(pk=pk)
+    user = request.user
+
+    if car in user.cars.all():
+        user.cars.remove(car)
+    else:
+        user.cars.add(car)
+
+    return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
