@@ -39,4 +39,4 @@ class CarCreationForm(forms.ModelForm):
 
 
 class CarAssignForm(forms.Form):
-    model = Car
+    pass
