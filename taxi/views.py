@@ -1,10 +1,18 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import FormMixin
 
-from .models import Driver, Car, Manufacturer
+from taxi.forms import (
+    DriverCreationForm,
+    DriverLicenseUpdateForm,
+    CarCreationForm,
+    CarAssignForm,
+)
+from taxi.models import Driver, Car, Manufacturer
 
 
 @login_required
@@ -58,13 +66,29 @@ class CarListView(LoginRequiredMixin, generic.ListView):
     queryset = Car.objects.all().select_related("manufacturer")
 
 
-class CarDetailView(LoginRequiredMixin, generic.DetailView):
+class CarDetailView(LoginRequiredMixin, generic.DetailView, FormMixin):
     model = Car
+    queryset = Car.objects.all().prefetch_related("drivers")
+    form_class = CarAssignForm
+    success_url = "."
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            qs = Car.objects.get(pk=self.object.pk)
+            if request.user in qs.drivers.all():
+                qs.drivers.remove(request.user)
+            else:
+                qs.drivers.add(request.user)
+            qs.save()
+            return super().form_valid(form)
+        return super().form_invalid(form)
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreationForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +111,26 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class LicenceUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+
+    def dispatch(self, request, *args, **kwargs):
+        if (
+            self.request.user.id != kwargs.get("pk")
+            and not self.request.user.is_superuser
+        ):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
