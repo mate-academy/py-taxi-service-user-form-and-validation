@@ -1,5 +1,5 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.forms import ModelForm
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
@@ -9,7 +9,8 @@ from django.views.generic.edit import FormMixin
 from .forms import (
     DriverCreateForm,
     DriverLicenseUpdateForm,
-    CarUpdateDriverForm
+    CarUpdateDriverForm,
+    CarCreateViewForm
 )
 from .models import Driver, Car, Manufacturer
 
@@ -97,8 +98,8 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView, FormMixin):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
     success_url = reverse_lazy("taxi:car-list")
+    form_class = CarCreateViewForm
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -113,30 +114,36 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = get_user_model()
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    model = get_user_model()
+    queryset = (
+        get_user_model()
+        .objects
+        .all()
+        .prefetch_related("cars__manufacturer"))
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Driver
+    model = get_user_model()
     success_url = reverse_lazy("taxi:driver-list")
     form_class = DriverCreateForm
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Driver
+    model = get_user_model()
     success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverLicenseUpdateView(generic.UpdateView):
-    model = Driver
+    model = get_user_model()
     form_class = DriverLicenseUpdateForm
-    success_url = reverse_lazy("taxi:driver-list")
+
+    def get_success_url(self):
+        return reverse("taxi:driver-detail", kwargs={"pk": self.object.id})
 
 
 # class CarUpdateDriver(LoginRequiredMixin, generic.UpdateView):

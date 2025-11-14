@@ -40,7 +40,7 @@ class DriverCreateForm(UserCreationForm):
     )
 
     class Meta:
-        model = Driver
+        model = get_user_model()
         fields = "__all__"
         exclude = ("groups",)
 
@@ -51,7 +51,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Driver
+        model = get_user_model()
         fields = ("license_number",)
 
 
@@ -59,3 +59,14 @@ class CarUpdateDriverForm(forms.ModelForm):
     class Meta:
         model = Car
         exclude = "__all__"
+
+
+class CarCreateViewForm(forms.ModelForm):
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+
+    class Meta:
+        model = Car
+        fields = "__all__"
