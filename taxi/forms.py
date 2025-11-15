@@ -1,10 +1,9 @@
-from debug_toolbar.utils import hidden_paths
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from taxi.models import Driver, Car
+from taxi.models import Car
 
 
 def clean_license_number(license_number):
@@ -20,7 +19,7 @@ def clean_license_number(license_number):
             "First 3 characters of license number "
             "have to be uppercase letters!!!"
         )
-    if not num_part.isnumeric():
+    if not num_part.isdigit():
         errors.append(
             "The last 5 characters of license number have to be digits!!!"
         )
@@ -31,18 +30,17 @@ def clean_license_number(license_number):
 
 
 class DriverCreateForm(UserCreationForm):
-    user_permissions = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(),
-        widget=forms.CheckboxSelectMultiple
-    )
     license_number = forms.CharField(
         validators=(clean_license_number,)
     )
 
-    class Meta:
+    class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = "__all__"
-        exclude = ("groups",)
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "license_number",
+        )
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -53,12 +51,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ("license_number",)
-
-
-class CarUpdateDriverForm(forms.ModelForm):
-    class Meta:
-        model = Car
-        exclude = "__all__"
 
 
 class CarCreateViewForm(forms.ModelForm):

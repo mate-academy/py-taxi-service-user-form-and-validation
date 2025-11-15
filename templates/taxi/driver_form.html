@@ -6,7 +6,11 @@
     {% csrf_token %}
     {{ form|crispy }}
     <input class="btn btn-success" type="submit" value="Submit">
-    <a class="btn btn-danger" href="{% url "taxi:driver-detail" pk=driver.pk %}">Cancel</a>
+    {% if object %}
+      <a class="btn btn-danger" href="{% url "taxi:driver-detail" pk=driver.pk %}">Cancel</a>
+    {% else %}
+      <a class="btn btn-danger" href="{% url "taxi:driver-list" %}">Cancel</a>
+    {% endif %}
   </form>
   <br>
 {% endblock %}
