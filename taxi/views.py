@@ -82,11 +82,13 @@ def add_driver_for_car(request: HttpRequest, pk: int) -> HttpResponse:
     driver = request.user
     car = Car.objects.get(pk=pk)
 
-    if driver not in car.drivers.all():
-        car.drivers.add(driver)
-    else:
+    """
+    Checking for an unauthorized way to add another driver
+    """
+    if driver in car.drivers.all():
         raise ValidationError("Driver already exists")
 
+    car.drivers.add(driver)
     return HttpResponseRedirect(reverse_lazy("taxi:car-detail", kwargs={"pk": car.pk}))
 
 
