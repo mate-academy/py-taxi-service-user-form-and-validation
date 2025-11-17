@@ -1,26 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
-
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
-
-  <div class="ml-3">
-    <h4>Cars</h4>
-
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
+<div class="card mt-4">
+  <div class="card-header">
+    <h1 class="card-title mb-0">
+      Username: {{ driver.username }}
+      {% if driver == user %}
+        <a href="{% url 'taxi:driver-delete' pk=driver.pk %}" class="btn btn-danger float-right ml-2">Delete Profile</a>
+      {% endif %}
+    </h1>
   </div>
+  <div class="card-body">
+    <p><strong>First name:</strong> {{ driver.first_name }}</p>
+    <p><strong>Last name:</strong> {{ driver.last_name }}</p>
+    <p>
+      <strong>License number:</strong> {{ driver.license_number }}
+      {% if driver == user %}
+        <a href="{% url 'taxi:driver-update' pk=driver.pk %}" class="btn btn-sm btn-secondary ml-2">Update license</a>
+      {% endif %}
+    </p>
+    <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+  </div>
+
+  <div class="card-footer">
+    <h4>Cars</h4>
+    {% if driver.cars.all %}
+      <ul class="list-group list-group-flush">
+        {% for car in driver.cars.all %}
+          <li class="list-group-item">
+            <p class="mb-0"><strong>Model:</strong> {{ car.model }}</p>
+            <p class="mb-0"><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
+            <p class="text-muted mb-0"><strong>Id:</strong> {{ car.id }}</p>
+          </li>
+        {% empty %}
+          <li class="list-group-item">No cars!</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+       <p>No cars!</p>
+    {% endif %}
+  </div>
+</div>
 {% endblock %}
