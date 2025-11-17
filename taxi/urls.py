@@ -16,7 +16,8 @@ from taxi.views import (
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
-    ManufacturerDeleteView, car_driver_delete_view,
+    ManufacturerDeleteView,
+    car_driver_delete_view,
 )
 
 urlpatterns = [
