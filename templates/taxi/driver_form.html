@@ -4,7 +4,7 @@
   {% load crispy_forms_filters %}
   <div class="card mt-4">
     <div class="card-header">
-	    <h1 class="card-title mb-0">Add driver</h1>
+	    <h1 class="card-title mb-0">{{ object|yesno:"Update,Create" }} driver</h1>
     </div>
     <div class="card-body">
       <form action="" method="post" novalidate>

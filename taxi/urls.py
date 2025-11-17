@@ -1,5 +1,3 @@
-from _pyrepl.commands import delete
-
 from django.urls import path
 
 from .views import (

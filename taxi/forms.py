@@ -34,7 +34,7 @@ class LicenseNumberValidationMixin:
 class DriverForm(LicenseNumberValidationMixin, UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = UserCreationForm.Meta.fields
+        fields = UserCreationForm.Meta.fields + ("license_number",)
 
 
 class DriverLicenseUpdateForm(LicenseNumberValidationMixin, forms.ModelForm):
