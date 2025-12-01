@@ -8,9 +8,7 @@ from taxi.forms import DriverLicenseUpdateForm
 class ValidLicenseNumberFormTests(TestCase):
     @staticmethod
     def create_form(test_license_number):
-        return DriverLicenseUpdateForm(
-            data={"license_number": test_license_number}
-        )
+        return DriverLicenseUpdateForm(data={"license_number": test_license_number})
 
     def test_validation_license_number_with_valid_data(self):
         self.assertTrue(self.create_form("TES12345").is_valid())

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Update Driver License</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update License</button>
+    <a href="{{ request.META.HTTP_REFERER|default:request.build_absolute_uri|safe }}">Cancel</a>
+  </form>
+{% endblock %}
