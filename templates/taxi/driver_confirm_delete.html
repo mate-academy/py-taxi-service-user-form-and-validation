@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <h1>Delete driver profile?</h1>
+  <form method="POST" action="">
+    {% csrf_token %}
+    <input type="submit" value="Delete" class="btn btn-danger">
+  </form>
+  <button onclick="history.back()" class="btn btn-primary">Cancel</button>
+{% endblock %}
