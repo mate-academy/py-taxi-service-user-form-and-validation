@@ -1,26 +1,24 @@
 {% extends "base.html" %}
-
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
+  <h1>Detalhes do Motorista: {{ driver.get_username }}</h1>
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+  <!-- exiba dados relevantes -->
+  <p><strong>Username:</strong> {{ driver.username }}</p>
+  {% if driver.first_name or driver.last_name %}
+    <p><strong>Nome:</strong> {{ driver.first_name }} {{ driver.last_name }}</p>
+  {% endif %}
 
-  <div class="ml-3">
-    <h4>Cars</h4>
+  {% if driver.license_number %}
+    <p><strong>License:</strong> {{ driver.license_number }}</p>
+  {% endif %}
 
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
+  <!-- Botões obrigatórios solicitados -->
+  <a href="{% url 'taxi:driver-license-update' driver.pk %}" class="btn btn-warning">Atualizar licença</a>
 
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
-  </div>
+  <form method="post" action="{% url 'taxi:driver-delete' driver.pk %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Excluir</button>
+  </form>
+
+  <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a>
 {% endblock %}
