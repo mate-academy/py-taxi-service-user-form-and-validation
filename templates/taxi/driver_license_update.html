@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Update License for {{ object.username }}</h1>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <button type="submit" class="btn btn-success mt-2">Save</button>
+    <a href="{% url 'taxi:driver-detail' pk=object.id %}" class="btn btn-secondary mt-2">
+      Cancel
+    </a>
+  </form>
+{% endblock %}

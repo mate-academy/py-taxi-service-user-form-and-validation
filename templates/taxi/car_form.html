@@ -1,12 +1,30 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 
 {% block content %}
   <h1>{{ object|yesno:"Update,Create" }} car</h1>
-  <form action="" method="post" novalidate>
+  <form method="post" novalidate>
     {% csrf_token %}
-    {{ form|crispy }}
 
-    <input type="submit" value="Submit" class="btn btn-primary">
+    <div class="mb-3">
+      {{ form.model|as_crispy_field }}
+    </div>
+
+    <div class="mb-3">
+      {{ form.manufacturer|as_crispy_field }}
+    </div>
+
+    <div class="mb-3">
+      <label>Drivers</label>
+      {% for checkbox in form.drivers %}
+        <div class="form-check">
+          {{ checkbox.tag }}
+          <label class="form-check-label">{{ checkbox.choice_label }}</label>
+        </div>
+      {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="{% url 'taxi:car-list' %}" class="btn btn-secondary">Cancel</a>
   </form>
 {% endblock %}
