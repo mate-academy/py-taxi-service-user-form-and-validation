@@ -16,7 +16,22 @@
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+      <li>
+        <strong>Username:</strong> {{ driver.username }}<br>
+        <strong>Full Name:</strong> {{ driver.first_name }} {{ driver.last_name }}<br>
+        <strong>License number:</strong> {{ driver.license_number }}
+      </li>
     {% endfor %}
   </ul>
+  {% if user in car.drivers.all %}
+    <form method="post" action="{% url 'taxi:car-remove-driver' pk=car.id %}">
+      {% csrf_token %}
+      <input type="submit" value="Delete me from this car" class="btn btn-danger">
+    </form>
+  {% else %}
+    <form method="post" action="{% url 'taxi:car-add-driver' pk=car.id %}">
+      {% csrf_token %}
+      <input type="submit" value="Assign me to this car" class="btn btn-primary">
+    </form>
+  {% endif %}
 {% endblock %}
