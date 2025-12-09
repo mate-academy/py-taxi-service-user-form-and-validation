@@ -1,10 +1,10 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h1>
     Username: {{ driver.username }}
   </h1>
-
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
@@ -23,4 +23,7 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+  <th>
+    <th><a class="btn btn-danger" href={% url 'taxi:driver-delete' pk=driver.id %} >delete</a></th>
+    <th><a class="btn btn-secondary" href={% url 'taxi:driver-update' pk=driver.id %} >update</a></th>
 {% endblock %}

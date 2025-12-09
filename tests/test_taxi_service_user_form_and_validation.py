@@ -14,6 +14,7 @@ class ValidLicenseNumberFormTests(TestCase):
 
     def test_validation_license_number_with_valid_data(self):
         self.assertTrue(self.create_form("TES12345").is_valid())
+        
 
     def test_length_of_license_number_should_be_not_more_than_8(self):
         self.assertFalse(self.create_form("TES123456").is_valid())
