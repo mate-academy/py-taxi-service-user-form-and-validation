@@ -1,0 +1,20 @@
+.assign-button,
+.delete-button {
+  font-size: 16px;
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  float: right;
+  border-radius: 5px;
+  margin-top: -40px;
+}
+
+.delete-button {
+  background-color: red;
+}
+
+.driver{
+  margin-left: 10px;
+}
