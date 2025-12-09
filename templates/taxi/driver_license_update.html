@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Update {{ driver.username }} Driver License</h1>
+  <p>Consist only of 8 characters</p>
+  <p>First 3 characters are uppercase letters</p>
+  <p>Last 5 characters are digits</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Update License</button>
+  </form>
+  <a href="{{ driver.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+{% endblock %}
