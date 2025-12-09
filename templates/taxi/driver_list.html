@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Driver List
+      <a style="padding-left: 20px" href="{% url "taxi:driver-create" %}">+</a>
     </h1>
 
     {% if driver_list %}
@@ -28,3 +29,4 @@
       <p>There are no drivers in the service.</p>
     {% endif %}
 {% endblock %}
+
