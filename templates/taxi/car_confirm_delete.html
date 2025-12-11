@@ -6,5 +6,8 @@
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
+    <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">
+    Cancel
+</a>
   </form>
 {% endblock %}
