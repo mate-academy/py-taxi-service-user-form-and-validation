@@ -3,20 +3,31 @@
 {% block content %}
   <h1>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+  </h1>
+  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+  <h1>Drivers
+    {% if driver in drivers %}
+      <a class="btn btn-danger" style="position: absolute; right: 100px" href="{% url "taxi:driver-remove" pk=car.id %}">
+        Delete me from this car
+      </a>
+    {% else %}
+      <a class="btn btn-success" style="position: absolute; right: 100px" href="{% url "taxi:driver-assign" pk=car.id %}">
+        Assign me to this car
+      </a>
+    {% endif %}
+  </h1>
+  <hr>
+  <ul>
+    {% for d in car.drivers.all %}
+      <li>{{ d.username }} ({{ d.first_name }} {{ d.last_name }})</li>
+    {% endfor %}
+  <br>
+  </ul>
+    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-left">
+      Update
+    </a>
+    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-left">
       Delete
     </a>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
 {% endblock %}
