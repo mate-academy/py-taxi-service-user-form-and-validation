@@ -2,9 +2,16 @@
 
 {% block content %}
   <h1>Delete car?</h1>
-  <form action="" method="post">
-    {% csrf_token %}
+  <div class="d-flex flex-row bd-highlight mb-3">
+    <div class="p-2 bd-highlight">
+      <form action="" method="post">
+        {% csrf_token %}
 
-    <input type="submit" value="Yes" class="btn btn-danger">
-  </form>
+        <input type="submit" value="Yes" class="btn btn-danger">
+      </form>
+    </div>
+    <div class="p-2 bd-highlight">
+      <a class="btn btn-primary" href="{% url 'taxi:car-detail' car.id %}">Cancel</a>
+    </div>
+  </div>
 {% endblock %}
