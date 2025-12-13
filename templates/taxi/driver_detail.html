@@ -4,7 +4,7 @@
   <h1>Username: {{ driver.username }}</h1>
 
   <div style="margin-bottom: 20px;">
-    <a href="{% url 'taxi:driver-update-license' pk=driver.id %}" class="btn btn-secondary link-to-page">
+    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary link-to-page">
       Update License
     </a>
     <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
