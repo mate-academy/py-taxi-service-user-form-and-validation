@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 
 from .models import Car, Manufacturer
 
+
 def validate_license_number(license_number):
     if len(license_number) != 8:
         raise ValidationError("License number must consist of 8 characters.")
@@ -13,6 +14,7 @@ def validate_license_number(license_number):
     if not license_number[3:].isdigit():
         raise ValidationError("Last 5 characters must be digits.")
     return license_number
+
 
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -26,6 +28,7 @@ class DriverCreationForm(UserCreationForm):
     def clean_license_number(self):
         return validate_license_number(self.cleaned_data["license_number"])
 
+
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
@@ -33,6 +36,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
     def clean_license_number(self):
         return validate_license_number(self.cleaned_data["license_number"])
+
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
@@ -44,6 +48,7 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
+
 
 class ManufacturerForm(forms.ModelForm):
     class Meta:
