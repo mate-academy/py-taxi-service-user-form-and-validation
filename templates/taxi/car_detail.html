@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+  <h1>Username: {{ driver.username }}</h1>
+  <p><strong>First name:</strong> {{ driver.first_name }}</p>
+  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
+  <p><strong>License number:</strong> {{ driver.license_number }}</p>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
+  <div class="btn-group mt-3">
+      <a href="{% url 'taxi:driver-update-license' pk=driver.id %}" class="btn btn-secondary">
+          Update License
+      </a>
+      <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger">
+          Delete
+      </a>
+  </div>
+  
+  <h2 class="mt-4">Cars</h2>
   <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
+      {% for car in driver.cars.all %}
+          <li><a href="{% url 'taxi:car-detail' pk=car.id %}">{{ car.model }}</a></li>
+      {% empty %}
+          <li>No cars assigned.</li>
+      {% endfor %}
   </ul>
+
 {% endblock %}

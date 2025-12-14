@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>Update Driver License: {{ object.username }}</h1>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="btn-group">
+        <input type="submit" value="Update" class="btn btn-primary">
+        {# ADDITION: Link back to the specific driver detail page #}
+        <a href="{% url 'taxi:driver-detail' pk=object.id %}" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+{% endblock %}
