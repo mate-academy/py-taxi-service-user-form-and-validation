@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>Create driver</h1>
+  {% block form %}
+    {% include "includes/update_form.html" %}
+  {% endblock %}
+{% endblock %}
