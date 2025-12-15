@@ -1,22 +1,40 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+  <h1>Model: {{ car.model }} (Manufacturer: {{ car.manufacturer.name }}, {{ car.manufacturer.country }})</h1>
+  <p class="text-muted">Id: {{ car.id }}</p>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  {% if user.is_authenticated %}
+      {% if is_driver %}
+          <form action="{% url 'taxi:assign-driver' pk=car.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Delete me from this car</button>
+          </form>
+      {% else %}
+          <form action="{% url 'taxi:assign-driver' pk=car.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success">Assign me to this car</button>
+          </form>
+      {% endif %}
+  {% endif %}
+
   <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+
+  <h2>Drivers</h2>
+  {% for driver in car.drivers.all %}
+    <p>
+      {{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})
+      {% if user == driver %}
+        (You)
+      {% endif %}
+    </p>
+  {% empty %}
+    <p>No drivers yet.</p>
+  {% endfor %}
+
+  <div class="mt-4">
+      <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-primary">Update</a>
+      <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">Delete</a>
+  </div>
 {% endblock %}
