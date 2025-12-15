@@ -22,5 +22,16 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+    <div style="display: flex; flex-direction: row; gap: 25px">
+        <a href="{% url 'taxi:driver-update' pk=driver.id %}"
+        class="btn btn-primary text-white">
+        Update
+        </a>
+
+        <a href="{% url 'taxi:driver-delete' pk=driver.id %}"
+           class="btn btn-danger text-white">
+          Delete
+        </a>
+    </div>
   </div>
 {% endblock %}
