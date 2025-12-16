@@ -4,9 +4,6 @@
   <h1>
     Username: {{ driver.username }}
   </h1>
-  <p>
-    Licence: {{ driver.license_number }}
-  </p>
 
   <div class="btn-group">
     <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-warning">
