@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    {% if form.instance.pk %}
+      Update Driver
+    {% else %}
+      Create Driver
+    {% endif %}
+  </h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+      {% if form.instance.pk %}
+        Save Changes
+      {% else %}
+        Create Driver
+      {% endif %}
+    </button>
+  </form>
+
+  {% if form.instance.pk %}
+    <a href="{% url 'taxi:driver-delete' form.instance.pk %}" class="btn btn-danger mt-2">
+      Delete Driver
+    </a>
+  {% endif %}
+{% endblock %}
