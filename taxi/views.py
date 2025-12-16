@@ -1,27 +1,23 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
-from .forms import (
-    DriverCreationForm,
-    DriverLicenseUpdateForm,
-    CarForm,
-)
+from django.contrib.auth import get_user_model
+
+from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
+from .models import Car, Manufacturer
 
 
-from .models import Driver, Car, Manufacturer
+Driver = get_user_model()
 
 
 @login_required
 def index(request):
     """View function for the home page of the site."""
-
     num_drivers = Driver.objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
-
     num_visits = request.session.get("num_visits", 0)
     request.session["num_visits"] = num_visits + 1
 
@@ -32,7 +28,9 @@ def index(request):
         "num_visits": num_visits + 1,
     }
 
-    return render(request, "taxi/index.html", context=context)
+    return render(request,
+                  "taxi/index.html",
+                  context=context)
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -111,7 +109,10 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
     template_name = "taxi/driver_license_update.html"
-    success_url = reverse_lazy("taxi:driver-list")
+
+    def get_success_url(self):
+        return reverse_lazy("taxi:driver-detail",
+                            kwargs={"pk": self.object.pk})
 
 
 @login_required
