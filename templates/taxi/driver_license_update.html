@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>Update driver's license</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Update" class="btn btn-warning">
+    <a href="{{ object.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
+
