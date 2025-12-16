@@ -106,19 +106,13 @@ class DriverCreateView(CreateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class DriverLicenseUpdateView(UpdateView):
-    model = User
-    form_class = DriverLicenseUpdateForm
-    success_url = reverse_lazy("taxi:driver-list")
-
-
 class DriverDeleteView(LoginRequiredMixin, DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
 
 
 class DriverLicenseUpdateView(LoginRequiredMixin, UpdateView):
-    model = Driver
+    model = User
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 

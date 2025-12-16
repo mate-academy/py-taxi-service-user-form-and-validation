@@ -22,10 +22,14 @@ class DriverCreationForm(UserCreationForm):
         license_number = self.cleaned_data["license_number"]
 
         if len(license_number) != 8:
-            raise forms.ValidationError("License must contain exactly 8 characters")
+            raise forms.ValidationError(
+                "License must contain exactly 8 characters"
+            )
 
         if not license_number[:3].isupper():
-            raise forms.ValidationError("First 3 characters must be uppercase letters")
+            raise forms.ValidationError(
+                "First 3 characters must be uppercase letters"
+            )
 
         if not license_number[3:].isdigit():
             raise forms.ValidationError("Last 5 characters must be digits")
