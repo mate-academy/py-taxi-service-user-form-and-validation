@@ -122,7 +122,7 @@ def toggle_assign_to_car(request, pk):
     driver = get_user_model().objects.get(id=request.user.id)
     car = get_object_or_404(Car, id=pk)
 
-    if car in request.user.cars.filter(pk=pk).exists():
+    if car in driver.cars.all():
         car.drivers.remove(driver)
     else:
         car.drivers.add(driver)
