@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="mt-4 col-md-6">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1 class="mb-0">{{ manufacturer.name }}</h1>
+
+      <div>
+        <a href="{% url 'taxi:manufacturer-update' pk=manufacturer.id %}" class="btn btn-secondary mr-2">
+          Update
+        </a>
+        <a href="{% url 'taxi:manufacturer-delete' pk=manufacturer.id %}" class="btn btn-danger">
+          Delete
+        </a>
+      </div>
+    </div>
+
+    <p class="text-muted mb-4">
+      Country: {{ manufacturer.country }}
+    </p>
+
+    <h4>Cars by this manufacturer</h4>
+    <hr>
+
+    {% if manufacturer.cars.all %}
+      <ul class="list-group">
+        {% for car in manufacturer.cars.all %}
+          <li class="list-group-item">
+            <a href="{% url 'taxi:car-detail' pk=car.id %}">
+              {{ car.model }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">No cars for this manufacturer.</p>
+    {% endif %}
+
+  </div>
+{% endblock %}
