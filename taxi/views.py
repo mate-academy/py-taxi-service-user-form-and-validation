@@ -1,13 +1,23 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import (
+    render,
+    get_object_or_404,
+    redirect,
+)
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 
-from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
-from .models import Car, Manufacturer
-
+from .forms import (
+    DriverCreationForm,
+    DriverLicenseUpdateForm,
+    CarForm,
+)
+from .models import (
+    Car,
+    Manufacturer,
+)
 
 Driver = get_user_model()
 
@@ -28,9 +38,11 @@ def index(request):
         "num_visits": num_visits + 1,
     }
 
-    return render(request,
-                  "taxi/index.html",
-                  context=context)
+    return render(
+        request,
+        "taxi/index.html",
+        context=context
+    )
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -111,8 +123,10 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/driver_license_update.html"
 
     def get_success_url(self):
-        return reverse_lazy("taxi:driver-detail",
-                            kwargs={"pk": self.object.pk})
+        return reverse_lazy(
+            "taxi:driver-detail",
+            kwargs={"pk": self.object.pk}
+        )
 
 
 @login_required
