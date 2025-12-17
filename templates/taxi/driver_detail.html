@@ -1,26 +1,39 @@
 {% extends "base.html" %}
-
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+<ul class="list-group list-group-flush mb-3">
+  <li class="list-group-item">
+    <strong>First name:</strong> {{ driver.first_name }}
+  </li>
+  <li class="list-group-item">
+    <strong>Last name:</strong> {{ driver.last_name }}
+  </li>
+  <li class="list-group-item">
+    <strong>License number:</strong> {{ driver.license_number }}
+  </li>
+  <li class="list-group-item">
+    <strong>Is staff:</strong> {{ driver.is_staff }}
+  </li>
+</ul>
 
-  <div class="ml-3">
-    <h4>Cars</h4>
+<div class="btn-group" role="group">
+  <a href="{% url 'taxi:driver-license-update' driver.pk %}"
+     class="btn btn-primary">
+    ✏️ Update license
+  </a>
 
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
+  <a href="{% url 'taxi:driver-delete' driver.pk %}"
+     class="btn btn-danger">
+    🗑️ Delete driver
+  </a>
+</div>
+{% for car in driver.cars.all %}
+  <hr>
+  <p><strong>Model:</strong> {{ car.model }}</p>
+  <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
+  <p class="text-muted mb-0"><strong>Id:</strong> {{ car.id }}</p>
+{% empty %}
+  <p class="text-muted">No cars!</p>
+{% endfor %}
 
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
-  </div>
 {% endblock %}
