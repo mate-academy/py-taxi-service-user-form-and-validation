@@ -68,7 +68,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         contex = super().get_context_data(**kwargs)
-        is_driver = self.object.driver.filter(pk=self.user.pk).exists()
+        is_driver = self.object.drivers.filter(pk=self.user.pk).exists()
         contex["is_driver"] = is_driver
         return contex
 
@@ -109,12 +109,14 @@ class AssignDriverToCar(LoginRequiredMixin, generic.View):
         car = get_object_or_404(Car, pk=pk)
 
         if not driver.license_number:
-            return redirect("taxi:driver-update", pk=pk)
+            return redirect("taxi:driver-update", pk=driver.pk)
+
         if driver in car.drivers.all():
             car.drivers.remove(driver)
         else:
             car.drivers.add(driver)
-        return redirect("taxi:car-detail", pk=pk)
+
+        return redirect("taxi:car-detail", pk=car.pk)
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):

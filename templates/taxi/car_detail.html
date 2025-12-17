@@ -6,7 +6,7 @@
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
-  <form action="{% url 'taxi:car-assign' pk=car.pk %}" method="post">
+  <form action="{% url 'taxi:driver-assign' pk=car.pk %}" method="post">
     {% csrf_token %}
     {% if is_driver %}
       <input type="submit" value="Delete me from this car" class="btn btn-danger">
