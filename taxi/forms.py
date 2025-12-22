@@ -1,9 +1,8 @@
-import re
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
-from .models import Driver, Car
+from .models import Car
 
 
 class CarForm(forms.ModelForm):

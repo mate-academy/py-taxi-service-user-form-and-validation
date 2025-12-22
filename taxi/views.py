@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 
 from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
-from .models import Driver, Car, Manufacturer
+from .models import Car, Manufacturer
 
 
 User = get_user_model()
@@ -17,7 +17,7 @@ User = get_user_model()
 def index(request):
     """View function for the home page of the site."""
 
-    num_drivers = Driver.objects.count()
+    num_drivers = User.objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
 
@@ -36,7 +36,7 @@ def index(request):
 
 @login_required
 def toggle_assign_to_car(request, pk):
-    driver = User.objects.get(id=request.user.id)
+    driver = request.user
     car = Car.objects.get(id=pk)
     if car in driver.cars.all():
         driver.cars.remove(car)
@@ -99,6 +99,7 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 class DriverListView(LoginRequiredMixin, generic.ListView):
     model = User
     paginate_by = 5
+    queryset = User.objects.all()
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
@@ -110,7 +111,7 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = User
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    queryset = User.objects.all().prefetch_related("cars__manufacturer")
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
