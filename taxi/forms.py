@@ -19,11 +19,14 @@ class DriverCreateForm(UserCreationForm):
         if len(license_number) != 8:
             raise forms.ValidationError("The field must have 8 characters")
 
-        if not license_number[:3].isalpha() or not license_number[:3].isupper():
-            raise forms.ValidationError("The first 3 letters must be capitalized")
+        if (not license_number[:3].isalpha()
+                or not license_number[:3].isupper()):
+            raise forms.ValidationError(
+                "The first 3 letters must be capitalized")
 
         if not license_number[3:].isdigit():
-            raise forms.ValidationError("The last 5 characters must be numbers")
+            raise forms.ValidationError(
+                "The last 5 characters must be numbers")
 
         return license_number
 
@@ -42,11 +45,14 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         if len(license_number) != 8:
             raise forms.ValidationError("The field must have 8 characters")
 
-        if not license_number[:3].isalpha() or not license_number[:3].isupper():
-            raise forms.ValidationError("The first 3 letters must be capitalized")
+        if (not license_number[:3].isalpha()
+                or not license_number[:3].isupper()):
+            raise forms.ValidationError(
+                "The first 3 letters must be capitalized")
 
         if not license_number[3:].isdigit():
-            raise forms.ValidationError("The last 5 characters must be numbers")
+            raise forms.ValidationError(
+                "The last 5 characters must be numbers")
 
         return license_number
 
