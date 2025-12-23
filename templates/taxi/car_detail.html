@@ -10,6 +10,16 @@
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
+    
+    {% if user not in car.drivers.all %}
+      <a href="{% url 'taxi:car-add-cur-driver' pk=car.id %}" class="btn btn-secondary link-to-page">
+        Assign me to this car
+      </a>
+    {% else %}
+      <a href="{% url 'taxi:car-del-cur-driver' pk=car.id %}" class="btn btn-secondary link-to-page">
+        Delete me from this car
+      </a>
+    {% endif %}
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
