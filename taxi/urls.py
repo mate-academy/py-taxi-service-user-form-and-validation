@@ -13,6 +13,9 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+    DriverCreateView,
+    DriverUpdateView,
+    DriverDeleteView,
 )
 
 urlpatterns = [
@@ -43,9 +46,14 @@ urlpatterns = [
     path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
     path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
     path("drivers/", DriverListView.as_view(), name="driver-list"),
+    path("drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"),  # NOQA E501
+    path("drivers-create/", DriverCreateView.as_view(), name="driver-create"),
     path(
-        "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
-    ),
+        "drivers/<int:pk>/update/", DriverUpdateView.as_view(), name="driver-update"  # NOQA E501
+    ),  # NOQA E501
+    path(
+        "drivers/<int:pk>/delete/", DriverDeleteView.as_view(), name="driver-delete"  # NOQA E501
+    ),  # NOQA E501
 ]
 
 app_name = "taxi"
