@@ -12,7 +12,22 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <div class="row justify-content-between">
+    <h1>Drivers</h1>
+    {% if user not in car.drivers.all %}
+    <form action="{% url 'taxi:add-car' pk=car.id %}" method="POST">
+      {% csrf_token %}
+      <input type="hidden" value="{{ car.id }}" name="car_id" />
+      <input type="submit" class="btn btn-success mt-2 ml-2" value="Assign me to this car" />
+    </form>
+    {% else %}
+    <form action="{% url 'taxi:remove-car' pk=car.id %}" method="POST">
+      {% csrf_token %}
+      <input type="hidden" value="{{ car.id }}" name="car_id" />
+      <input type="submit" class="btn btn-danger mt-2 ml-2" value="Delete me from this car" />
+    </form>
+    {% endif %}
+  </div>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
