@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <form action="{% url "taxi:car-toggle-assign" car.id %}" method="post">
+    {% csrf_token %}
+    {% if is_driver %}
+      <button class="btn btn-danger" type="submit">
+        Delete me from this car
+      </button>
+    {% else %}
+      <button class="btn btn-primary" type="submit">
+        Assign me to this car
+      </button>
+    {% endif %}
+  </form>
   <h1>
     {{ car.model }}
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
