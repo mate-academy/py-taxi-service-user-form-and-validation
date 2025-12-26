@@ -1,22 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Car list
-    <a href="{% url 'taxi:car-create' %}" class="btn btn-primary link-to-page">
+  <div class="d-flex justify-content-between align-items-center mt-4">
+    <h1>Car list</h1>
+    <a href="{% url 'taxi:car-create' %}" class="btn btn-primary">
       Create
     </a>
-  </h1>
+  </div>
+
   {% if car_list %}
-    <ul>
+    <ul class="list-group mt-3">
       {% for car in car_list %}
-        <li>
-          <a href="{% url "taxi:car-detail" pk=car.id %} ">{{ car.id }}</a>
-          {{ car.model }} ({{ car.manufacturer.name }})
+        <li class="list-group-item">
+          <a href="{% url "taxi:car-detail" pk=car.id %} ">{{ car.model }}</a>
+          <span class="text-muted"> ({{ car.manufacturer.name }})</span>
+          <a href="{% url "taxi:car-detail" pk=car.id %} " class="float-right text-secondary">Details</a>
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <p>There are no cars in taxi</p>
+    <p class="mt-3">There are no cars in taxi</p>
   {% endif %}
 {% endblock %}
