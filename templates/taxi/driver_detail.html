@@ -1,26 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
+  <div class="container mt-4">
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">👤 Driver Profile</h4>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Username: {{ driver.username }}</h5>
+        <p><strong>First name:</strong> {{ driver.first_name }}</p>
+        <p><strong>Last name:</strong> {{ driver.last_name }}</p>
+        <p><strong>License number:</strong> {{ driver.license_number }}</p>
+        <p><strong>Is staff:</strong> {{ driver.is_staff|yesno:"Yes,No" }}</p>
+      </div>
+    </div>
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
-
-  <div class="ml-3">
-    <h4>Cars</h4>
-
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
+    <div class="card shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <h5 class="mb-0">🚗 Assigned Cars</h5>
+      </div>
+      <div class="card-body">
+        {% for car in driver.cars.all %}
+          <div class="border-bottom pb-2 mb-3">
+            <p><strong>Model:</strong> {{ car.model }}</p>
+            <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
+            <p class="text-muted"><strong>ID:</strong> {{ car.id }}</p>
+          </div>
+        {% empty %}
+          <p class="text-muted">No cars assigned to this driver.</p>
+        {% endfor %}
+      </div>
+    </div>
   </div>
+  <a href="{% url 'taxi:driver-delete' driver.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+  <br>
+  <a href="{% url 'taxi:driver-update' driver.id %}" class="btn btn-outline-primary btn-sm">Update</a>
 {% endblock %}

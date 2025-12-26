@@ -1,30 +1,51 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Driver List
-    </h1>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="text-primary">🚗 Driver List</h2>
+      <a href="{% url 'taxi:driver-create' %}" class="btn btn-success">+ Create Driver</a>
+    </div>
 
     {% if driver_list %}
-    <table class="table">
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>License number</th>
-      </tr>
-    {% for driver in driver_list %}
-      <tr>
-        <td>{{ driver.id }}</td>
-        <td><a href="{{ driver.get_absolute_url }}">{{ driver.username }} {% if user == driver %} (Me){% endif %}</a></td>
-        <td>{{ driver.first_name }}</td>
-        <td>{{ driver.last_name }}</td>
-        <td>{{ driver.license_number }}</td>
-      </tr>
-    {% endfor %}
-
-    </table>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>License Number</th>
+              <th>Delete</th>
+              <th>Update License</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for driver in driver_list %}
+              <tr>
+                <td>{{ driver.id }}</td>
+                <td>
+                  <a href="{{ driver.get_absolute_url }}">
+                    {{ driver.username }}{% if user == driver %} <span class="badge bg-info text-dark">Me</span>{% endif %}
+                  </a>
+                </td>
+                <td>{{ driver.first_name }}</td>
+                <td>{{ driver.last_name }}</td>
+                <td>{{ driver.license_number }}</td>
+                <td>
+                  <a href="{% url 'taxi:driver-delete' driver.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+                </td>
+                <td>
+                  <a href="{% url 'taxi:driver-update' driver.id %}" class="btn btn-outline-primary btn-sm">Update</a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     {% else %}
-      <p>There are no drivers in the service.</p>
+      <div class="alert alert-warning">There are no drivers in the service.</div>
     {% endif %}
+  </div>
 {% endblock %}

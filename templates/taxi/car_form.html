@@ -2,11 +2,21 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  <h1>{{ object|yesno:"Update,Create" }} car</h1>
-  <form action="" method="post" novalidate>
-    {% csrf_token %}
-    {{ form|crispy }}
+  <div class="container mt-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">{{ object.pk|yesno:"Update,Create" }} car</h4>
+      </div>
+      <div class="card-body">
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form|crispy }}
 
-    <input type="submit" value="Submit" class="btn btn-primary">
-  </form>
+          <div class="d-flex justify-content-end mt-3">
+            <input type="submit" value="Submit" class="btn btn-success">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}
