@@ -10,8 +10,14 @@
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
+    <form action="{% url 'taxi:car-assign' pk=car.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-secondary link-to-page">
+        Assign me to this car
+      </button>
+    </form>
   </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+  <p><strong>Manufacturer:</strong> ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
   <hr>
   <ul>

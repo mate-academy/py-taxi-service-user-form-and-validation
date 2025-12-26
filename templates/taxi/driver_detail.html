@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h1>
@@ -14,13 +15,16 @@
     <h4>Cars</h4>
 
     {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
+      <hr>
+      <p><strong>Model:</strong> {{ car.model }}</p>
+      <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
+      <p class="text-muted"><strong>Id:</strong> {{ car.id }}</p>
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+    <br>
+    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-primary">Update</a>
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">Delete</a>
+    <br>
   </div>
 {% endblock %}
