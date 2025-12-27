@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
-    <h1>Driver List
-    </h1>
-
+    <h1>Driver List</h1>
+    <a href="{% url "taxi:driver-create" %}">
+      <input type="button" value="Add New Driver">
+    </a>
     {% if driver_list %}
     <table class="table">
       <tr>
