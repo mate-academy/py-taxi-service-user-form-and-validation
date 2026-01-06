@@ -1,22 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+  <h1>Model: {{ car.model }}</h1>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
+  <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }} ({{ car.manufacturer.country }})</p>
+
+  <div class="drivers-section">
+    <h2>Drivers
+      {% if user in car.drivers.all %}
+        <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}" class="btn btn-warning" style="float: right;">
+          Delete me from this car
+        </a>
+      {% else %}
+        <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}" class="btn btn-success" style="float: right;">
+          Assign me to this car
+        </a>
+      {% endif %}
+    </h2>
+
+    {% if car.drivers.all %}
+      {% for driver in car.drivers.all %}
+        <div class="driver-info" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+          <p><strong>Username:</strong>
+            <a href="{% url 'taxi:driver-detail' pk=driver.id %}">
+              {{ driver.username }}
+            </a>
+          </p>
+          <p><strong>Full name:</strong> {{ driver.first_name }} {{ driver.last_name }}</p>
+          <p><strong>License number:</strong> {{ driver.license_number }}</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No drivers assigned to this car.</p>
+    {% endif %}
+  </div>
+
+  <div class="mt-3">
+    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">
       Update
     </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">
+      Delete
+    </a>
+  </div>
+
 {% endblock %}

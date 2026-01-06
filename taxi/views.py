@@ -1,17 +1,27 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.contrib.auth import get_user_model
 
-from .models import Driver, Car, Manufacturer
+from .models import Car, Manufacturer
+from .forms import (
+    DriverCreationForm,
+    DriverLicenseUpdateForm,
+    CarForm,
+    ManufacturerForm
+)
+
+User = get_user_model()
 
 
 @login_required
 def index(request):
     """View function for the home page of the site."""
 
-    num_drivers = Driver.objects.count()
+    num_drivers = User.objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
 
@@ -35,15 +45,19 @@ class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
 
 
+class ManufacturerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Manufacturer
+
+
 class ManufacturerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Manufacturer
-    fields = "__all__"
+    form_class = ManufacturerForm
     success_url = reverse_lazy("taxi:manufacturer-list")
 
 
 class ManufacturerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Manufacturer
-    fields = "__all__"
+    form_class = ManufacturerForm
     success_url = reverse_lazy("taxi:manufacturer-list")
 
 
@@ -64,13 +78,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -80,10 +94,41 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = User
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    model = User
+    queryset = User.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = User
+    form_class = DriverCreationForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = User
+    form_class = DriverLicenseUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = User
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def toggle_assign_to_car(request, pk):
+    """Toggle current user's assignment to a car"""
+    driver = request.user
+    car = get_object_or_404(Car, id=pk)
+
+    if car in driver.cars.all():
+        driver.cars.remove(car)
+    else:
+        driver.cars.add(car)
+
+    return HttpResponseRedirect(reverse_lazy("taxi:car-detail", args=[pk]))
