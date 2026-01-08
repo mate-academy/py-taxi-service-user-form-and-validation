@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Driver List
-    </h1>
+    <h1>Driver List</h1>
 
     {% if driver_list %}
     <table class="table">
@@ -27,4 +26,9 @@
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
+
+    <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary rounded-pill">
+      Create
+    </a>
+
 {% endblock %}

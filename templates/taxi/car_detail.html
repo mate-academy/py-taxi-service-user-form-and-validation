@@ -1,22 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+  <h1>{{ car.model }}</h1>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+
+  {% if user.is_authenticated %}
+    <form action="{% url 'taxi:car-assign' pk=car.id %}" method="post">
+      {% csrf_token %}
+
+      {% if user in car.drivers.all %}
+        <button type="" class="btn btn-danger rounded-pill py-1 link-to-page">Delete me from this car</button>
+      {% else %}
+        <button type="" class="btn btn-success rounded-pill py-1 link-to-page">Assign me to this car</button>
+        <input type="hidden" name="drivers" value="{{ user.id }}">
+      {% endif %}
+
+      <input type="hidden" name="model" value="{{ car.model }}">
+      <input type="hidden" name="manufacturer" value="{{ car.manufacturer.id }}">
+
+      {% for driver in car.drivers.all %}
+        {% if driver.id != user.id %}
+          <input type="hidden" name="drivers" value="{{ driver.id }}">
+        {% endif %}
+      {% endfor %}
+
+    </form>
+  {% endif %}
+
+  <h1>
+    Drivers
+  </h1>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+
+  <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+    Delete
+  </a>
+
+  <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
+    Update
+  </a>
 {% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete driver?</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <td>
+          <button type="submit" value="submit" class="btn btn-danger">
+            Yes
+          </button>
+        </td>
+        <td>
+          <button type="button" onclick="history.back()" class="btn btn-secondary">
+            Cancel
+          </button>
+        </td>
+      </tr>
+    </table>
+  </form>
+{% endblock %}
