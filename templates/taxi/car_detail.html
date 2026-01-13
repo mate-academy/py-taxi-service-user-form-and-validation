@@ -6,17 +6,26 @@
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
       Delete
     </a>
-
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px;">
+    <h1>Drivers</h1>
+      <form style="margin: 0;" method="post" action="{% url 'taxi:car-driver-toggle' pk=car.id %}">
+        {% csrf_token %}
+        {% if user in car.drivers.all %}
+          <button type="submit" class="btn btn-danger">Delete me from this car</button>
+        {% else %}
+          <button type="submit" class="btn btn-success">Assign me to this car</button>
+        {% endif %}
+      </form>
+  </div>
+    <hr>
+    <ul>
+      {% for driver in car.drivers.all %}
+        <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+      {% endfor %}
+    </ul>
 {% endblock %}
