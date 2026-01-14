@@ -1,0 +1,5 @@
+{% if user in car.drivers.all %}
+  <a href="{% url 'taxi:car-remove' car.pk %}">Remove me from this car</a>
+{% else %}
+  <a href="{% url 'taxi:car-assign' car.pk %}">Assign me to this car</a>
+{% endif %}
