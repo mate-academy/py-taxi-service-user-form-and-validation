@@ -1,3 +1,8 @@
+from django.core.validators import (
+    RegexValidator,
+    MaxLengthValidator,
+    MinLengthValidator
+)
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -15,7 +20,7 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(max_length=8, unique=True)
 
     class Meta:
         verbose_name = "driver"
