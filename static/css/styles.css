@@ -6,3 +6,12 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.head_driver {
+    font-size: 60px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 25vw;
+
+}
