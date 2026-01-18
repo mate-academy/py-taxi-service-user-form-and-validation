@@ -19,4 +19,13 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+  {% if car in user.cars.all %}
+    <a href="{% url 'taxi:assign-driver' pk=car.id %}" class="btn btn-danger link-to-page">
+      Delete me from this car
+    </a>
+  {% else %}
+    <a href="{% url 'taxi:assign-driver' pk=car.id %}" class="btn btn-success link-to-page">
+      Assign me from this car
+    </a>
+  {% endif %}
 {% endblock %}
