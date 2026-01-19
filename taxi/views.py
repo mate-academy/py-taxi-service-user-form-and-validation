@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverCreateForm, LicenseUpdateForm, CarCreateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,7 +66,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreateForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +89,52 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreateForm
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = LicenseUpdateForm
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "taxi:driver-detail",
+            kwargs={"pk": self.object.pk}
+        )
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+def car_add_driver(request: HttpRequest, pk: int) -> HttpResponseRedirect:
+    car = get_object_or_404(Car, pk=pk)
+    if request.user.is_authenticated:
+        driver = request.user
+        car.drivers.add(driver)
+    return HttpResponseRedirect(
+        reverse_lazy
+        (
+            "taxi:car-detail",
+            kwargs={"pk": car.pk}
+        )
+    )
+
+
+def car_delete_driver(request: HttpRequest, pk: int) -> HttpResponseRedirect:
+    car = get_object_or_404(Car, pk=pk)
+    if request.user.is_authenticated:
+        driver = request.user
+        car.drivers.remove(driver)
+    return HttpResponseRedirect(
+        reverse_lazy
+        (
+            "taxi:car-detail",
+            kwargs={"pk": car.pk}
+        )
+    )

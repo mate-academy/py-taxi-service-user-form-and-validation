@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>You sure that you want to delete {{ driver.first_name }} {{ driver.last_name }}</h1>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    <input type="submit" value="Yes" class="btn btn-danger">
+  </form>
+{% endblock %}
