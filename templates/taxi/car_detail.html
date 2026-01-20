@@ -3,14 +3,17 @@
 {% block content %}
   <h1>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
-
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
   </h1>
+  <form action="" method="post">
+      {% csrf_token %}
+      <div class="d-flex justify-content-end">
+        {% if request.user in car.drivers.all %}
+        <button type="submit" name="remove" class="btn btn-danger">Delete me from this car</button>
+        {% else %}
+        <button type="submit" name="assign" class="btn btn-success">Assign me to this car</button>
+        {% endif %}
+      </div>
+    </form>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
   <hr>
@@ -19,4 +22,11 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+      Delete
+    </a>
+
+    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
+      Update
+    </a>
 {% endblock %}
