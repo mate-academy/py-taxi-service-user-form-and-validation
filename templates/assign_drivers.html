@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Assign drivers to {{ car.model }}</h1>
+  <p>Manufacturer: {{ car.manufacturer.name }} ({{ car.manufacturer.country }})</p>
+
+  <h2>Available Drivers</h2>
+  <form method="POST">
+    {% csrf_token %}
+    
+    <ul>
+      {% for driver in drivers %}
+        <li>
+          {{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})
+          
+          <!-- Якщо водій не призначений, додаємо чекбокс для призначення -->
+          {% if driver in car.drivers.all %}
+            <!-- Флажок для скасування призначення -->
+            <label for="remove_driver_{{ driver.id }}">
+              <input type="checkbox" id="remove_driver_{{ driver.id }}" name="remove_drivers" value="{{ driver.id }}">
+              Delete me from this car
+            </label>
+          {% else %}
+            <!-- Флажок для призначення -->
+            <label for="driver_{{ driver.id }}">
+              <input type="checkbox" id="driver_{{ driver.id }}" name="drivers" value="{{ driver.id }}">
+              Assign me to this car
+            </label>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <input type="submit" value="Assign/Remove Drivers" class="btn btn-primary">
+  </form>
+
+  <br>
+  <a href="{% url 'taxi:car-detail' pk=car.id %}" class="btn btn-secondary">Back to Car Details</a>
+{% endblock %}

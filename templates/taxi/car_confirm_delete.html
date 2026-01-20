@@ -7,4 +7,7 @@
 
     <input type="submit" value="Yes" class="btn btn-danger">
   </form>
+  <form action="{% url 'car_list' %}" method="get">
+    <input type="submit" value="Cancel" class="btn btn-secondary">
+  </form>
 {% endblock %}
