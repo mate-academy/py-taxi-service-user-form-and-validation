@@ -10,6 +10,17 @@
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
+    {% if is_user_driver_of_this_car %}
+  <form action="{% url 'taxi:car-toggle-driver' pk=car.id %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-warning">Remove me from this car</button>
+  </form>
+{% else %}
+  <form action="{% url 'taxi:car-toggle-driver' pk=car.id %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Assign me to this car</button>
+  </form>
+{% endif %}
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
