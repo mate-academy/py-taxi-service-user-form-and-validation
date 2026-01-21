@@ -4,7 +4,8 @@
   <h1>Delete car?</h1>
   <form action="" method="post">
     {% csrf_token %}
-
     <input type="submit" value="Yes" class="btn btn-danger">
+    <a class="btn btn-secondary" href="
+      {% if request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% url 'taxi:car-list' %}{% endif %}">Cancel</a>
   </form>
 {% endblock %}
