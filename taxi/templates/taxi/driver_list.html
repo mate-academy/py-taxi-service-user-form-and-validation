@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Список водителей</h1>
+
+  <a href="{% url 'driver-create' %}">➕ Создать нового водителя</a>
+
+  <ul>
+    {% for driver in driver_list %}
+      <li>
+        <a href="{% url 'driver-detail' driver.pk %}">{{ driver.username }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

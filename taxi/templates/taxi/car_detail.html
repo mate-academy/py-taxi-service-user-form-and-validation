@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Детали машины</h1>
+
+  <p><strong>Производитель:</strong> {{ car.manufacturer.name }}</p>
+  <p><strong>Модель:</strong> {{ car.model }}</p>
+
+  <p><strong>Водители:</strong></p>
+  <ul>
+    {% for driver in car.drivers.all %}
+      <li>{{ driver.get_full_name }} ({{ driver.username }})</li>
+    {% empty %}
+      <li>Нет водителей</li>
+    {% endfor %}
+  </ul>
+
+  <hr>
+
+  {% if user in car.drivers.all %}
+    <a href="{% url 'taxi:remove-me' car.pk %}">🗑️ Удалить меня из машины</a>
+  {% else %}
+    <a href="{% url 'taxi:assign-me' car.pk %}">✅ Назначить меня на машину</a>
+  {% endif %}
+
+  <br><br>
+  <a href="{% url 'taxi:car-list' %}">🔙 Назад к списку машин</a>
+{% endblock %}
+1></h1>

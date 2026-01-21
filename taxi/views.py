@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .models import Driver, Car, Manufacturer
+from .forms import CarForm, DriverCreationForm, DriverLicenseUpdateForm
+from .models import Car, Driver, Manufacturer
 
 
 @login_required
@@ -87,3 +89,44 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+    template_name = "driver/driver_form.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(DeleteView):
+    model = Driver
+    template_name = "driver/driver_confirm_delete.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenseUpdateView(UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "driver/driver_license_form.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def assign_me(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+    car.drivers.add(request.user)
+    return redirect("taxi:car-detail", pk=pk)
+
+
+@login_required
+def remove_me(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+    car.drivers.add(request.user)
+    return redirect("taxi:car-detail", pk=pk)
+
+
+class DriverUpdateView(LoginRequiredMixin, UpdateView):
+    model = Driver
+    fields = ["license_number", "first_name", "last_name", "etc"]
+    template_name = "taxi/driver_form.html"
+    success_url = reverse_lazy("taxi:driver-list")

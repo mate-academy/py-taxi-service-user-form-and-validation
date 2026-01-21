@@ -1,0 +1,15 @@
+{% extends %}
+
+{% block content %}
+ <h1>Детали водителя</h1>
+
+ <p><strong>Имя пользователя:</strong> {{ driver.username }}</p>
+ <p><strong>Имя:</strong> {{ driver.first_name }}</p>
+ <p><strong>Фамилия:</strong> {{ driver.last_name }}</p>
+ <p><strong>Номер лицензии:</strong> {{ driver.license_number }}</p>
+
+ <hr>
+ <a href="{% url 'taxi:driver-license-update' driver.pk %}">✏️ Обновить лицензию</a><br>
+  <a href="{% url 'taxI:driver-delete' driver.pk %}">🗑️ Удалить водителя</a><br>
+  <a href="{% url 'taxi:driver-list' %}">🔙 Назад к списку</a>
+{% endblock %

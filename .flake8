@@ -1,10 +1,15 @@
 [flake8]
+max-line-length = 88
 inline-quotes = "
 ignore = E203, E266, W503, N807, N818, F401
-max-line-length = 79
-max-complexity = 18
-select = B,C,E,F,W,T4,B9,Q0,N8,VNE
 exclude =
-    **migrations
-    venv
-    tests
+    .git,
+    __pycache__,
+    build,
+    dist,
+    .venv,
+    env,
+    venv,
+    */migrations/*,
+    */tests/*,
+    manage.py
