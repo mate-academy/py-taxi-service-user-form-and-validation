@@ -25,6 +25,7 @@ on this page must check that license:
     - Last 5 characters are digits
     
     Also, don't forget to validate the license number on user creation as well.
+
 4. On the driver detail page add buttons that lead to the driver's license updating page and
 driver deletion page.
 5. On car creation page switch to checkboxes widget for assigning drivers to car.

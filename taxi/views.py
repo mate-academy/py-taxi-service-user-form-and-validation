@@ -1,10 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Driver, Car, Manufacturer
+from .forms import DriverCreationForm, CarForm, DriverLicenseUpdateForm
 
 
 @login_required
@@ -64,7 +66,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +89,35 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+    form_class = DriverLicenseUpdateForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    template_name = "taxi/driver_confirm_delete.html"
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverCarAssign(LoginRequiredMixin, generic.View):
+    model = Car
+    form_class = CarForm
+    success_url = reverse_lazy("taxi:car-list")
+
+    def post(self, request: HttpRequest,
+             pk: int, *args, **kwargs) -> HttpResponseRedirect:
+        car = get_object_or_404(Car, pk=pk)
+        if "assign" in request.POST:
+            car.drivers.add(request.user)
+        elif "delete" in request.POST:
+            car.drivers.remove(request.user)
+        return HttpResponseRedirect(reverse_lazy("taxi:car-list"))
