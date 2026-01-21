@@ -12,7 +12,17 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <h1 class="my-4">Drivers
+  {% if request.user not in car.drivers.all %}
+    <form action="{% url 'taxi:car-assign-driver' car.id %}" method="post">
+        <button type="submit" class="btn btn-success link-to-page mt-n4">Assign me to this car</button>
+    </form>
+  {% else %}
+    <form action="{% url 'taxi:car-remove-driver' car.id %}" method="post">
+        <button type="submit" class="btn btn-danger link-to-page mt-n4">Delete me from this car</button>
+    </form>
+  {% endif %}
+  </h1>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
