@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
+  <h1>Username: {{ driver.username }}</h1>
+{#  <p><a href="{% url 'taxi:driver-update-info' driver.id %}">update this driver's info</a></p>#}
+  <p><a style="color: red" href="{% url 'taxi:driver-delete' driver.id %}">delete this driver</a></p>
+  <br>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <p><strong>License number:</strong> {{ driver.license_number }} <a href="{% url 'taxi:driver-update' driver.id %}">update license number</a></p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
