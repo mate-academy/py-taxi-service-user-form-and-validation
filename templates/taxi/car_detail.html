@@ -1,22 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
+  <div class="container mt-4">
+    <h1 class="mb-3">{{ car.model }}</h1>
+    <p class="text-muted">
+      <strong>Manufacturer:</strong> {{ car.manufacturer.name }} ({{ car.manufacturer.country }})
+    </p>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+    <h2 class="mt-4">Drivers
+      {% if user in car.drivers.all %}
+        <a href="{% url 'taxi:driver-delete-from-car' pk=car.id %}" class="btn btn-danger">Delete me from this car</a>
+      {% else %}
+        <a href="{% url 'taxi:driver-add-to-the-car' pk=car.id %}" class="btn btn-primary">Assign me to this car</a>
+      {% endif %}
+    </h2>
+    <hr>
+
+    {% if car.drivers.all %}
+      <div class="row">
+        {% for driver in car.drivers.all %}
+          <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card border-primary shadow-sm rounded-3 bg-light">
+              <div class="card-body">
+                <h5 class="card-title text-primary">
+                  {{ driver.get_full_name }}
+                </h5>
+                <p class="card-text">
+                  <strong>Username:</strong> {{ driver.username }}<br>
+                  <strong>License number:</strong> {{ driver.license_number }}
+                </p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">No drivers assigned to this car.</p>
+    {% endif %}
+
+    <div class="mt-4">
+      <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">
+        Delete
+      </a>
+      <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">
+        Update
+      </a>
+    </div>
+  </div>
 {% endblock %}
