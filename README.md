@@ -15,7 +15,7 @@ Feel free to add more data using admin panel, if needed.
 In this task, you will implement a custom form and django built-in forms to create,
 update or delete content from the site.
 
-1. Implement:
+<!-- 1. Implement:
     - `Create`, `Delete` views for `Driver`, 
 2. On the driver list page create a button that leads to the driver creation page.
 3. Create a driver's license update page. The form - `DriverLicenseUpdateForm`
@@ -26,8 +26,8 @@ on this page must check that license:
     
     Also, don't forget to validate the license number on user creation as well.
 4. On the driver detail page add buttons that lead to the driver's license updating page and
-driver deletion page.
-5. On car creation page switch to checkboxes widget for assigning drivers to car.
+driver deletion page. -->
+<!-- 5. On car creation page switch to checkboxes widget for assigning drivers to car. -->
 6. On the car detail page add button `Assign me to this car`. This button adds 
 current user to car drivers. When current user is already a driver of this car, 
 there should be `Delete me from this car` button that deletes user from car drivers.
