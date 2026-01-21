@@ -6,3 +6,11 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.driver-details {
+    font-weight: 200;
+}
+
+.driver-title {
+    font-weight: 600;
+}
