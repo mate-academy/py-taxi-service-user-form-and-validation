@@ -3,6 +3,16 @@ body {
 }
 
 .link-to-page {
-    float: right;
+    float: right ;
     margin: 0 2px 0 2px;
+}
+.link-to-page-left {
+    float: left;
+    margin: 0 2px 0 2px;
+}
+
+.drivers-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
