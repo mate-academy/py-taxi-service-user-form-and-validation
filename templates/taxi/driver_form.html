@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>{{ object|yesno:"Update driver's license, Create new driver's account" }}</h1>
+
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <a href="{% url 'taxi:driver-list' %}" class="btn btn-danger">Cansel</a>
+    <input type="submit" value="Submit" class="btn btn-primary">
+  </form>
+{% endblock %}
