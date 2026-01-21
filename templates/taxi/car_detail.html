@@ -6,7 +6,6 @@
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
       Delete
     </a>
-
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
@@ -19,4 +18,17 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+  <h1>{{ car.name }}</h1>
+  {% if user in car.drivers.all %}
+    <form action="{% url 'taxi:remove-driver' car.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger link-to-page">Delete me from this car</button>
+    </form>
+  {% else %}
+    <br>
+    <form action="{% url 'taxi:assign-driver' car.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success link-to-page">Assign me to this car</button>
+    </form>
+  {% endif %}
 {% endblock %}
