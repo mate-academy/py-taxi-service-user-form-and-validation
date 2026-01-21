@@ -3,20 +3,30 @@
 {% block content %}
   <h1>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+  </h1>
+  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+<h1 class="d-inline">Drivers</h1>
+<div class="d-inline">
+  {% if request.user not in car.drivers.all %}
+    <form method="post" action="{% url "taxi:assign_car" car.id %}" class="d-inline">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary assign_car">Assign me to this car</button>
+    </form>
+  {% else %}
+    <a class="delete_car btn btn-danger d-inline" href="{% url "taxi:car-delete" pk=car.id %}">Delete me from this car</a>
+  {% endif %}
+</div>
+  <hr>
+<ul>
+  {% for driver in car.drivers.all %}
+    <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+  {% endfor %}
+</ul>
+      <a href="{% url "taxi:car-delete" pk=car.id %}" class="delete_button">
       Delete
     </a>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
+    <a href="{% url "taxi:car-update" pk=car.id %}" class="update_button">
       Update
     </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
 {% endblock %}

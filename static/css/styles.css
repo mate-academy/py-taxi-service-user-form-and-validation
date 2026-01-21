@@ -6,3 +6,58 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.update_button {
+  background-color: #6c757d;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.delete_button {
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #dc3545;
+}
+
+
+.assign_car {
+  background-color: #289406;
+  float: right;
+  text-decoration: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.delete_car {
+  background-color: #dc3545;
+  float: right;
+  text-decoration: none;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.create_driver {
+  background-color: #289406;
+  float: right;
+  text-decoration: none;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+}

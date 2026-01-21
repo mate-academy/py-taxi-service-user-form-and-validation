@@ -22,9 +22,9 @@
         <td>{{ driver.license_number }}</td>
       </tr>
     {% endfor %}
-
     </table>
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
+    <a class="create_driver" href="{%  url "taxi:driver-create" %}">Create</a>
 {% endblock %}
