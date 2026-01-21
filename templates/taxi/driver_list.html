@@ -2,6 +2,9 @@
 
 {% block content %}
     <h1>Driver List
+       <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary link-to-page">
+      Create driver
+    </a>
     </h1>
 
     {% if driver_list %}
@@ -27,4 +30,7 @@
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
+   <div class="d-flex justify-content-start" style="margin-bottom: 10px">
+      <a href="javascript:history.back()" class="btn btn-secondary">Return</a>
+    </div>
 {% endblock %}

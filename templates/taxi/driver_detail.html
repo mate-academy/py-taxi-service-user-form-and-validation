@@ -23,4 +23,14 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+<div>
+  <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary">
+    Update
+  </a>
+  <a  href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger">
+    Delete
+  </a>
+   <a href="{% url 'taxi:driver-list' %}" class="btn btn-primary link-to-page">Prev</a>
+  <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+</div>
 {% endblock %}
