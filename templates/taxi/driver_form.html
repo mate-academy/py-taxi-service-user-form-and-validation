@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+      <div class="content">
+        <div class="form-container">
+          <h2>Add a new Driver</h2  >
+          <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form }}
+            <br>
+            <button type="submit">Save</button>
+          </form>
+        </div>
+      </div>
+{% endblock %}
