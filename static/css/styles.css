@@ -1,8 +1,19 @@
 body {
     margin-top: 20px;
+    background-color: #f8f9fa;
 }
 
 .link-to-page {
     float: right;
     margin: 0 2px 0 2px;
+}
+
+.table {
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    margin-right: 10px;
 }
