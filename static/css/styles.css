@@ -6,3 +6,24 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.border-top {
+    border-top: 1px;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+}
+
+.manufacturer {
+  font-size: 18px; /* Adjust the font size as needed */
+}
+
+.btn-green {
+    background-color: green;
+    color: white;
+}
+
+.btn-red {
+    background-color: red;
+    color: white;
+}
