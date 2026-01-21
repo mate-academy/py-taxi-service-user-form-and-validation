@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Assign yourself as the driver of the car {{ car.model }}?</h2>
+  <form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to assign yourself to this car?</p>
+    <button type="submit" class="btn btn-success">Yes, assign me</button>
+    <a href="{% url 'taxi:car-detail' car.pk %}" class="btn btn-secondary">No</a>
+  </form>
+{% endblock %}
