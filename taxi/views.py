@@ -1,9 +1,11 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverLicenseUpdateForm, DriverLicenseCreationForm, CarForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -64,7 +66,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +89,42 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverLicenseCreationForm
+    success_url = reverse_lazy("taxi:driver-create")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class CarDeleteDriverView(LoginRequiredMixin, generic.View):
+    def post(self, request, *args, **kwargs):
+        car = Car.objects.get(id=kwargs["pk"])
+        user = self.request.user
+        if user in car.drivers.all():
+            car.drivers.remove(user)
+        return HttpResponseRedirect(reverse("taxi:car-detail",
+                                            kwargs={"pk": car.id}))
+
+
+class CarAddDriverView(LoginRequiredMixin, generic.View):
+    def post(self, request, *args, **kwargs):
+        car_id = kwargs.get("pk")
+        car = Car.objects.get(pk=car_id)
+        user = self.request.user
+        if user not in car.drivers.all():
+            car.drivers.add(user)
+
+            return HttpResponseRedirect(reverse("taxi:car-detail",
+                                                kwargs={"pk": car.id}))
