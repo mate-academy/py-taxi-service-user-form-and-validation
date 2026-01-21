@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "crispy_forms",
     "taxi",
+    ...,
+   "crispy_bootstrap4",
+   "crispy_forms",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +62,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "taxi_service.urls"
+CRISPY_TEMPLATE_PACK="bootstrap4"
 
 TEMPLATES = [
     {
