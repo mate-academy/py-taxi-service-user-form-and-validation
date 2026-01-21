@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block content %}
+  <h1 class="header-warning">Do you really want to delete?</h1>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    <div class="buttons-confirm">
+  <a href="{% url 'taxi:driver-detail'  driver.id %}">
+    <button class="btn btn-primary">Return</button>
+  </a>
+  <a href="{% url 'taxi:driver-delete'  driver.id %}">
+    <button type="submit" class="btn btn-danger">Delete</button>
+  </a>
+  </div>
+  </form>
+{% endblock %}
