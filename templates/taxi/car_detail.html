@@ -3,6 +3,21 @@
 {% block content %}
   <h1>
     {{ car.model }}
+
+    {% if user in car.drivers.all() %}
+      <form method="POST" action="{% url 'taxi:delete_from_car' car.id %}">
+        {% csrf_token %}
+        <input class="btn btn-danger" type="submit" value="Delete me from this car">
+      </form>
+    {% else %}
+      <form method="POST" action="{% url 'taxi:assign_to_car' car.id %}">
+        {% csrf_token %}
+        <input class="btn btn-light" type="submit" value="Assign me to this car">
+      </form>
+    {% endif %}
+
+    <br><br>
+
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
       Delete
     </a>
@@ -11,7 +26,9 @@
       Update
     </a>
   </h1>
+
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+
   <h1>Drivers</h1>
   <hr>
   <ul>
