@@ -1,3 +1,6 @@
+import re
+
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -26,6 +29,14 @@ class Driver(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+
+    def clean_license_number(self):
+        if not re.fullmatch(r"^[A-Z]{3}[0-9]{5}$", self.license_number):
+            raise ValidationError("The license number is incorrect.")
+
+    def clean(self):
+        super().clean()
+        self.clean_license_number()
 
 
 class Car(models.Model):
