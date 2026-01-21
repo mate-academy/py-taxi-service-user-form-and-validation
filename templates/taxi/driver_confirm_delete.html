@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <p style="font-size: 25px">
+    <strong>Delete</strong> {{ object.first_name }} {{ object.last_name }}?
+  </p>
+  <form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete" class="btn btn-danger">
+  </form>
+{% endblock %}
