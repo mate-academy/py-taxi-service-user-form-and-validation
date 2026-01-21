@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1> Delete Driver</h1>
+  <p>Are you sure you want to delete {{ driver.username }} driver?</p>
+  <form action="" method="post" >
+  {% csrf_token %}
+  {{ form|crispy }}
+  <input type="submit" value="Yes, delete" class="btn btn-danger">
+  {% if request.META.HTTP_REFERER %}
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Cancel</a>
+  {% else %}
+    <a href="{% url 'taxi:car-list' %}" class="btn btn-secondary">Cancel</a>
+  {% endif %}
+  </form>
+{% endblock %}
