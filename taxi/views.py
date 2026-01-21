@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 from .models import Driver, Car, Manufacturer
+from django.views import View
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import DriverCreationForm, DriverLicenseUpdateForm
 
 
 @login_required
@@ -87,3 +88,47 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(View):
+    def get(self, request):
+        form = DriverCreationForm()
+        return render(request,
+                      "taxi/driver_list.html", {"form": form})
+
+    def post(self, request):
+        form = DriverCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("taxi:driver-list")
+        return render(request,
+                      "taxi/driver_list.html", {"form": form})
+
+
+class DriverUpdateView(View):
+    def get(self, request, pk):
+        driver = get_object_or_404(Driver, pk=pk)
+        form = DriverLicenseUpdateForm(instance=driver)
+        return render(request, "taxi/driver_update.html",
+                      {"form": form, "driver": driver})
+
+    def post(self, request, pk):
+        driver = get_object_or_404(Driver, pk=pk)
+        form = DriverLicenseUpdateForm(request.POST, instance=driver)
+        if form.is_valid():
+            form.save()
+            return redirect("taxi:driver-list")
+        return render(request, "taxi/driver_update.html",
+                      {"form": form, "driver": driver})
+
+
+class DriverDeleteView(View):
+    def get(self, request, pk):
+        driver = get_object_or_404(Driver, pk=pk)
+        return render(request, "taxi/driver_delete.html",
+                      {"driver": driver})
+
+    def post(self, request, pk):
+        driver = get_object_or_404(Driver, pk=pk)
+        driver.delete()
+        return redirect("taxi:driver-list")
