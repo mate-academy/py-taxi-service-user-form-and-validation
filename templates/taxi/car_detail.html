@@ -1,22 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
+  <div class="col mb-2">
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">{{ car.model }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ car.manufacturer.name }}</h6>
+      <hr style="border: 0.01cm solid black;">
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="card-text mb-0">Drivers:</p>
+          <a href="{% url 'taxi:car-add-driver' car.pk %}" class="btn btn-outline-primary btn-sm">
+            {% if request.session.is_driver %}
+              Delete me
+            {% else %}
+              Assign me
+            {% endif %}
+          </a>
+
+      </div>
+      <div class="mt-2">
+        {% for driver in car.drivers.all %}
+          {{ driver.first_name }} {{ driver.last_name }} <br>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="col-sm-4 mb-2">
+    <a href="{% url "taxi:car-update" car.id %}"
+       class="btn btn-outline-primary">
+      Update Car
     </a>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
+    <a href="{% url "taxi:car-delete" car.id %}"
+       class="btn btn-outline-primary">
+      Delete Car
     </a>
-  </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
-  <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
+  </div>
+
 {% endblock %}

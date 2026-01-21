@@ -1,9 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.contrib import messages
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+import logging
+from .forms import DriverCreationForm, DriverLicenseUpdateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -62,6 +65,25 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
 
+@login_required
+def car_add_driver(request: HttpRequest, car_pk: int) -> HttpResponse:
+    car = get_object_or_404(Car, pk=car_pk)
+    drivers = car.drivers.all()
+
+    if request.user in drivers:
+        car.drivers.remove(request.user)
+        is_driver = False
+    else:
+        car.drivers.add(request.user)
+        is_driver = True
+    car.save()
+
+    # Передаємо змінну is_driver в сесію
+    request.session["is_driver"] = is_driver
+
+    return redirect("taxi:car-detail", pk=car_pk)
+
+
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
     fields = "__all__"
@@ -87,3 +109,19 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriversCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreationForm
+
+
+class DriversUpdateLicenseNumberView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_form.html"
+
+
+class DriversDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")

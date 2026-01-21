@@ -1,26 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
-
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
-
-  <div class="ml-3">
-    <h4>Cars</h4>
-
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
+  <div class="col mb-2">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">
+          <strong>
+            {{ driver.first_name }} {{ driver.last_name }}</strong>
+          <br>
+          License number: {{ driver.license_number }}
+        </h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          {{ driver.username }}
+        </h6>
+        <hr style="border: 0.01cm solid black;">
+        <p class="card-text">
+          Cars: <br>
+          {% for car in driver.cars.all %}
+            {{ car.model }}<br>
+          {% endfor %}
+        </p>
+      </div>
+    </div>
   </div>
+
+  <div class="col-sm-4 mb-2">
+
+    <a href="{% url "taxi:driver-update" driver.id %}"
+       class="btn btn-outline-primary">
+      Update driver
+    </a>
+
+    <a href="{% url "taxi:driver-delete" driver.id %}"
+       class="btn btn-outline-primary">
+      Delete driver
+    </a>
+  </div>
+
 {% endblock %}
