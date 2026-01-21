@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h1>
@@ -6,7 +7,15 @@
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
       Delete
     </a>
-
+    <form action="{% url "taxi:toggle-car-assign" pk=car.id %}" method="post" novalidate>
+      {% csrf_token %}
+      {{ form|crispy }}
+      {% if user in car.drivers.all %}
+        <input type="submit" value="Delete me from this car" class="btn btn-danger">
+      {% else %}
+        <input type="submit" value="Assign me to this car" class="btn btn-success">
+      {% endif %}
+    </form>
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
