@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -15,7 +16,7 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(max_length=8, unique=True)
 
     class Meta:
         verbose_name = "driver"
@@ -26,6 +27,21 @@ class Driver(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+
+    def clean(self):
+        if (
+                len(self.license_number) != 8
+                or not self.license_number[:3].isalpha()
+                or not self.license_number[-5:].isdigit()
+        ):
+            raise ValidationError(
+                "License number must start "
+                "with 3 uppercase letters followed by 5 digits."
+            )
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
 
 class Car(models.Model):
