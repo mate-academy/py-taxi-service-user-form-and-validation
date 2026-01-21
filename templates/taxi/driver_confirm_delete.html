@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete driver?</h1>
+  <p>Are you sure you really want to delete this driver?</p>
+  <p><strong>All driver`s dependencies will also be deleted!</strong></p>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+
+    <input type="submit" value="Yes, Delete this driver" class="btn btn-danger">
+  </form>
+{% endblock %}
