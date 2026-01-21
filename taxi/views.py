@@ -1,9 +1,14 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import (
+    DriverCreateForm,
+    DriverLicenseUpdateForm,
+    CarCreateForm
+)
 from .models import Driver, Car, Manufacturer
 
 
@@ -26,6 +31,20 @@ def index(request):
     }
 
     return render(request, "taxi/index.html", context=context)
+
+
+@login_required
+def driver_to_car(request, car_id, param, user_id):
+    car_obj = get_object_or_404(Car, id=car_id)
+    driver_obj = get_object_or_404(Driver, id=user_id)
+
+    if car_obj and driver_obj and param == "assign":
+        driver_obj.cars.add(car_obj)
+
+    elif car_obj and driver_obj and param == "delete":
+        driver_obj.cars.remove(car_obj)
+
+    return redirect("taxi:car-detail", car_id)
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -64,13 +83,13 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreateForm
     success_url = reverse_lazy("taxi:car-list")
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreateForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +106,21 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_license_update_form.html"
+    success_url = reverse_lazy("taxi:driver-list")
