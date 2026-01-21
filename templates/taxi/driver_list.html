@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Driver List
-    </h1>
+    <h1>Driver List</h1>
+      <form action="{% url 'taxi:driver-create'%}" method="get">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
 
     {% if driver_list %}
     <table class="table">
