@@ -3,6 +3,17 @@ body {
 }
 
 .link-to-page {
-    float: right;
     margin: 0 2px 0 2px;
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+.up {
+    margin-top: -50px;
 }
