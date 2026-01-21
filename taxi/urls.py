@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import assign_me_to_car, delete_me_from_car
 
 from .views import (
     index,
@@ -9,6 +10,9 @@ from .views import (
     CarDeleteView,
     DriverListView,
     DriverDetailView,
+    DriverCreateView,
+    DriverDeleteView,
+    DriverLicenseUpdateView,
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
@@ -46,6 +50,24 @@ urlpatterns = [
     path(
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
     ),
+    path(
+        "drivers/create/", DriverCreateView.as_view(), name="driver-create"
+    ),
+    path(
+        "drivers/<int:pk>/delete/", DriverDeleteView.as_view(), name="driver-delete"
+    ),
+    path(
+        "drivers/<int:pk>/update_license/",
+        DriverLicenseUpdateView.as_view(),
+        name="driver-license-update"
+    ),
+    path(
+        "cars/<int:pk>/assign_me/", assign_me_to_car, name="car-assign-me"
+    ),
+    path(
+        "cars/<int:pk>/delete_me/", delete_me_from_car, name="car-delete-me"
+    ),
+
 ]
 
 app_name = "taxi"
