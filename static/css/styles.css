@@ -4,5 +4,9 @@ body {
 
 .link-to-page {
     float: right;
+    margin: 0 2px 100px 2px;
+}
+
+.link-to-page-left {
     margin: 0 2px 0 2px;
 }
