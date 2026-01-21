@@ -13,10 +13,26 @@
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
-  <hr>
-  <ul>
+
+
+  <form action="{% url "taxi:car-driver-switch" pk=car.id %}" method="post">
+    {% csrf_token %}
+    {% if user in car.drivers.all %}
+      <input class="btn btn-danger" type="submit" value="Delete me from this car">
+    {% else %}
+      <input class="btn btn-success" type="submit" value="Assign me to this car">
+    {% endif %}
+  </form>
+
+
+  <hr class="mb-0">
+  <ul class="list-group list-group-flush">
     {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+      <li class="list-group-item">
+        <strong>Username: </strong>{{ driver.username }}<br>
+        <strong>Full name: </strong>{{ driver.first_name }} {{ driver.last_name }}<br>
+        <strong>License number: </strong>{{ driver.license_number }}
+      </li>
     {% endfor %}
   </ul>
 {% endblock %}
