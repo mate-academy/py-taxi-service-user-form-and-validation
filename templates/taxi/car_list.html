@@ -3,15 +3,15 @@
 {% block content %}
   <h1>
     Car list
-    <a href="{% url 'taxi:car-create' %}" class="btn btn-primary link-to-page">
-      Create
-    </a>
+    <span class="position-relative pl-5">
+      <a href="{% url 'taxi:car-create' %}" class="btn btn-primary position-relative ml-5">Create New car</a>
+    </span>
   </h1>
   {% if car_list %}
-    <ul>
+    <ul class="list-group">
       {% for car in car_list %}
-        <li>
-          <a href="{% url "taxi:car-detail" pk=car.id %} ">{{ car.id }}</a>
+        <li class="list-group-item">
+          <a class="btn btn-outline-primary btn-sm px-4 mr-2" href="{% url 'taxi:car-detail' pk=car.id %}">id: {{ car.id }}</a>
           {{ car.model }} ({{ car.manufacturer.name }})
         </li>
       {% endfor %}
@@ -19,4 +19,5 @@
   {% else %}
     <p>There are no cars in taxi</p>
   {% endif %}
+  <hr>
 {% endblock %}
