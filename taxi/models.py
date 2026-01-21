@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.forms import forms
 from django.urls import reverse
 
 
@@ -26,6 +27,21 @@ class Driver(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+
+    def clean_license_number(self):
+        if len(self.license_number) != 8:
+            raise forms.ValidationError(
+                "The license must be 8 characters long"
+            )
+        if (not self.license_number[:3].isupper()
+                or not self.license_number[:3].isalpha()):
+            raise forms.ValidationError(
+                "The first 3 characters must be uppercase letters"
+            )
+        if not self.license_number[-5:].isdigit():
+            raise forms.ValidationError(
+                "The last 5 characters must be digits"
+            )
 
 
 class Car(models.Model):
