@@ -6,5 +6,8 @@
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
+    <button class="btn btn-success">
+      <a style="color: white" href="{% url "taxi:manufacturer-list" %}">Cancel</a>
+    </button>    
   </form>
 {% endblock %}
