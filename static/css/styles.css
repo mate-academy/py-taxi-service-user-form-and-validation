@@ -2,6 +2,12 @@ body {
     margin-top: 20px;
 }
 
+.title-position {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .link-to-page {
     float: right;
     margin: 0 2px 0 2px;
