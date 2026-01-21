@@ -19,4 +19,19 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+  
+  <hr>
+  {% if user in car.drivers.all %}
+    <form method="post" action="{% url 'taxi:car-detail' pk=car.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="remove" value="true">
+      <button type="submit" class="btn btn-danger">Delete me from this car</button>
+    </form>
+  {% else %}
+    <form method="post" action="{% url 'taxi:car-detail' pk=car.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="assign" value="true">
+      <button type="submit" class="btn btn-primary">Assign me to this car</button>
+    </form>
+  {% endif %}
 {% endblock %}
