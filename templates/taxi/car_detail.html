@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_filters %}
 {% block content %}
   <h1>
     {{ car.model }}
@@ -18,5 +18,19 @@
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
-  </ul>
+  </ul> 
+  
+  <form action="" method="post" novalidate>    
+    {% csrf_token %}
+
+    {% if user not in car.drivers.all %}
+    <p>assign me to this car</p>
+    {{ form.assign_me_to_this_car }}
+    {% else %}
+    <p>remove me from this car</p>
+    {{ form.remove_me_from_this_car }}   
+    {% endif %}
+    <input type="submit" value="Submit" class="btn btn-primary">
+  </form>
+    
 {% endblock %}
