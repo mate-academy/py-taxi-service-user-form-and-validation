@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{% if form.instance.pk %}Update Driver{% else %}Create Driver{% endif %}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">
+      {% if form.instance.pk %}Update{% else %}Create{% endif %}
+    </button>
+  </form>
+
+  <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary">Back to Driver List</a>
+{% endblock %}
