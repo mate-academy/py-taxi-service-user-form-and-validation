@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.forms import ValidationError
 from django.urls import reverse
 
 
@@ -20,6 +21,21 @@ class Driver(AbstractUser):
     class Meta:
         verbose_name = "driver"
         verbose_name_plural = "drivers"
+
+    def clean(self):
+        license_number = self.license_number
+
+        if len(license_number) != 8:
+            raise ValidationError("License number must be exactly 8 characters long.")
+
+        letters = license_number[:3]
+        digits = license_number[3:]
+
+        if not letters.isalpha() or not letters.isupper():
+            raise ValidationError("First 3 characters must be uppercase letters.")
+
+        if not digits.isdigit():
+            raise ValidationError("Last 5 characters must be digits.")
 
     def __str__(self):
         return f"{self.username} ({self.first_name} {self.last_name})"
