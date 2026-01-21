@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if driver in car.drivers.all %}
+    <h1>Driver {{ driver.username }} assigned to car {{ car.model }}.</h1>
+  {% else %}
+    <h1>Driver {{ driver.username }} deleted from car {{ car.model }}.</h1>
+  {% endif %}
+  <a class="btn btn-secondary" href="{% url "taxi:car-list" %}">Back to car list</a>
+{% endblock %}

@@ -1,3 +1,5 @@
+from typing import Type
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -10,7 +12,7 @@ class Manufacturer(models.Model):
     class Meta:
         ordering = ["name"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} {self.country}"
 
 
@@ -21,10 +23,10 @@ class Driver(AbstractUser):
         verbose_name = "driver"
         verbose_name_plural = "drivers"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.username} ({self.first_name} {self.last_name})"
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> object:
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
 
 
@@ -33,5 +35,5 @@ class Car(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
     drivers = models.ManyToManyField(Driver, related_name="cars")
 
-    def __str__(self):
+    def __str__(self) -> Type["Car"]:
         return self.model
