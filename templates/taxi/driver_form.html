@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>
+    {% if object.pk %}
+      Update Driver License
+    {% else %}
+      Create New Driver
+    {% endif %}
+  </h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">
+      {% if object.pk %}Update{% else %}Create{% endif %}
+    </button>
+  </form>
+
+  {% if object.pk %}
+    <a href="{% url 'taxi:driver-detail' pk=object.pk %}" class="btn btn-secondary mt-3">Back to Driver</a>
+  {% else %}
+    <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary mt-3">Back to Driver List</a>
+  {% endif %}
+{% endblock %}
