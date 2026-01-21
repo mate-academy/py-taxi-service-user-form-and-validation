@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Remove Confirmation</h2>
+  <p>Are you sure you want to un-assign yourself from the car {{ car.model }}?</p>
+
+  <form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Yes, remove me" class="btn btn-danger">
+    <a href="{% url 'taxi:car-detail' pk=car.pk %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
