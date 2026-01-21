@@ -23,4 +23,6 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+  <a role = "button" href = "{% url "taxi:driver-update" pk=user.id %}" class = "btn btn-secondary">Update</a>
+  <a role = "button" href = "{% url "taxi:driver-delete" pk=user.id %}" class = "btn btn-danger">Delete</a>
 {% endblock %}
