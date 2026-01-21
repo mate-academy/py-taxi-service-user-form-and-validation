@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Are you really want no delete <strong>{{ driver.username }}</strong></h2>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-sm btn-danger" value="DELETE">
+        <a href="{% url 'taxi:driver-detail' pk=driver.id %}"
+           class="btn btn-sm btn-warning">
+            Cancel
+        </a>
+    </form>
+{% endblock %}
