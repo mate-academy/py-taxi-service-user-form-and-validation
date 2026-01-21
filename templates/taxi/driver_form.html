@@ -1,0 +1,13 @@
+{% block content %}
+  {% if object.pk %}
+    <h1>Update Driver</h1>
+  {% else %}
+    <h1>Create Driver</h1>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{% endblock %}
