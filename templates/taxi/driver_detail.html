@@ -2,18 +2,31 @@
 
 {% block content %}
   <h1>
-    Username: {{ driver.username }}
+    Username: {{ object.username }}
+      <a href="{% url 'taxi:driver-update' object.pk %}" class="btn btn-warning">Update License</a>
+      <a href="{% url 'taxi:driver-delete' object.pk %}" class="btn btn-danger">Delete Driver</a>
   </h1>
+  {% if driver_list %}
+    <form method="post" action="{% url 'taxi:remove-from-car' object.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Delete me from this car</button>
+    </form>
+  {% else %}
+    <form method="post" action="{% url 'taxi:add-to-car' object.pk %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success">Assign me to this car</button>
+    </form>
+  {% endif %}
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+  <p><strong>First name:</strong> {{ object.first_name }}</p>
+  <p><strong>Last name:</strong> {{ object.last_name }}</p>
+  <p><strong>License number:</strong> {{ object.license_number }}</p>
+  <p><strong>Is staff:</strong> {{ object.is_staff }}</p>
 
   <div class="ml-3">
     <h4>Cars</h4>
 
-    {% for car in driver.cars.all %}
+    {% for car in object.cars.all %}
         <hr>
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
