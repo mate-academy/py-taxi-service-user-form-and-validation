@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -26,6 +27,18 @@ class Driver(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+
+    def clean(self):
+        if len(self.license_number) != 8:
+            raise ValidationError("License Number must be 8 characters long")
+
+        if not (self.license_number[:3].isalpha()
+                and self.license_number[:3].isupper()):
+            raise ValidationError("First 3 characters "
+                                  "must be uppercase letters.")
+
+        if not self.license_number[3:].isdigit():
+            raise ValidationError("Last 5 characters must be digits.")
 
 
 class Car(models.Model):
