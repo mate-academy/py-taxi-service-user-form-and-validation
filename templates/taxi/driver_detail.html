@@ -23,4 +23,8 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+  <div>
+    <p><button onclick="window.location.href='{% url 'taxi:driver-update' driver.id %}'" class="btn btn-primary">Update License</button></p>
+    <p><button onclick="window.location.href='{% url 'taxi:driver-delete' driver.id %}'" class="btn btn-danger">Delete driver</button></p>
+  </div>
 {% endblock %}
