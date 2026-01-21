@@ -31,7 +31,9 @@ class Driver(AbstractUser):
 class Car(models.Model):
     model = models.CharField(max_length=255)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
-    drivers = models.ManyToManyField(Driver, related_name="cars")
+    from django.contrib.auth import get_user_model
+
+    drivers = models.ManyToManyField(get_user_model(), related_name="cars")
 
     def __str__(self):
         return self.model
