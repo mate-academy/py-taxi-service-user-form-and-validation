@@ -3,17 +3,37 @@
 {% block content %}
   <h1>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
-      Delete
-    </a>
-
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
-      Update
-    </a>
   </h1>
+  <br>
+  <a href="{% url 'taxi:car-update' pk=car.id %}"
+     class="btn btn-primary float-left">
+    Update
+  </a>
+  <a href="{% url 'taxi:car-delete' pk=car.id %}"
+     class="btn btn-danger float-left">
+    Delete
+  </a>
+  <br><br>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
-  <hr>
+  <br>
+
+
+
+{% if user.is_authenticated %}
+    {% if car in user.cars.all %}
+        <form action="{% url 'taxi:car-change-driver-assignment' car.id %}" method="post" class="mt-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">This is no longer my car</button>
+        </form>
+    {% else %}
+        <form action="{% url 'taxi:car-change-driver-assignment' car.id %}" method="post" class="mt-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">This is my car!</button>
+        </form>
+    {% endif %}
+{% endif %}
+
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
