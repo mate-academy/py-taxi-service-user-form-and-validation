@@ -1,26 +1,32 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
+    <h1>Driver details: {{ driver.username }}</h1>
+    <p>Name: {{ driver.first_name }}</p>
+    <p>Last name: {{ driver.last_name }}</p>
+    <p>Email: {{ driver.email }}</p>
+    <p>License: {% if driver.license_number %}{{ driver.license_number }}{% else %}Not specified{% endif %}</p>
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+    {% if user.is_authenticated %}
+        {% if user == driver or user.is_staff %}
+          <a href="{% url "taxi:driver-license-update" pk=driver.pk %}" class="btn btn-warning mb-3">Update license</a>
+          <a href="{% url "taxi:driver-delete" pk=driver.pk %}" class="btn btn-danger mb-3">Delete driver</a>
+        {% endif %}
+    {% endif %}
 
-  <div class="ml-3">
-    <h4>Cars</h4>
+    <h3>Cars that drive {{ driver.username }}:</h3>
+    {% if driver.cars.all %}
+        <ul class="list-group">
+            {% for car in driver.cars.all %}
+                <li class="list-group-item">
+                    <a href="{{ car.get_absolute_url }}">{{ car.manufacturer.name }} {{ car.model }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>{{ driver.username }} currently does not drive any car.</p>
+    {% endif %}
 
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
-  </div>
-{% endblock %}
+    <a href="{% url "taxi:driver-list" %}" class="btn btn-secondary mt-3">Return to the list of drivers</a>
+{% endblock content %}
