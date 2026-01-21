@@ -5,7 +5,25 @@
   <h1>{{ object|yesno:"Update,Create" }} car</h1>
   <form action="" method="post" novalidate>
     {% csrf_token %}
-    {{ form|crispy }}
+    
+    {{ form.non_field_errors }}
+    <div class="form-group">
+      {{ form.model|as_crispy_field }}
+    </div>
+    <div class="form-group">
+      {{ form.manufacturer|as_crispy_field }}
+    </div>
+    
+    <div class="form-group">
+      <label>Add Drivers</label>
+      {% for driver in form.drivers %}
+        <div class="form-check">
+          <input type="checkbox" name="{{ driver.name }}" value="{{ driver.choice_value }}" id="{{ driver.id_for_label }}" class="form-check-input">
+          <label for="{{ driver.id_for_label }}" class="form-check-label">{{ driver.choice_label }}</label>
+        </div>
+      {% endfor %}
+      {{ form.drivers.errors }}
+    </div>
 
     <input type="submit" value="Submit" class="btn btn-primary">
   </form>

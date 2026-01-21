@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Are you sure you want to delete this driver?</h1>
+  
+  <p><strong>Username:</strong> {{ object.username }}</p>
+  <p><strong>First name:</strong> {{ object.first_name }}</p>
+  <p><strong>Last name:</strong> {{ object.last_name }}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Confirm delete" class="btn btn-danger">
+    <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
