@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 
+# from taxi.validators import validate_driver_license
+
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=255, unique=True)
