@@ -6,3 +6,60 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.car-title {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center; /* Center the title */
+    color: #333; /* Dark gray color */
+}
+
+.button-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center the buttons */
+    gap: 10px; /* Space between buttons */
+    margin-bottom: 20px; /* Space below the buttons */
+}
+
+button, .link-to-page {
+    padding: 10px 20px; /* Padding for buttons */
+    font-size: 16px; /* Font size */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Center text in button */
+    text-decoration: none; /* Remove underline from links */
+    transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+}
+
+.btn-primary {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: #fff; /* White text */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: #fff; /* White text */
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Darker shade on hover */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    color: #fff; /* White text */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker shade on hover */
+}
+
+.link-to-page {
+    display: inline-block; /* Make links behave like buttons */
+    padding: 10px 20px; /* Padding for links */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+}
