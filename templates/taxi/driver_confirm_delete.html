@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <p class="alert alert-warning">Are you sure want to delete this field?</p>
+  <form action="" method="post">
+  {% csrf_token %}
+    <input type="submit" value="Yes, I agree" class="btn btn-danger">
+  <a href="{% url 'taxi:driver-detail' object.pk %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
