@@ -1,8 +1,68 @@
 body {
     margin-top: 20px;
+    background-color: aliceblue;
 }
 
 .link-to-page {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.sidebar-nav {
+  background: #0f172a;
+  border-radius: 8px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.sidebar-nav .list-group-item {
+  background: transparent;
+  border: none;
+  padding: 10px 15px;
+  color: #e5e7eb;
+}
+
+.sidebar-nav .list-group-item.active,
+.sidebar-nav .list-group-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-nav .nav-link {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-nav .nav-link:hover {
+  color: #fff;
+}
+
+.nav-section {
+  color: #9ca3af;
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 0 15px;
+}
+
+.user-info {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.user-info .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #22d3ee;
+  color: #0c4a6e;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #fff;
+}
+

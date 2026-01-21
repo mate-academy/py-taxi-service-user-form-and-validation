@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+from django.core.validators import RegexValidator
+from .constants import LICENSE_PATTERN, LICENSE_MESSAGE
 
 
 class Manufacturer(models.Model):
@@ -11,18 +13,25 @@ class Manufacturer(models.Model):
         ordering = ["name"]
 
     def __str__(self):
-        return f"{self.name} {self.country}"
+        return f"{self.name} ({self.country})"
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(
+        max_length=8,
+        unique=True,
+        help_text="3 uppercase letters followed by 5 digits (e.g. ABC12345).",
+        validators=[
+            RegexValidator(regex=LICENSE_PATTERN, message=LICENSE_MESSAGE),
+        ],
+    )
 
     class Meta:
         verbose_name = "driver"
         verbose_name_plural = "drivers"
 
     def __str__(self):
-        return f"{self.username} ({self.first_name} {self.last_name})"
+        return f"{self.username} ({self.license_number})"
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
