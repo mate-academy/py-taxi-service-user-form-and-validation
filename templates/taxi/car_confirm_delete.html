@@ -1,10 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete car?</h1>
-  <form action="" method="post">
-    {% csrf_token %}
+  <h1>Delete car {{ car.model }}?</h1>
+    <div class="row">
+      <div class="col-1">
+        <a href="{% url 'taxi:car-detail' car.id %}" class="btn btn-secondary">Cancel</a>
+      </div>
+      <div class="col-1 col-offset-1">
+        <form action="" method="post">
+          {% csrf_token %}
 
-    <input type="submit" value="Yes" class="btn btn-danger">
-  </form>
+          <input type="submit" value="Yes" class="btn btn-danger">
+        </form>
+      </div>
+    </div>
 {% endblock %}
