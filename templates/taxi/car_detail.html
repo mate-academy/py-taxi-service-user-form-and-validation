@@ -1,5 +1,3 @@
-{% extends "base.html" %}
-
 {% block content %}
   <h1>
     {{ car.model }}
@@ -12,6 +10,7 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+  
   <h1>Drivers</h1>
   <hr>
   <ul>
@@ -19,4 +18,11 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+  
+  <hr>
+  {% if user in car.drivers.all %}
+    <a href="{% url 'taxi:car-toggle-driver' pk=car.id %}" class="btn btn-danger">Delete me from this car</a>
+  {% else %}
+    <a href="{% url 'taxi:car-toggle-driver' pk=car.id %}" class="btn btn-primary">Assign me to this car</a>
+  {% endif %}
 {% endblock %}
