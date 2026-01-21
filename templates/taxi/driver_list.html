@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Driver List
+        <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary float-end">Create Driver</a>
     </h1>
 
     {% if driver_list %}
@@ -22,7 +23,6 @@
         <td>{{ driver.license_number }}</td>
       </tr>
     {% endfor %}
-
     </table>
     {% else %}
       <p>There are no drivers in the service.</p>
