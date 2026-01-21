@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete account?</h1>
+  <p><i>You wouldn't be possible to renew account</i></p>
+  <form action="{% url 'taxi:driver-delete' pk=user.id %}" method="post">
+    {% csrf_token %}
+
+    <input type="submit" value="Yes, delete" class="btn btn-danger">
+  </form>
+{% endblock %}
