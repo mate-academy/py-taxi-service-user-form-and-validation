@@ -7,4 +7,7 @@
 
     <input type="submit" value="Yes" class="btn btn-danger">
   </form>
+  <form action="{% url 'taxi:driver-detail' pk=driver.pk %}" method="get">
+    <input class="btn btn-info" type="submit" value="Cancel">
+  </form>
 {% endblock %}
