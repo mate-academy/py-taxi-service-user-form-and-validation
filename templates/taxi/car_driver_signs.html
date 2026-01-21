@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Driver {{ text }}</h1>
+
+  <p>Are you sure you want to {{ text }} from {{ car.model }}?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-primary" type="submit">Confirm</button>
+  </form>
+{% endblock %}
