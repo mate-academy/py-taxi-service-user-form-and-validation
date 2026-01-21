@@ -3,7 +3,8 @@
 {% block content %}
     <h1>Driver List
     </h1>
-
+    <a href="{% url "driver_license_update" driver.pk %}" class="btn btn-warning">Update License</a>
+    <a href="{% url "driver_delete" driver.pk %}" class="btn btn-danger">Delete Driver</a>
     {% if driver_list %}
     <table class="table">
       <tr>
@@ -26,5 +27,6 @@
     </table>
     {% else %}
       <p>There are no drivers in the service.</p>
+      <a href="{% url "driver_create" %}" class="btn btn-primary">Create New Driver</a>
     {% endif %}
 {% endblock %}

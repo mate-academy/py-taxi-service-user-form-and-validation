@@ -2,6 +2,14 @@
 
 {% block content %}
   <h1>
+    <form method="post">
+    {% csrf_token %}
+    {% if user in car.drivers.all %}
+        <button type="submit" name="remove" class="btn btn-danger">Delete me from this car</button>
+    {% else %}
+        <button type="submit" name="assign" class="btn btn-success">Assign me to this car</button>
+    {% endif %}
+    </form>
     {{ car.model }}
     <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
       Delete
