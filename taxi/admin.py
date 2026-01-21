@@ -1,10 +1,13 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Driver, Car, Manufacturer
+
+from taxi.forms import DriverCreationForm
+from taxi.models import Driver, Car, Manufacturer
 
 
 @admin.register(Driver)
 class DriverAdmin(UserAdmin):
+    add_form = DriverCreationForm
     list_display = UserAdmin.list_display + ("license_number",)
     fieldsets = UserAdmin.fieldsets + (
         (("Additional info", {"fields": ("license_number",)}),)
@@ -18,6 +21,7 @@ class DriverAdmin(UserAdmin):
                         "first_name",
                         "last_name",
                         "license_number",
+                        "password",
                     )
                 },
             ),
