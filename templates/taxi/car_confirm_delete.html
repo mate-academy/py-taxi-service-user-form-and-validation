@@ -2,9 +2,17 @@
 
 {% block content %}
   <h1>Delete car?</h1>
+
+  <div class="delete-confirmation">
+
   <form action="" method="post">
     {% csrf_token %}
-
-    <input type="submit" value="Yes" class="btn btn-danger">
+    <input type="submit" value="Yes, delete!" class="btn btn-danger">
   </form>
+
+    <button class="btn btn-primary">
+      <a href="{% url 'taxi:car-detail' pk=car.pk %}">No, cancel</a>
+    </button>
+  </div>
+
 {% endblock %}
