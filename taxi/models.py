@@ -1,5 +1,8 @@
-from django.db import models
+import re
+
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.db import models
 from django.urls import reverse
 
 
@@ -26,6 +29,17 @@ class Driver(AbstractUser):
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+
+    def clean(self):
+        super().clean()
+        self.validate_driver_license()
+
+    def validate_driver_license(self):
+        if not re.match(r"^[A-Z]{3}\d{5}$", self.license_number):
+            raise ValidationError(
+                "Driver license must consist of exactly 8 characters: "
+                "the first 3 are uppercase letters, and the last 5 are digits."
+            )
 
 
 class Car(models.Model):

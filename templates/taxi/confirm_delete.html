@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Do you really want to delete {{ object_type }} {{ object }}?</h1>
+  <p style="color: red">All related data can be erased as well!</p>
+  <form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Yes" class="btn btn-danger">
+    <a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
