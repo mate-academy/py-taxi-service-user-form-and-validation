@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Are you sure that you want to delete driver?</h1>
+  <br><br>
+  <form action="" method="post">
+    {% csrf_token %}
+
+    <input type="submit" value="Yes" class="btn btn-danger">
+    <a class="btn btn-secondary" href="{{ previous }}" role="button">No</a>
+  </form>
+{% endblock %}
