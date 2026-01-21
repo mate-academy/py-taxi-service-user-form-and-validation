@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete Driver</h1>
+
+  <p> Do you really want to delete the Driver</p>
+    <strong>{{ driver.username }} <p>{{ driver.first_name }} {{ driver.last_name }}</p></strong>
+
+  <form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Yes delete" class="btn-danger">
+    <input class="col-sm-4 control-label" type=button value="Cancel / Return" onClick="javascript:history.go(-1);">
+  </form>
+  <br>
+
+{% endblock %}
