@@ -1,8 +1,16 @@
 body {
     margin-top: 20px;
+    background-color: papayawhip;
+    color: #555;
 }
 
 .link-to-page {
     float: right;
     margin: 0 2px 0 2px;
+}
+
+.sidebar-nav {
+    height: 100%;
+    padding: 10px;
+    list-style: none;
 }
