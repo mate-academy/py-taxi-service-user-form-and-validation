@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Update Driver's License</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_license_number">License Number:</label>
+      {{ form.license_number }}
+      {% if form.license_number.errors %}
+        <ul class="text-danger">
+          {% for error in form.license_number.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update License</button>
+  </form>
+
+  <hr>
+  <a href="{% url 'taxi:driver-detail' pk=driver.pk %}" class="btn btn-secondary">Back to Driver Details Info</a>
+{% endblock %}
