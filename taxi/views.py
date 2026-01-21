@@ -1,9 +1,16 @@
+from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from django.forms import ModelMultipleChoiceField
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverRegisterForm, DriverLicenseUpdateForm, CarCreateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -61,10 +68,23 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["car_drivers"] = self.object.drivers.all()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if request.user in self.object.drivers.all():
+            self.object.drivers.remove(request.user)
+        else:
+            self.object.drivers.add(request.user)
+        return redirect(request.path)
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarCreateForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +107,56 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["update_license_form"] = DriverLicenseUpdateForm()
+        return context
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    form_class = DriverRegisterForm
+    template_name = "taxi/driver_form.html"
+
+
+class DriverLicenseUpdate(LoginRequiredMixin, generic.UpdateView):
+    model = get_user_model()
+
+    def post(self, request, *args, **kwargs):
+        license_number = request.POST.get("license_number")
+        license_number_form = DriverLicenseUpdateForm(
+            {"license_number": license_number}
+        )
+        if license_number_form.is_valid():
+            if not Driver.objects.filter(license_number=license_number):
+                self.object = self.get_object()
+                self.object.license_number = license_number
+                self.object.save()
+            else:
+                messages.error(
+                    request, f"driver license {license_number}"
+                             " is already in use"
+                )
+        else:
+            messages.error(
+                request,
+                "Valid license number consists of 3 uppercase letters "
+                "and 5 digits",
+            )
+        return redirect(request.META.get("HTTP_REFERER"))
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+def driver_update(request, pk):
+    license_number = request.POST.get("license_number")
+    license_number_form = DriverLicenseUpdateForm(
+        {"license_number": license_number}
+    )
+    if license_number_form.is_valid():
+        return HttpResponse(status=302)
+    else:
+        return HttpResponse(status=200)
