@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Driver, Car, Manufacturer
+from taxi.forms import DriverLicenseUpdateForm, DriverCreateForm, CarForm
+from taxi.models import Driver, Car, Manufacturer
 
 
 @login_required
@@ -62,9 +63,31 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
 
+@login_required
+def car_driver_add(request, pk):
+    if request.method == "POST":
+        car = get_object_or_404(Car, pk=pk)
+
+        if request.user not in car.drivers.all():
+            car.drivers.add(request.user)
+
+    return redirect("taxi:car-detail", pk=pk)
+
+
+@login_required
+def car_driver_delete(request, pk):
+    if request.method == "POST":
+        car = get_object_or_404(Car, pk=pk)
+
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
+
+    return redirect("taxi:car-detail", pk=pk)
+
+
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
+    form_class = CarForm
     model = Car
-    fields = "__all__"
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +110,20 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    form_class = DriverCreateForm
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateLicenseView(LoginRequiredMixin, generic.UpdateView):
+    form_class = DriverLicenseUpdateForm
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
