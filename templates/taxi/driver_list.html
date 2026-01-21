@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Driver List
+    <a href="{% url 'taxi:driver-create' %}">+</a>
     </h1>
 
     {% if driver_list %}
@@ -13,7 +14,7 @@
         <th>Last name</th>
         <th>License number</th>
       </tr>
-    {% for driver in driver_list %}
+      {% for driver in driver_list %}
       <tr>
         <td>{{ driver.id }}</td>
         <td><a href="{{ driver.get_absolute_url }}">{{ driver.username }} {% if user == driver %} (Me){% endif %}</a></td>
