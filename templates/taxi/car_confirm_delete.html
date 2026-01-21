@@ -1,10 +1,2 @@
-{% extends "base.html" %}
-
-{% block content %}
-  <h1>Delete car?</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-
-    <input type="submit" value="Yes" class="btn btn-danger">
-  </form>
-{% endblock %}
+{% extends 'confirm_delete.html' %}
+{% block obj_name %} Car {% endblock %}
