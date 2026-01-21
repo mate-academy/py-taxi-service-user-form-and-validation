@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Are you sure you want to delete this driver?</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+    <hr>
+    <h3 id="user-delete-marker">{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</h3>
+    <p class="warning-text">
+      This information won't be available to restore.
+      All boundaries with cars will be lost!
+    </p>
+    <input type="submit" value="Yes" class="btn btn-danger del-button" style="margin-left: 50px">
+    <input type="submit" value="Cancel" class="btn btn-primary del-button" style="margin-left: 50px">
+  </form>
+{% endblock %}

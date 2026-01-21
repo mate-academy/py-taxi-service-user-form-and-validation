@@ -6,3 +6,49 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.assignment {
+    float: right;
+}
+
+.del-button {
+    margin-top: 35px;
+    float: left;
+    width: 100px;
+    height: 40px;
+}
+
+.upd-button {
+    margin-top: 35px;
+    float: left;
+    margin-left: 25px;
+    width: 100px;
+}
+
+.driver-add-button {
+    font-size: 18px;
+    float: right;
+    margin-right: 70px;
+    margin-bottom: 15px;
+    width: 200px;
+}
+
+.driver-but {
+    font-size: 18px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.driver-but-link {
+    all: unset;
+}
+
+#user-delete-marker {
+    color: darkblue;
+}
+
+.warning-text {
+    font-size: 20px;
+}
