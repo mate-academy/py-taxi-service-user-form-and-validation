@@ -11,12 +11,29 @@
       Update
     </a>
   </h1>
+  
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+
+  <h2>Drivers</h2>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+    {% empty %}
+      <p>No drivers assigned to this car.</p>
     {% endfor %}
   </ul>
+
+  <hr>
+
+  {% if user in car.drivers.all %}
+    <a href="{% url 'taxi:toggle-car-driver' car.id %}" class="btn btn-danger">
+      Remove Me from This Car
+    </a>
+  {% else %}
+    <a href="{% url 'taxi:toggle-car-driver' car.id %}" class="btn btn-success">
+      Assign Me to This Car
+    </a>
+  {% endif %}
+  
 {% endblock %}
