@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h1>
@@ -7,16 +8,35 @@
       Create
     </a>
   </h1>
-  {% if car_list %}
-    <ul>
-      {% for car in car_list %}
-        <li>
-          <a href="{% url "taxi:car-detail" pk=car.id %} ">{{ car.id }}</a>
-          {{ car.model }} ({{ car.manufacturer.name }})
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>There are no cars in taxi</p>
-  {% endif %}
+
+
+
+  <div class="row">
+    <div class="col-md-4">
+      <form action="" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit"
+               value="Assign Driver"
+               class="btn btn-primary">
+      </form>
+    </div>
+
+
+    <div class="col-md-8">
+      <ul class="list-group">
+      <p>List cars</p>
+        {% for car in car_list %}
+          <li class="list-group-item">
+            <a href="{% url 'taxi:car-detail' pk=car.id %} ">{{ car.id }}</a>
+            {{ car.model }} ({{ car.manufacturer.name }})
+          </li>
+        {% empty %}
+          <p>There are no cars in taxi</p>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+
 {% endblock %}
