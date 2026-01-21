@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="DELETE">
+    <button type="button" onclick="history.back()">⬅ Назад</button>
+  </form>
+{% endblock %}
