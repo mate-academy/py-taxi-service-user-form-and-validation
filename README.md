@@ -55,6 +55,6 @@ CRISPY_TEMPLATE_PACK="bootstrap4"
 INSTALLED APPS = [
    ...,
    "crispy_bootstrap4",
-   "crispy_forms",
+   "crispy_f orms",
 ]
 ```
