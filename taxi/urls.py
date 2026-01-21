@@ -1,5 +1,6 @@
 from django.urls import path
 
+from .forms import DriverLicenseUpdateForm
 from .views import (
     index,
     CarListView,
@@ -13,7 +14,13 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+    DriverCreateView,
+    DriverDeleteView,
+    DriverLicenseUpdateView,
+    car_driver_add,
+    car_driver_remove,
 )
+
 
 urlpatterns = [
     path("", index, name="index"),
@@ -41,10 +48,27 @@ urlpatterns = [
     path("cars/<int:pk>/", CarDetailView.as_view(), name="car-detail"),
     path("cars/create/", CarCreateView.as_view(), name="car-create"),
     path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
+    path(
+        "cars/<int:pk>/driver_add/<int:dr_pk>",
+        car_driver_add, name="car-driver-add"
+    ),
+    path(
+        "cars/<int:pk>/driver_remove/<int:dr_pk>",
+        car_driver_remove, name="car-driver-remove"
+    ),
     path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
     path("drivers/", DriverListView.as_view(), name="driver-list"),
     path(
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
+    ),
+    path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
+    path(
+        "drivers/<int:pk>/update/", DriverLicenseUpdateView.as_view(),
+        name="driver-update"
+    ),
+    path(
+        "drivers/<int:pk>/delete/", DriverDeleteView.as_view(),
+        name="driver-delete"
     ),
 ]
 

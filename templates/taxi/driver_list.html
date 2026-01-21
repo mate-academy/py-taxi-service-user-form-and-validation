@@ -27,4 +27,5 @@
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
+  <ul><li><a href="{% url 'taxi:driver-create' %}">Create new driver</a></li></ul>
 {% endblock %}
