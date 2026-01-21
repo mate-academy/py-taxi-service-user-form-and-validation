@@ -6,3 +6,7 @@ body {
     float: right;
     margin: 0 2px 0 2px;
 }
+
+.btn-group {
+    padding: 20px 20px;
+}

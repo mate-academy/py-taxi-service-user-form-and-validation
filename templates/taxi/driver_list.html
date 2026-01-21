@@ -2,6 +2,10 @@
 
 {% block content %}
     <h1>Driver List
+      <a
+        style="float: center" href="{% url 'taxi:driver-create' %}">
+      <input class="btn btn-primary" type="submit" value="Add driver">
+      </a>
     </h1>
 
     {% if driver_list %}
