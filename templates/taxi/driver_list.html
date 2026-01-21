@@ -3,6 +3,7 @@
 {% block content %}
     <h1>Driver List
     </h1>
+  <p>Create Driver: <a style="text-decoration: none" href="{% url "taxi:driver-create" %}">+</a></p>
 
     {% if driver_list %}
     <table class="table">
