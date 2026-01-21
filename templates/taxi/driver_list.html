@@ -2,6 +2,9 @@
 
 {% block content %}
     <h1>Driver List
+      <a href="{% url 'taxi:drivers-create' %}" class="btn btn-primary link-to-page">
+        Create
+      </a>
     </h1>
 
     {% if driver_list %}
@@ -21,6 +24,7 @@
         <td>{{ driver.last_name }}</td>
         <td>{{ driver.license_number }}</td>
       </tr>
+
     {% endfor %}
 
     </table>
