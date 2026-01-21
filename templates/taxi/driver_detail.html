@@ -7,7 +7,15 @@
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <div style="display: flex; gap: 50px;">
+    <p><strong>License number:</strong> {{ driver.license_number }}</p>
+    <h4><a href="{% url 'taxi:driver-update' pk=driver.id %}"
+       class="btn btn-info btn-sm"
+       role="button"
+    >
+      Update License
+    </a></h4>
+  </div>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
@@ -22,5 +30,13 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+  </div>
+
+  <br><br><br>
+  <div style="display: flex;">
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}"
+       class="btn btn-danger link-to-page">
+      Delete Driver
+    </a>
   </div>
 {% endblock %}
