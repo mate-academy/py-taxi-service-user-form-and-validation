@@ -7,25 +7,25 @@ class Manufacturer(models.Model):
     name = models.CharField(max_length=255, unique=True)
     country = models.CharField(max_length=255)
 
-    class Meta:
-        ordering = ["name"]
-
     def __str__(self):
         return f"{self.name} {self.country}"
+
+    class Meta:
+        ordering = ["name"]
 
 
 class Driver(AbstractUser):
     license_number = models.CharField(max_length=255, unique=True)
-
-    class Meta:
-        verbose_name = "driver"
-        verbose_name_plural = "drivers"
 
     def __str__(self):
         return f"{self.username} ({self.first_name} {self.last_name})"
 
     def get_absolute_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.pk})
+
+    class Meta:
+        verbose_name = "driver"
+        verbose_name_plural = "drivers"
 
 
 class Car(models.Model):
