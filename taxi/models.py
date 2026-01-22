@@ -1,6 +1,10 @@
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+
+from taxi.custom_validators import license_number_validator
+from taxi_service.settings import AUTH_USER_MODEL
 
 
 class Manufacturer(models.Model):
@@ -15,7 +19,13 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(
+        max_length=255,
+        unique=True,
+        validators=[
+            license_number_validator,
+        ],
+    )
 
     class Meta:
         verbose_name = "driver"
@@ -31,7 +41,7 @@ class Driver(AbstractUser):
 class Car(models.Model):
     model = models.CharField(max_length=255)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
-    drivers = models.ManyToManyField(Driver, related_name="cars")
+    drivers = models.ManyToManyField(AUTH_USER_MODEL, related_name="cars")
 
     def __str__(self):
         return self.model
