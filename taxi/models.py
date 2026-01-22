@@ -33,5 +33,13 @@ class Car(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
     drivers = models.ManyToManyField(Driver, related_name="cars")
 
+    def add_driver(self, user: Driver):
+        if not self.drivers.filter(id=user.id).exists():
+            self.drivers.add(user)
+
+    def remove_driver(self, user: Driver):
+        if self.drivers.filter(id=user.id).exists():
+            self.drivers.remove(user)
+
     def __str__(self):
         return self.model
