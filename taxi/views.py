@@ -1,10 +1,14 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .forms import DriverLicenseUpdateForm, DriverCreationForm, CarForm
 from .models import Driver, Car, Manufacturer
+
+UserModel = get_user_model()
 
 
 @login_required
@@ -64,7 +68,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -87,3 +91,39 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = UserModel
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_form.html"
+    form_class = DriverCreationForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = UserModel
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_confirm_delete.html"
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = UserModel
+    form_class = DriverLicenseUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
+    template_name = "taxi/driver_form.html"
+
+
+@login_required
+def assign_driver(request, pk):
+    driver = request.user
+    car = Car.objects.get(pk=pk)
+    car.drivers.add(driver)
+    return redirect("taxi:car-detail", pk=pk)
+
+
+@login_required
+def remove_driver(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+    driver = request.user
+    car.drivers.remove(driver)
+    return redirect("taxi:car-detail", pk=pk)
