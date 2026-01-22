@@ -19,4 +19,12 @@
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
   </ul>
+    <form action="" method="post">
+      {% csrf_token %}
+      {% if user not in car.drivers.all %}
+        <input type="submit" class="btn btn-primary" value="Assign me to this car">
+      {% else %}
+        <input type="submit" class="btn btn-danger" value="Delete me from this car">
+      {% endif %}
+    </form>
 {% endblock %}

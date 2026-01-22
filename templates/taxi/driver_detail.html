@@ -4,6 +4,7 @@
   <h1>
     Username: {{ driver.username }}
   </h1>
+  <a style="float: right" href="{% url 'taxi:driver-update' pk=driver.id %}" class="page-link">Edit</a>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
