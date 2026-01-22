@@ -1,4 +1,6 @@
-from django.urls import path
+import debug_toolbar
+from django.urls import path, include
+
 
 from .views import (
     index,
@@ -7,8 +9,12 @@ from .views import (
     CarCreateView,
     CarUpdateView,
     CarDeleteView,
+    add_or_delete_from_car,
     DriverListView,
     DriverDetailView,
+    DriverCreateView,
+    DriverUpdateView,
+    DriverDeleteView,
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
@@ -16,6 +22,7 @@ from .views import (
 )
 
 urlpatterns = [
+    path("__debug__/", include(debug_toolbar.urls)),
     path("", index, name="index"),
     path(
         "manufacturers/",
@@ -40,11 +47,27 @@ urlpatterns = [
     path("cars/", CarListView.as_view(), name="car-list"),
     path("cars/<int:pk>/", CarDetailView.as_view(), name="car-detail"),
     path("cars/create/", CarCreateView.as_view(), name="car-create"),
+    path(
+        "cars/<int:pk>/add_or_delete/",
+        add_or_delete_from_car,
+        name="add-or-delete-from-list-drivers"
+    ),
     path("cars/<int:pk>/update/", CarUpdateView.as_view(), name="car-update"),
     path("cars/<int:pk>/delete/", CarDeleteView.as_view(), name="car-delete"),
     path("drivers/", DriverListView.as_view(), name="driver-list"),
     path(
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
+    ),
+    path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
+    path(
+        "drivers/<int:pk>/update/",
+        DriverUpdateView.as_view(),
+        name="driver-update"
+    ),
+    path(
+        "drivers/<int:pk>/delete/",
+        DriverDeleteView.as_view(),
+        name="driver-delete"
     ),
 ]
 
