@@ -1,8 +1,58 @@
 body {
     margin-top: 20px;
+    background: lightslategray;
 }
 
 .link-to-page {
     float: right;
     margin: 0 2px 0 2px;
+}
+
+/* Основний стиль кнопки */
+.custom-btn {
+  display: inline-block;
+  text-decoration: none;
+  padding: 3px 20px; /* Зменшено вертикальні відступи вдвічі */
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  border: 1px solid transparent; /* Кайма */
+  border-radius: 25px; /* Зменшено радіус скруглення */
+  background-clip: padding-box; /* Забезпечує видимість градієнтної кайми */
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+}
+
+/* Хромована кайма через псевдоелемент */
+.custom-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #e3e3e3, #cfcfcf, #f7f7f7);
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+}
+
+/* Ефект при наведенні */
+.custom-btn:hover {
+  background: linear-gradient(90deg, #2575fc, #6a11cb);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Ефект при натисканні */
+.custom-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
 }

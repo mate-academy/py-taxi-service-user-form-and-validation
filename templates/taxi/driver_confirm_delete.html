@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete driver?</h1>
+  <form action="" method="post">
+    {% csrf_token %}
+
+    <input type="button" value="Yes" class="custom-btn">
+    <input type="button" value="No" class="custom-btn">
+  </form>
+{% endblock %}
