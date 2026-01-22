@@ -7,8 +7,26 @@
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <p><strong>License number:</strong> {{ driver.license_number }}
+    <br>
+
+    <form method="get" action="{% url 'taxi:driver-update' pk=driver.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" value="Update license number" >
+
+    </form>
+
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+
+    <form method="get" action="{% url 'taxi:driver-delete' pk=driver.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <input type="submit" value="Delete driver" >
+
+    </form>
 
   <div class="ml-3">
     <h4>Cars</h4>
