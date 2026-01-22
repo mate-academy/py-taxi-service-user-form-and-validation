@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -14,8 +15,16 @@ class Manufacturer(models.Model):
         return f"{self.name} {self.country}"
 
 
+def validate_license_number(license_number: str) -> bool:
+    if (len(license_number) != 8 or not license_number[:3].isalpha()
+            or license_number[:3] != license_number[:3].upper()
+            or not license_number[-5:].isdigit()):
+        raise ValidationError("Invalid license number")
+
+
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(max_length=255, unique=True,
+                                      validators=[validate_license_number])
 
     class Meta:
         verbose_name = "driver"
