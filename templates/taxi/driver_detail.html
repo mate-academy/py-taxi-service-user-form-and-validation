@@ -7,8 +7,16 @@
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <p>
+    <strong>License number:</strong> {{ driver.license_number }}
+    <a href="{% url 'taxi:driver-update' driver.id %}">(update)</a>
+  </p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+  <a 
+      href="{% url 'taxi:driver-delete' driver.id %}"
+      class="btn btn-danger"
+  >Delete Driver
+  </a>
 
   <div class="ml-3">
     <h4>Cars</h4>
