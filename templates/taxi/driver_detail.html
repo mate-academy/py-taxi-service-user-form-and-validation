@@ -3,6 +3,9 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+    <a class="btn btn-primary link-to-page" href={% url 'taxi:driver-update' driver.id %}>Update </a> <br>
+    <a class="btn btn-danger link-to-page" href={% url 'taxi:driver-delete' driver.id %}>Delete </a>
+
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
