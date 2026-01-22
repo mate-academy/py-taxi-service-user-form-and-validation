@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  <h3>Are you sure, that you want to delete a driver {{ object.username }}?</h3>
+  <form action="" method="post">
+    {% csrf_token %}
+
+    <input type="submit" value="Yes" class="btn btn-danger">
+    <a href="{% url "taxi:driver-detail" object.pk %}" class="btn btn-success" style="margin-left: 10px;">
+      Cancel
+    </a>
+
+  </form>
+{% endblock %}
