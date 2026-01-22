@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Update Driver License</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+    <a href="javascript:history.back()">Cancel</a>
+  </form>
+
+  {% if form.errors %}
+    <div class="form-errors">
+      <ul>
+        {% for field in form %}
+          {% for error in field.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <hr>
+  <h2>Are you sure you want to delete this driver?</h2>
+  <form method="post" action="{% url 'taxi:driver-delete' pk=driver.id %}">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+    <a href="javascript:history.back()">Cancel</a>
+  </form>
+{% endblock %}
