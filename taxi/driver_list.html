@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Driver List</h1>
+
+  <p>
+    <a class="btn btn-primary" href="{% url 'taxi:driver-create' %}">
+      Create driver
+    </a>
+  </p>
+
+  <ul>
+    {% for driver in driver_list %}
+      <li>
+        <a href="{{ driver.get_absolute_url }}">{{ driver }}</a>
+      </li>
+    {% empty %}
+      <li>No drivers yet.</li>
+    {% endfor %}
+  </ul>
+
+  {% if is_paginated %}
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Prev</a>
+      {% endif %}
+      <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endblock %}
