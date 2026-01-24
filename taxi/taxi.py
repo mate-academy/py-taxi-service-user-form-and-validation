@@ -1,56 +1,126 @@
-from __future__ import annotations
+from typing import Any, cast
 
-import re
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views import generic
 
-from django import forms
-from django.contrib.auth.forms import UserCreationForm
-
-from .models import Car, Driver
-
-
-LICENSE_RE = re.compile(r"^[A-Z]{3}\d{5}$")
-
-
-def validate_license_number(value: str) -> str:
-    """Validate driver's license number.
-
-    Rules:
-    - exactly 8 characters
-    - first 3 characters are uppercase letters
-    - last 5 characters are digits
-    """
-    value = (value or "").strip()
-    if len(value) != 8:
-        raise forms.ValidationError("License number must consist of 8 characters")
-    if not LICENSE_RE.match(value):
-        raise forms.ValidationError(
-            "License number must have 3 uppercase letters and 5 digits"
-        )
-    return value
+from taxi.forms import CarForm, DriverCreateForm, DriverLicenseUpdateForm
+from taxi.models import Car, Driver, Manufacturer
 
 
-class DriverCreateForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = Driver
-        fields = ("username", "first_name", "last_name", "license_number")
+@login_required
+def index(request: HttpRequest) -> HttpResponse:
+    num_visits = request.session.get("num_visits", 0) + 1
+    request.session["num_visits"] = num_visits
 
-    def clean_license_number(self) -> str:
-        return validate_license_number(self.cleaned_data.get("license_number", ""))
-
-
-class DriverLicenseUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Driver
-        fields = ("license_number",)
-
-    def clean_license_number(self) -> str:
-        return validate_license_number(self.cleaned_data.get("license_number", ""))
+    context = {
+        "num_drivers": Driver.objects.count(),
+        "num_cars": Car.objects.count(),
+        "num_manufacturers": Manufacturer.objects.count(),
+        "num_visits": num_visits,
+    }
+    return render(request, "taxi/index.html", context=context)
 
 
-class CarForm(forms.ModelForm):
-    class Meta:
-        model = Car
-        fields = "__all__"
-        widgets = {
-            "drivers": forms.CheckboxSelectMultiple(),
-        }
+class ManufacturerListView(LoginRequiredMixin, generic.ListView):
+    model = Manufacturer
+    context_object_name = "manufacturer_list"
+    template_name = "taxi/manufacturer_list.html"
+    paginate_by = 5
+
+
+class ManufacturerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Manufacturer
+    fields = "__all__"
+    success_url = reverse_lazy("taxi:manufacturer-list")
+
+
+class ManufacturerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Manufacturer
+    fields = "__all__"
+    success_url = reverse_lazy("taxi:manufacturer-list")
+
+
+class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Manufacturer
+    success_url = reverse_lazy("taxi:manufacturer-list")
+
+
+class CarListView(LoginRequiredMixin, generic.ListView):
+    model = Car
+    paginate_by = 5
+    queryset = Car.objects.all().select_related("manufacturer")
+
+
+class CarDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Car
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        car: Car = self.object
+        user = self.request.user
+        context["is_driver"] = car.drivers.filter(pk=user.pk).exists()
+        return context
+
+
+class CarCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Car
+    form_class = CarForm
+    success_url = reverse_lazy("taxi:car-list")
+
+
+class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Car
+    form_class = CarForm
+    success_url = reverse_lazy("taxi:car-list")
+
+
+class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Car
+    success_url = reverse_lazy("taxi:car-list")
+
+
+class DriverListView(LoginRequiredMixin, generic.ListView):
+    model = Driver
+    paginate_by = 5
+
+
+class DriverDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Driver
+    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_license_form.html"
+
+    def get_success_url(self) -> str:
+        return self.object.get_absolute_url()
+
+
+@login_required
+def toggle_assign_to_car(request: HttpRequest, pk: int) -> HttpResponse:
+    car = get_object_or_404(Car, pk=pk)
+    driver = cast(Driver, request.user)
+
+    if car.drivers.filter(pk=driver.pk).exists():
+        car.drivers.remove(driver)
+    else:
+        car.drivers.add(driver)
+
+    return redirect("taxi:car-detail", pk=pk)

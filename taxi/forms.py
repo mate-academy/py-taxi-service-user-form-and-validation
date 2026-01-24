@@ -12,11 +12,11 @@ def validate_license_number(value: str) -> str:
     value = (value or "").strip()
 
     if len(value) != 8:
-        raise forms.ValidationError("License number must consist of 8 characters")
+        raise forms.ValidationError("License number must be 8 characters long")
 
     if not _LICENSE_RE.match(value):
         raise forms.ValidationError(
-            "License number must have 3 uppercase letters and 5 digits"
+            "License must be 3 uppercase letters + 5 digits"
         )
 
     return value
@@ -46,6 +46,4 @@ class CarForm(forms.ModelForm):
     class Meta:
         model = Car
         fields = "__all__"
-        widgets = {
-            "drivers": forms.CheckboxSelectMultiple(),
-        }
+        widgets = {"drivers": forms.CheckboxSelectMultiple()}
