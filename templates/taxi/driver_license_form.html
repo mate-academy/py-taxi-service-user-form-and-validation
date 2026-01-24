@@ -9,5 +9,5 @@
     {{ form|crispy }}
     <input type="submit" value="Update" class="btn btn-primary">
   </form>
-  <div><a href="{% url 'taxi:driver-detail'  pk=user.id %}" class="btn btn-primary mt-2">Cancel</a></div>
+  <div><a href="{% url 'taxi:driver-detail'  pk=driver.id %}" class="btn btn-primary mt-2">Cancel</a></div>
 {% endblock %}
