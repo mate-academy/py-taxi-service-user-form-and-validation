@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views import generic
 
 from taxi.forms import CarForm, DriverCreateForm, DriverLicenseUpdateForm
@@ -30,9 +30,9 @@ def index(request: HttpRequest) -> HttpResponse:
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
     model = Manufacturer
-    context_object_name = "manufacturer_list"
-    template_name = "taxi/manufacturer_list.html"
     paginate_by = 5
+    template_name = "taxi/manufacturer_list.html"
+    context_object_name = "manufacturer_list"
 
 
 class ManufacturerCreateView(LoginRequiredMixin, generic.CreateView):
@@ -113,7 +113,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     template_name = "taxi/driver_license_form.html"
 
     def get_success_url(self) -> str:
-        return self.object.get_absolute_url()
+        return reverse("taxi:driver-detail", kwargs={"pk": self.object.pk})
 
 
 @login_required

@@ -21,8 +21,6 @@ from taxi.views import (
 
 app_name = "taxi"
 
-DRIVER_LICENSE_UPDATE = "driver-license-update"
-
 urlpatterns = [
     path("", index, name="index"),
     path(
@@ -46,7 +44,8 @@ urlpatterns = [
         name="manufacturer-delete",
     ),
     path("cars/", CarListView.as_view(), name="car-list"),
-    path("cars/create/", CarCreateView.as_view(), name="car-create"),
+    path("cars/create/",
+         CarCreateView.as_view(), name="car-create"),
     path("cars/<int:pk>/",
          CarDetailView.as_view(), name="car-detail"),
     path("cars/<int:pk>/update/",
@@ -68,9 +67,16 @@ urlpatterns = [
         DriverDeleteView.as_view(),
         name="driver-delete",
     ),
+    # ✅ tests expect this name:
+    path(
+        "drivers/<int:pk>/update/",
+        DriverLicenseUpdateView.as_view(),
+        name="driver-update",
+    ),
+    # (опционально) можно оставить старый route, если в шаблонах он уже есть
     path(
         "drivers/<int:pk>/update-license/",
         DriverLicenseUpdateView.as_view(),
-        name=DRIVER_LICENSE_UPDATE,
+        name="driver-license-update",
     ),
 ]
