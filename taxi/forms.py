@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from .validators import validate_license_number
 
-from .models import Car, Driver
+from .models import Car
 
 
 class DriverCreationForm(UserCreationForm):
@@ -32,7 +32,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=Driver.objects.all(),
+        queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False
     )
