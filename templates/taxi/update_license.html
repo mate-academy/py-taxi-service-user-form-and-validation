@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Оновлення посвідчення водія</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.license_number.label_tag }}
+            {{ form.license_number }}
+            {% if form.license_number.errors %}
+                <div class="text-danger">
+                    {{ form.license_number.errors }}
+                </div>
+            {% endif %}
+        </div>
+        <small>Формат: 3 великі літери та 5 цифр (напр. UKR00001)</small>
+        <br><br>
+        <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+    </form>
+</div>
+{% endblock %}

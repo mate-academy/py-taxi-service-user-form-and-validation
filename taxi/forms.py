@@ -1,0 +1,29 @@
+from django import forms
+from django.contrib.auth import get_user_model
+from .models import Driver, Car
+
+
+class DriverLicenseUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Driver
+        fields = ["license_number"]
+
+
+class CarForm(forms.ModelForm):
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
+    class Meta:
+        model = Car
+        fields = "__all__"
+
+
+class DriverCreationForm(forms.ModelForm):
+    class Meta:
+        model = Driver
+        fields = ("username", "first_name",
+                  "last_name", "license_number",
+                  "password")
