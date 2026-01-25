@@ -1,5 +1,3 @@
-# from multiprocessing.managers import all_methods
-
 from django.urls import path
 
 from taxi.views import (
