@@ -1,9 +1,12 @@
 import re
 
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 
-from taxi.models import Car, Driver
+from taxi.models import Car
+
+User = get_user_model()
 
 _LICENSE_RE = re.compile(r"^[A-Z]{3}\d{5}$")
 
@@ -24,7 +27,7 @@ def validate_license_number(value: str) -> str:
 
 class DriverCreateForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model = Driver
+        model = User
         fields = ("username", "first_name", "last_name", "license_number")
 
     def clean_license_number(self) -> str:
@@ -34,7 +37,7 @@ class DriverCreateForm(UserCreationForm):
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
-        model = Driver
+        model = User
         fields = ("license_number",)
 
     def clean_license_number(self) -> str:
