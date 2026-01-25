@@ -1,0 +1,52 @@
+import re
+
+from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
+
+from taxi.models import Car
+
+User = get_user_model()
+
+_LICENSE_RE = re.compile(r"^[A-Z]{3}\d{5}$")
+
+
+def validate_license_number(value: str) -> str:
+    value = (value or "").strip()
+
+    if len(value) != 8:
+        raise forms.ValidationError("License number must be 8 characters long")
+
+    if not _LICENSE_RE.match(value):
+        raise forms.ValidationError(
+            "License must be 3 uppercase letters + 5 digits"
+        )
+
+    return value
+
+
+class DriverCreateForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ("username", "first_name", "last_name", "license_number")
+
+    def clean_license_number(self) -> str:
+        license_number = self.cleaned_data.get("license_number", "")
+        return validate_license_number(license_number)
+
+
+class DriverLicenseUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("license_number",)
+
+    def clean_license_number(self) -> str:
+        license_number = self.cleaned_data.get("license_number", "")
+        return validate_license_number(license_number)
+
+
+class CarForm(forms.ModelForm):
+    class Meta:
+        model = Car
+        fields = "__all__"
+        widgets = {"drivers": forms.CheckboxSelectMultiple()}

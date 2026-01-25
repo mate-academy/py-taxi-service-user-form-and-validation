@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ driver }}</h1>
+
+  <p><strong>License:</strong> {{ driver.license_number }}</p>
+
+  <p>
+    <a class="btn btn-secondary" href="{% url 'taxi:driver-license-update' driver.pk %}">
+      Update license
+    </a>
+    <a class="btn btn-danger" href="{% url 'taxi:driver-delete' driver.pk %}">
+      Delete driver
+    </a>
+  </p>
+
+  <h2>Cars</h2>
+  <ul>
+    {% for car in driver.cars.all %}
+      <li>
+        <a href="{% url 'taxi:car-detail' car.pk %}">{{ car }}</a>
+        ({{ car.manufacturer }})
+      </li>
+    {% empty %}
+      <li>No cars assigned.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ car }}</h1>
+  <p><strong>Manufacturer:</strong> {{ car.manufacturer }}</p>
+
+  <p>
+    {% if is_driver %}
+      <a class="btn btn-danger" href="{% url 'taxi:car-toggle-assign' car.pk %}">
+        Delete me from this car
+      </a>
+    {% else %}
+      <a class="btn btn-primary" href="{% url 'taxi:car-toggle-assign' car.pk %}">
+        Assign me to this car
+      </a>
+    {% endif %}
+  </p>
+
+  <h2>Drivers</h2>
+  <ul>
+    {% for driver in car.drivers.all %}
+      <li>
+        <a href="{% url 'taxi:driver-detail' driver.pk %}">{{ driver }}</a>
+      </li>
+    {% empty %}
+      <li>No drivers assigned.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
