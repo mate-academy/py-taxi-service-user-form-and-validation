@@ -14,9 +14,9 @@ class LicenseNumberValidator:
             )
         first_vals = value[:3]
         if not (
-                first_vals.isascii() and
-                first_vals.isalpha() and
-                first_vals.isupper()
+            first_vals.isascii()
+            and first_vals.isalpha()
+            and first_vals.isupper()
         ):
             raise ValidationError(
                 "First three values of license "
