@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='driver',
             name='license_number',
-            field=models.CharField(max_length=255, unique=True, validators=[taxi.models.validate_license_number]),
+            field=models.CharField(max_length=8, unique=True, validators=[taxi.models.validate_license_number]),
         ),
     ]
