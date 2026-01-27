@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import RegexValidator
 
 from taxi.models import Car
@@ -26,7 +26,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         validators=[RegexValidator(r"^[A-Z]{3}\d{5}$")]
     )
 
-    class Meta(UserChangeForm.Meta):
+    class Meta:
         model = get_user_model()
         fields = ("license_number",)
 
