@@ -1,8 +1,9 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.validators import RegexValidator
 
-from taxi.models import Driver
+from taxi.models import Car
 
 
 class DriverCreationForm(UserCreationForm):
@@ -13,9 +14,9 @@ class DriverCreationForm(UserCreationForm):
     )
 
     class Meta(UserCreationForm.Meta):
-        model = Driver
+        model = get_user_model()
         fields = (UserCreationForm.Meta.fields
-                  + ("first_name", "last_name", "license_number",))
+                  + ("first_name", "last_name", "license_number", ))
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -26,5 +27,17 @@ class DriverLicenseUpdateForm(forms.ModelForm):
     )
 
     class Meta(UserChangeForm.Meta):
-        model = Driver
+        model = get_user_model()
         fields = ("license_number",)
+
+
+class CarForm(forms.ModelForm):
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+
+    class Meta:
+        model = Car
+        fields = ("manufacturer", "model", "drivers", )
