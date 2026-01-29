@@ -6,5 +6,7 @@
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
+    <input type="button" value="Cancel" class="btn btn-secondary" onclick="window.history.back();">
+
   </form>
 {% endblock %}
