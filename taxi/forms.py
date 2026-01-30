@@ -11,11 +11,12 @@ class DriverCreationForm(UserCreationForm):
         required=True,
         validators=[
             RegexValidator(
-                regex=r'^[A-Z]{3}[0-9]{5}$',
+                regex=r"^[A-Z]{3}[0-9]{5}$",
                 message="Ensure license number looks like 'AAA00000'."
             )
         ]
     )
+
     class Meta(UserCreationForm.Meta):
         model = Driver
         fields = UserCreationForm.Meta.fields + (
@@ -30,11 +31,12 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         required=True,
         validators=[
             RegexValidator(
-                regex=r'^[A-Z]{3}[0-9]{5}$',
+                regex=r"^[A-Z]{3}[0-9]{5}$",
                 message="Ensure license number looks like 'AAA00000'."
             )
         ]
     )
+
     class Meta:
         model = Driver
         fields = ("license_number",)
@@ -45,6 +47,7 @@ class CarCreationForm(forms.ModelForm):
         queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
     )
+
     class Meta:
         model = Car
         fields = "__all__"
