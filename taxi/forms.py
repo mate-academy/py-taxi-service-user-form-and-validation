@@ -9,7 +9,7 @@ from taxi.models import Car
 def valid_license_number(license_number):
     if (len(license_number) != 8
             or not license_number[0:3].isalpha()
-            or not license_number[0:4].isupper()
+            or not license_number[0:3].isupper()
             or not license_number[-5:].isnumeric()):
         raise ValidationError("Incorrect license number")
     return license_number
