@@ -17,7 +17,8 @@ from .views import (
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
-    ManufacturerDeleteView, DriverLicenseUpdateView,
+    ManufacturerDeleteView,
+    DriverLicenseUpdateView,
 )
 
 urlpatterns = [
