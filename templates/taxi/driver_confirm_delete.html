@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Delete driver?</h1>
+  <p>Are you sure you want to continue?</p>
+
+  <form action="{% url 'taxi:driver-delete' pk=driver.id %}" method="post">
+    {% csrf_token %}
+
+    <input type="submit" value="Yes, delete" class="btn btn-danger">
+    <a href="{{ cancel_url }}" class="btn btn-primary">Cancel</a>
+  </form>
+
+{% endblock %}
