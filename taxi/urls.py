@@ -9,6 +9,11 @@ from .views import (
     CarDeleteView,
     DriverListView,
     DriverDetailView,
+    # Importy nowych widoków:
+    DriverCreateView,
+    DriverDeleteView,
+    DriverLicenseUpdateView,
+    toggle_assign_to_car,
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
@@ -45,6 +50,23 @@ urlpatterns = [
     path("drivers/", DriverListView.as_view(), name="driver-list"),
     path(
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
+    ),
+    # NOWE ŚCIEŻKI:
+    path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
+    path(
+        "drivers/<int:pk>/update/",
+        DriverLicenseUpdateView.as_view(),
+        name="driver-update",
+    ),
+    path(
+        "drivers/<int:pk>/delete/",
+        DriverDeleteView.as_view(),
+        name="driver-delete",
+    ),
+    path(
+        "cars/<int:pk>/toggle-assign/",
+        toggle_assign_to_car,
+        name="toggle-car-assign",
     ),
 ]
 

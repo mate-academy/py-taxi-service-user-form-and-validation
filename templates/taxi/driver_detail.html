@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
+  <div class="row">
+    <div class="col-sm-8">
+      <h1>
+        Username: {{ driver.username }}
+      </h1>
+    </div>
+    <div class="col-sm-4 text-right">
+      <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary">
+        Update license
+      </a>
+      <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger">
+        Delete
+      </a>
+    </div>
+  </div>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
@@ -11,14 +23,14 @@
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
+    <hr>
     <h4>Cars</h4>
 
     {% for car in driver.cars.all %}
-        <hr>
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
         <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
+        <hr>
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
