@@ -1,9 +1,15 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from taxi.forms import (
+    DriverCreationForm,
+    DriverLicenseUpdateForm,
+    CarCreateForm
+)
 from .models import Driver, Car, Manufacturer
 
 
@@ -61,11 +67,21 @@ class CarListView(LoginRequiredMixin, generic.ListView):
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
+    def post(self, request, *args, **kwargs):
+        this_car = self.get_object()
+        user = request.user
+
+        if user in this_car.drivers.all():
+            this_car.drivers.remove(user)
+        else:
+            this_car.drivers.add(user)
+
+        return redirect(self.request.path)
+
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
-    success_url = reverse_lazy("taxi:car-list")
+    form_class = CarCreateForm
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -87,3 +103,21 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    User = get_user_model()
+    model = User
+    form_class = DriverCreationForm
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    User = get_user_model()
+    model = User
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    User = get_user_model()
+    model = User
+    form_class = DriverLicenseUpdateForm
