@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+
+        <div class="card shadow-lg">
+          <div class="card-body">
+
+            <h3 class="card-title text-center mb-4">
+              🚕 Create New Driver
+            </h3>
+
+            <form method="post" novalidate>
+              {% csrf_token %}
+
+              {{ form|crispy }}
+
+              <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-primary">
+                  Create Driver
+                </button>
+
+                <a href="{% url 'taxi:driver-list' %}"
+                   class="btn btn-outline-secondary">
+                  Cancel
+                </a>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

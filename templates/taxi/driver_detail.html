@@ -1,26 +1,65 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
+  <div class="container mt-5">
+    <div class="card shadow-lg">
+      <div class="card-body">
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
+        <h2 class="card-title mb-4">
+          👤 {{ driver.username }}
+        </h2>
 
-  <div class="ml-3">
-    <h4>Cars</h4>
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <p><strong>First name:</strong> {{ driver.first_name }}</p>
+            <p><strong>Last name:</strong> {{ driver.last_name }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>License number:</strong> {{ driver.license_number }}</p>
+            <p>
+              <strong>Status:</strong>
+              {% if driver.is_staff %}
+                <span class="badge bg-success">Staff</span>
+              {% else %}
+                <span class="badge bg-secondary">Regular</span>
+              {% endif %}
+            </p>
+          </div>
+        </div>
 
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
+        <h4 class="mb-3">🚗 Cars</h4>
 
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
+        {% if driver.cars.all %}
+          <div class="list-group mb-4">
+            {% for car in driver.cars.all %}
+              <div class="list-group-item">
+                <h5 class="mb-1">{{ car.model }}</h5>
+                <p class="mb-1">
+                  <strong>Manufacturer:</strong> {{ car.manufacturer.name }}
+                </p>
+                <small class="text-muted">ID: {{ car.id }}</small>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="alert alert-warning">
+            No cars assigned.
+          </div>
+        {% endif %}
+
+        <div class="d-flex gap-2">
+          <a href="{% url 'taxi:driver-update' driver.pk %}"
+             class="btn btn-primary">
+            Upgrade License
+          </a>
+
+          <a href="{% url 'taxi:driver-delete' driver.pk %}"
+             class="btn btn-danger">
+            Delete Driver
+          </a>
+        </div>
+
+      </div>
+    </div>
   </div>
 {% endblock %}
