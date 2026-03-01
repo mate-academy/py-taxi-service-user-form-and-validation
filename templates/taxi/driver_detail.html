@@ -2,6 +2,8 @@
 
 {% block content %}
   <h1>
+    <a href="{% url "taxi:driver-license-update" pk=driver.id %}" class="btn btn-secondary link-to-page">Update</a>
+    <a href="{% url "taxi:driver-delete" pk=driver.id %}" class="btn btn-danger link-to-page">Delete</a>
     Username: {{ driver.username }}
   </h1>
 
@@ -18,7 +20,6 @@
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
         <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
