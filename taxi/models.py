@@ -1,6 +1,14 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
+from django.core.validators import RegexValidator
+
+license_validator = RegexValidator(
+    regex=r"^[A-Z]{3}\d{5}$",
+    message="License number must consist of 3 uppercase letters "
+            "followed by 5 digits (e.g. ABC12345)"
+)
 
 
 class Manufacturer(models.Model):
@@ -15,7 +23,11 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    license_number = models.CharField(
+        max_length=255,
+        unique=True,
+        validators=[license_validator]
+    )
 
     class Meta:
         verbose_name = "driver"
@@ -31,7 +43,7 @@ class Driver(AbstractUser):
 class Car(models.Model):
     model = models.CharField(max_length=255)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE)
-    drivers = models.ManyToManyField(Driver, related_name="cars")
+    drivers = models.ManyToManyField(get_user_model(), related_name="cars")
 
     def __str__(self):
         return self.model
