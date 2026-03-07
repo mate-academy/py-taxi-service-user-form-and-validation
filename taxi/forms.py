@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user, get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django  import forms
+from django import forms
 from django.core.validators import RegexValidator
 
 from taxi.models import Driver, Car
@@ -18,12 +18,12 @@ class DriverCreationForm(UserCreationForm):
 
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=get_user_model().objects.all(), widget=forms.CheckboxSelectMultiple)
+        queryset=get_user_model().objects.all(),
+        widget=forms.CheckboxSelectMultiple)
 
     class Meta:
         model = Car
         fields = "__all__"
-
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
@@ -31,6 +31,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         max_length=9,
         validators=[license_validator]
     )
+
     class Meta:
         model = Driver
         fields = ("license_number",)
