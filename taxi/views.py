@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import UpdateView, RedirectView
 
-from .forms import DriverCreationForm
+from .forms import DriverCreationForm, CarForm, DriverLicenseUpdateForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -65,8 +66,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
-    success_url = reverse_lazy("taxi:car-list")
+    form_class = CarForm
 
 
 class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -99,3 +99,25 @@ class DriverDeletionView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
 
+
+class DriverLicenseUpdateView(UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+
+
+class AssignMeToCarView(LoginRequiredMixin, RedirectView):
+    pattern_name = "taxi:car-detail"
+
+    def get_redirect_url(self, *args, **kwargs):
+        car = get_object_or_404(Car, pk=kwargs["pk"])
+        car.drivers.add(self.request.user)
+        return reverse("taxi:car-detail", kwargs={"pk": car.pk})
+
+
+class RemoveMeFromCarView(LoginRequiredMixin, RedirectView):
+    pattern_name = "taxi:car-detail"
+
+    def get_redirect_url(self, *args, **kwargs):
+        car = get_object_or_404(Car, pk=kwargs["pk"])
+        car.drivers.remove(self.request.user)
+        return reverse("taxi:car-detail", kwargs={"pk": car.pk})
