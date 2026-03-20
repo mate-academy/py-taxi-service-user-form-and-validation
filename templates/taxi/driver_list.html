@@ -2,24 +2,34 @@
 
 {% block content %}
     <h1>Driver List
+      <a style="float: right" href="{% url 'taxi:driver-create' %}"
+         class="btn btn-primary">
+        Create
+      </a>
     </h1>
 
     {% if driver_list %}
     <table class="table">
-      <tr>
+      <tr style="text-align: center">
         <th>ID</th>
         <th>Username</th>
         <th>First name</th>
         <th>Last name</th>
         <th>License number</th>
+        <th>Update</th>
       </tr>
     {% for driver in driver_list %}
-      <tr>
+      <tr style="text-align: center">
         <td>{{ driver.id }}</td>
         <td><a href="{{ driver.get_absolute_url }}">{{ driver.username }} {% if user == driver %} (Me){% endif %}</a></td>
         <td>{{ driver.first_name }}</td>
         <td>{{ driver.last_name }}</td>
         <td>{{ driver.license_number }}</td>
+        <td>
+          <a href="{% url 'taxi:driver-update' driver.pk %}" class="btn btn-primary">
+            Update
+          </a>
+        </td>
       </tr>
     {% endfor %}
 
