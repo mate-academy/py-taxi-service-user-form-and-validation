@@ -80,7 +80,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -120,7 +120,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
-    template_name = "taxi/driver_license_update.html"
+    template_name = "taxi/driver_update.html"
 
 
 @login_required()
