@@ -3,7 +3,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django import forms
 
-from .models import Driver, Car
+from .models import Car
+
+
+Driver = get_user_model()
 
 
 class DriverCreationForm(UserCreationForm):
