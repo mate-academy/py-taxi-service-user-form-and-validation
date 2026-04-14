@@ -7,7 +7,7 @@ from .models import Driver, Car
 from django import forms
 
 
-class DriverLicenseUpdateForm(forms.ModelForm):
+class DriverLicenseUpdateForm(UserCreationForm):
 
     class Meta:
         model = Driver

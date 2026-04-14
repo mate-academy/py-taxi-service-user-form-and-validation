@@ -20,12 +20,12 @@
     {% endfor %}
   </ul>
   {% if car.drivers.filter(pk=request.user.pk).exists %}
-    <form method="post" action="{% url 'taxi:car-remove' car.pk %}">
+    <form method="post" action="{% url 'taxi:car-remove' car.pk pk=driver.pk%}">
       {% csrf_token %}
       <button class="btn btn-danger">Delete me from this car</button>
     </form>
   {% else %}
-    <form method="post" action="{% url 'taxi:car-assign' car.pk %}">
+    <form method="post" action="{% url 'taxi:car-assign' car.pk pk=driver.pk%}">
       {% csrf_token %}
       <button class="btn btn-primary">Assign me to this car</button>
     </form>
