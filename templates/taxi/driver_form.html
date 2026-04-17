@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% with title=object|yesno:"Update driver license,Create driver" %}
+  {% include "includes/form.html" with title=title %}
+  {% endwith %}
+{% endblock %}

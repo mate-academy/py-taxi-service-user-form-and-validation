@@ -1,9 +1,23 @@
+# IDE
 .idea/
 .vscode/
 *.iml
+
+# Environment
 .env
-.DS_Store
 venv/
-.pytest_cache/
-**__pycache__/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Django
 db.sqlite3
+
+# Test cache
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
