@@ -17,6 +17,10 @@ class Manufacturer(models.Model):
 class Driver(AbstractUser):
     license_number = models.CharField(max_length=255, unique=True)
 
+    first_name = models.CharField(max_length=150, blank=False)
+    last_name = models.CharField(max_length=150, blank=False)
+    email = models.EmailField(unique=True, blank=True, null=True, default=None)
+
     class Meta:
         verbose_name = "driver"
         verbose_name_plural = "drivers"
