@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h1>Update number of License</h1>
+        <hr>
+        <form action="" method="post" novalidate>
+          {% csrf_token %}
+          {# Использование crispy фильтра для рендеринга формы с Bootstrap 4 #}
+          {{ form|crispy }}
+          <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Save Update</button>
+            <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary">Cancel</a>
+          </div>
+        </form>
+        <div class="mt-4">
+          <small class="text-muted">
+            Required to License:
+            <ul>
+              <li>Equal 8 symbols.</li>
+              <li>First 3 symbols is latin letters.</li>
+              <li>Last 5 symbols is digits.</li>
+            </ul>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
