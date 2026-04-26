@@ -13,6 +13,21 @@
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
+    {% empty %}
+      <li>No drivers assigned yet.</li>
     {% endfor %}
   </ul>
+  <div class="mt-4">
+    <form action="" method="post">
+      {% csrf_token %}
+      {% if user in car.drivers.all %}
+        <button type="submit" class="btn btn-danger">Delete me from this car</button>
+      {% else %}
+        <button type="submit" class="btn btn-success">Assign me to this car</button>
+      {% endif %}
+    </form>
+  </div>
+  <div class="mt-3">
+    <a href="{% url 'taxi:car-list' %}" class="btn btn-secondary">Back to list</a>
+  </div>
 {% endblock content %}
