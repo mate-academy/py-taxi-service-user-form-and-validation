@@ -1,3 +1,4 @@
+from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -15,7 +16,12 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(max_length=255, unique=True)
+    LICENCE_VALIDATOR = RegexValidator(regex=r"^[A-Z]{3}[0-9]{5}$")
+    license_number = models.CharField(
+        max_length=255,
+        unique=True,
+        validators=[LICENCE_VALIDATOR]
+    )
 
     class Meta:
         verbose_name = "driver"
