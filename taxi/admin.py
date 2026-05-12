@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User, Group
+
 from .models import Driver, Car, Manufacturer
 
 
@@ -32,3 +34,5 @@ class CarAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Manufacturer)
+
+admin.site.unregister(Group)
