@@ -23,7 +23,7 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
-  <a href="{% url 'taxi:driver-license-update' pk=driver.id %}">
+  <a href="{% url 'taxi:driver-update' pk=driver.id %}">
     Update license
   </a>
   <a style="color: red"
