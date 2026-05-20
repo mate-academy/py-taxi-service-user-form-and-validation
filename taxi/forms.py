@@ -12,16 +12,11 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data.get("license_number")
-
-        if not license_number:
-            raise forms.ValidationError(
-                "This field is required"
-            )
+        license_number = self.cleaned_data.get("license_number", "")
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
-        if not re.match(pattern, license_number):
+        if not re.fullmatch(pattern, license_number):
             raise forms.ValidationError(
                 "License must consist of 3 uppercase letters and 5 digits"
             )
@@ -39,16 +34,11 @@ class DriverCreationForm(UserCreationForm):
         )
 
     def clean_license_number(self):
-        license_number = self.cleaned_data.get("license_number")
-
-        if not license_number:
-            raise forms.ValidationError(
-                "This field is required"
-            )
+        license_number = self.cleaned_data.get("license_number", "")
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
-        if not re.match(pattern, license_number):
+        if not re.fullmatch(pattern, license_number):
             raise forms.ValidationError(
                 "License must consist of 3 uppercase letters and 5 digits"
             )
