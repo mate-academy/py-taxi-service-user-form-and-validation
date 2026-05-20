@@ -12,7 +12,9 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data.get("license_number", "")
+        license_number = str(
+            self.cleaned_data.get("license_number", "")
+        )
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
@@ -34,7 +36,9 @@ class DriverCreationForm(UserCreationForm):
         )
 
     def clean_license_number(self):
-        license_number = self.cleaned_data.get("license_number", "")
+        license_number = str(
+            self.cleaned_data.get("license_number", "")
+        )
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
