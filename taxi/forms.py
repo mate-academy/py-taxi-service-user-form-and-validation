@@ -12,7 +12,12 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
+        license_number = self.cleaned_data.get("license_number")
+
+        if not license_number:
+            raise forms.ValidationError(
+                "This field is required"
+            )
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
@@ -34,7 +39,12 @@ class DriverCreationForm(UserCreationForm):
         )
 
     def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
+        license_number = self.cleaned_data.get("license_number")
+
+        if not license_number:
+            raise forms.ValidationError(
+                "This field is required"
+            )
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
