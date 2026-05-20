@@ -10,6 +10,17 @@
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
+  <div class="mb-4">
+  <a href="{% url 'taxi:driver-update' pk=driver.id %}"
+     class="btn btn-info link-to-page">
+    Update license
+  </a>
+  <a href="{% url 'taxi:driver-delete' pk=driver.id %}"
+     class="btn btn-danger link-to-page">
+    Delete driver
+  </a>
+</div>
+
   <div class="ml-3">
     <h4>Cars</h4>
 
