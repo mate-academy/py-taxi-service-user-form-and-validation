@@ -106,6 +106,11 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 
+    def form_invalid(self, form):
+        return self.render_to_response(
+            self.get_context_data(form=form)
+        )
+
 
 def toggle_assign_to_car(request, pk):
     car = get_object_or_404(Car, id=pk)
