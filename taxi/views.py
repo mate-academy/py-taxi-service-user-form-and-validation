@@ -1,5 +1,3 @@
-from gc import get_objects
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -31,12 +29,14 @@ def index(request):
     return render(request, "taxi/index.html", context=context)
 
 
+@login_required
 def assign_driver(request, pk):
     car = get_object_or_404(Car, pk=pk)
     car.drivers.add(request.user)
     return redirect("taxi:car-detail", pk=pk)
 
 
+@login_required
 def remove_driver(request, pk):
     car = get_object_or_404(Car, pk=pk)
     car.drivers.remove(request.user)
