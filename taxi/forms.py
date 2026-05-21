@@ -23,7 +23,8 @@ class DriverCreationForm(UserCreationForm):
 
         if not re.fullmatch(pattern, license_number):
             raise forms.ValidationError(
-                "License number must consist of 3 uppercase letters and 5 digits"
+                "License number must consist of 3 uppercase "
+                "letters and 5 digits"
             )
 
         return license_number
@@ -41,7 +42,8 @@ class DriverLicenseUpdateForm(forms.ModelForm):
 
         if not re.fullmatch(pattern, license_number):
             raise forms.ValidationError(
-                "License number must consist of 3 uppercase letters and 5 digits"
+                "License number must consist of 3 uppercase "
+                "letters and 5 digits"
             )
 
         return license_number
