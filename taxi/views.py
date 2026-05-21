@@ -82,13 +82,12 @@ class CarAddRemoveDriver(LoginRequiredMixin, View):
         car = Car.objects.get(pk=pk)
         user = get_user_model().objects.get(pk=request.user.pk)
 
-        if not user in car.drivers.all():
+        if user not in car.drivers.all():
             car.drivers.add(user)
         else:
             car.drivers.remove(user)
 
         return redirect("taxi:car-detail", pk=pk)
-
 
 
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -118,7 +117,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
-class DriverLicenseUpdate(generic.UpdateView):
+class DriverLicenseUpdate(LoginRequiredMixin, generic.UpdateView):
     model = Driver
     form_class = DriverLicenseUpdateForm
     template_name = "taxi/driver_license_form.html"
