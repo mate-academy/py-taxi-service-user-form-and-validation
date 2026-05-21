@@ -2,6 +2,7 @@ import re
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import CheckboxSelectMultiple
 
 from .models import Driver, Car
 
@@ -12,15 +13,13 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         fields = ("license_number",)
 
     def clean_license_number(self):
-        license_number = str(
-            self.cleaned_data.get("license_number", "")
-        )
+        license_number = self.cleaned_data["license_number"]
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
         if not re.fullmatch(pattern, license_number):
             raise forms.ValidationError(
-                "License must consist of 3 uppercase letters and 5 digits"
+                "License number must be 3 uppercase letters and 5 digits"
             )
 
         return license_number
@@ -36,26 +35,22 @@ class DriverCreationForm(UserCreationForm):
         )
 
     def clean_license_number(self):
-        license_number = str(
-            self.cleaned_data.get("license_number", "")
-        )
+        license_number = self.cleaned_data["license_number"]
 
         pattern = r"^[A-Z]{3}[0-9]{5}$"
 
         if not re.fullmatch(pattern, license_number):
             raise forms.ValidationError(
-                "License must consist of 3 uppercase letters and 5 digits"
+                "License number must be 3 uppercase letters and 5 digits"
             )
 
         return license_number
 
 
 class CarForm(forms.ModelForm):
-    drivers = forms.ModelMultipleChoiceField(
-        queryset=Driver.objects.all(),
-        widget=forms.CheckboxSelectMultiple
-    )
-
     class Meta:
         model = Car
         fields = "__all__"
+        widgets = {
+            "drivers": CheckboxSelectMultiple(),
+        }
