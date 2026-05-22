@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    {% if object %}
+      Update driver license
+    {% else %}
+      Create driver
+    {% endif %}
+  </h1>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <input type="submit"
+           value="Submit"
+           class="btn btn-primary">
+  </form>
+{% endblock %}
