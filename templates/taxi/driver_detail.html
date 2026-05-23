@@ -1,26 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Username: {{ driver.username }}
-  </h1>
+  <h1>Driver: {{ object.username }}</h1>
+  <p><strong>Full Name:</strong> {{ object.first_name }} {{ object.last_name }}</p>
+  <p><strong>License Number:</strong> {{ object.license_number }}</p>
 
-  <p><strong>First name:</strong> {{ driver.first_name }}</p>
-  <p><strong>Last name:</strong> {{ driver.last_name }}</p>
-  <p><strong>License number:</strong> {{ driver.license_number }}</p>
-  <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
-
-  <div class="ml-3">
-    <h4>Cars</h4>
-
-    {% for car in driver.cars.all %}
-        <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
-        <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
-    {% empty %}
-      <p>No cars!</p>
-    {% endfor %}
+  <div class="mb-3">
+    <a href="{% url 'taxi:driver-update' object.id %}" class="btn btn-warning">
+      Update License
+    </a>
+    <a href="{% url 'taxi:driver-delete' object.id %}" class="btn btn-danger">
+      Delete Driver
+    </a>
   </div>
+
+  <h3>Cars</h3>
+  <ul>
+    {% for car in object.cars.all %}
+      <li>{{ car.model }} ({{ car.manufacturer.name }})</li>
+    {% empty %}
+      <p>No cars assigned to this driver.</p>
+    {% endfor %}
+  </ul>
 {% endblock %}
