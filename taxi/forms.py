@@ -6,9 +6,13 @@ from .models import Driver, Car
 
 def validate_license_number(license_number):
     if len(license_number) != 8:
-        raise forms.ValidationError("License number must contain 8 characters.")
+        raise forms.ValidationError(
+            "License number must contain 8 characters."
+        )
     if not license_number[:3].isalpha() or not license_number[:3].isupper():
-        raise forms.ValidationError("First 3 characters must be uppercase letters.")
+        raise forms.ValidationError(
+            "First 3 characters must be uppercase letters."
+        )
     if not license_number[3:].isdigit():
         raise forms.ValidationError("Last 5 characters must be digits.")
     return license_number
