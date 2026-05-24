@@ -1,8 +1,11 @@
-{% load crispy_forms_filters %}
+{% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-<form method="post">
-  {% csrf_token %}
-  {{ form|crispy }}
-  <button type="submit" class="btn btn-success">Save</button>
-</form>
+{% block content %}
+  <h1>Driver Form</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Save</button>
+  </form>
+{% endblock %}
