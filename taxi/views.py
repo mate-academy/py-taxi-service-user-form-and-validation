@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -65,12 +66,14 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
     success_url = reverse_lazy("taxi:driver-list")
 
 
+@login_required
 def assign_me_to_car(request, pk):
     car = get_object_or_404(Car, id=pk)
     car.drivers.add(request.user)
     return redirect("taxi:car-detail", pk=pk)
 
 
+@login_required
 def delete_me_from_car(request, pk):
     car = get_object_or_404(Car, id=pk)
     car.drivers.remove(request.user)
