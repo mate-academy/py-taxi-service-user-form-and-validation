@@ -9,17 +9,7 @@ from .models import Car
 User = get_user_model()
 
 
-class DriverCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ("username", "first_name", "last_name", "license_number")
-
-
-class DriverLicenseUpdateForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ("license_number",)
-
+class LicenseValidationMixin:
     def clean_license_number(self):
         license_number = self.cleaned_data["license_number"]
         if not re.match(r"^[A-Z]{3}\d{5}$", license_number):
@@ -28,6 +18,18 @@ class DriverLicenseUpdateForm(forms.ModelForm):
                 "first 3 uppercase letters followed by 5 digits."
             )
         return license_number
+
+
+class DriverCreationForm(LicenseValidationMixin, UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ("username", "first_name", "last_name", "license_number")
+
+
+class DriverLicenseUpdateForm(LicenseValidationMixin, forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("license_number",)
 
 
 class CarForm(forms.ModelForm):
