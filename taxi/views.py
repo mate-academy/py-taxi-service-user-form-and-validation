@@ -127,15 +127,9 @@ class DriverLicenseUpdateView(LoginRequiredMixin, UpdateView):
         return reverse("taxi:driver-detail", kwargs={"pk": self.object.pk})
 
     def form_valid(self, form):
-        print("\n--- FORM IS VALID ---")
-        print(form.cleaned_data)
-        print("---------------------\n")
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        print("\n--- FORM VALIDATION ERRORS ---")
-        print(form.errors)
-        print("------------------------------\n")
         return super().form_invalid(form)
 
 
@@ -151,17 +145,3 @@ def toggle_assign_to_car(request, pk):
         car.drivers.add(driver)
 
     return HttpResponseRedirect(reverse("taxi:car-detail", kwargs={"pk": pk}))
-
-
-def update_driver_license(request, pk):
-    driver = Driver.objects.get(pk=pk)
-    if request.method == "POST":
-        form = DriverLicenseUpdateForm(request.POST, instance=driver)
-        if form.is_valid():
-            form.save()
-            # This triggers the 302 status code
-            return redirect("taxi:driver-detail", pk=driver.pk)
-    else:
-        form = DriverLicenseUpdateForm(instance=driver)
-
-    return render(request, "taxi/driver_form.html", {"form": form})

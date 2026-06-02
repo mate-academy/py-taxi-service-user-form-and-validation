@@ -9,5 +9,7 @@
     {{ form|crispy }}
 
     <button type="submit" class="btn btn-primary">Зберегти</button>
+    <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">Скасувати</a>
+
   </form>
 {% endblock %}
