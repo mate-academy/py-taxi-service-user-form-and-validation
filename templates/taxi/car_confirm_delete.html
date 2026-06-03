@@ -7,4 +7,5 @@
 
     <input type="submit" value="Yes" class="btn btn-danger">
   </form>
+  <a href="{{ request.META.HTTP_REFERER|default:'/cars/' }}" class="btn btn-secondary">Cancel</a>
 {% endblock %}
