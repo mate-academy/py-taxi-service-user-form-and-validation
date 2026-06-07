@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1>Manufacturer name: {{ manufacturer.name }}</h1>
+    <p><strong>Manufacturer country:</strong> {{ manufacturer.country }}</p>
+
+    <hr>
+
+    <h3>Cars by this manufacturer:</h3>
+
+    {% if manufacturer.car_set.all %}
+      <ul class="list-group">
+        {% for car in manufacturer.car_set.all %}
+          <li class="list-group-item">
+            <strong>Model:</strong> {{ car.model }}
+
+            <div class="mt-2 text-muted" style="font-size: 0.9rem;">
+              <strong>Drivers for this car:</strong>
+
+              {% if car.drivers.all %}
+                {% for driver in car.drivers.all %}
+                  <span class="badge bg-secondary text-dark">
+                    {{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})
+                  </span>
+                {% endfor %}
+              {% else %}
+                <span class="text-warning">No drivers assigned to this car.</span>
+              {% endif %}
+            </div>
+
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">This manufacturer has no cars in the database yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

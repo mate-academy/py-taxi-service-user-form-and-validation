@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="text-danger">Permanent Driver Deletion</h1>
+
+    {% if object == request.user %}
+      <p>Are you sure you want to <strong>permanently delete your account</strong> ({{ object.username }})? This action cannot be undone.</p>
+    {% else %}
+      <p>Are you sure you want to delete driver <strong>{{ object.username }}</strong> from the database?</p>
+    {% endif %}
+
+    <form action="" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Yes, delete permanently" class="btn btn-danger">
+      <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+{% endblock %}
