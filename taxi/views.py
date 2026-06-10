@@ -108,7 +108,7 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 @login_required
-def assign_to_car(request, pk):
+def toggle_assign_to_car(request, pk):
     driver = request.user
     car = get_object_or_404(Car, pk=pk)
     if driver in car.drivers.all():
