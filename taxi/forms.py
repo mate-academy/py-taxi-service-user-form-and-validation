@@ -8,33 +8,40 @@ from taxi.models import Driver, Car
 
 def validate_license_number(license_number):
     if len(license_number) != 8:
-        raise ValidationError("License number must consist of exactly 8 characters.")
+        raise ValidationError("License number must consist of 8 characters")
     if not (license_number[:3].isalpha() and license_number[:3].isupper()):
-        raise ValidationError("First 3 characters must be uppercase letters.")
+        raise ValidationError("First 3 characters must be uppercase letters")
     if not license_number[3:].isdigit():
-        raise ValidationError("Last 5 characters must be digits.")
+        raise ValidationError("Last 5 characters must be digits")
     return license_number
 
 
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Driver
-        fields = UserCreationForm.fields + ("license_number",
-                                            "first_name",
-                                            "last_name",
-                                            )
+        fields = UserCreationForm.Meta.fields + (
+            "license_number",
+            "first_name",
+            "last_name",
+        )
 
     def clean_license_number(self):
-        return validate_license_number(self.cleaned_data["license_number"])
+        license_number = self.cleaned_data.get("license_number")
+        if license_number is None:
+            return license_number
+        return validate_license_number(license_number)
 
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
-        fields = ["license_number"]
+        fields = ("license_number",)
 
     def clean_license_number(self):
-        return validate_license_number(self.cleaned_data["license_number"])
+        license_number = self.cleaned_data.get("license_number")
+        if license_number is None:
+            return license_number
+        return validate_license_number(license_number)
 
 
 class CarForm(forms.ModelForm):
