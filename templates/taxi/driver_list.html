@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary mb-3">
+  + Create driver
+</a>
     <h1>Driver List
     </h1>
 
@@ -27,7 +30,4 @@
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
-    <a style="float: right" href="{% url 'taxi:driver-create' %}" class="btn btn-primary">
-      Create
-    </a>
 {% endblock %}
