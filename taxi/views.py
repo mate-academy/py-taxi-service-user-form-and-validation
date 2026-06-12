@@ -111,3 +111,9 @@ def toggle_assign_to_car(request, pk):
         car.drivers.add(request.user)
 
     return redirect("taxi:car-detail", pk=pk)
+
+
+class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_form.html"
