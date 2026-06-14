@@ -1,12 +1,24 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinLengthValidator
 
 from taxi.models import Driver, Car
 
 
 class DriverCreateForm(UserCreationForm):
+    license_number = forms.CharField(
+        max_length=8,
+        validators=[
+            MinLengthValidator(8),  # ВИПРАВЛЕНО: передали число напряму
+            RegexValidator(
+                regex=r"^[A-Z]{3}\d{5}$",
+                message="License must consist of 3 uppercase letters"
+                        " followed by 5 digits."
+            )
+        ]
+    )
+
     class Meta(UserCreationForm.Meta):
         model = Driver
         fields = UserCreationForm.Meta.fields + (
@@ -20,8 +32,8 @@ class DriverCreateForm(UserCreationForm):
 class DriverLicenseUpdateForm(forms.ModelForm):
     license_number = forms.CharField(
         max_length=8,
-        min_length=8,
         validators=[
+            MinLengthValidator(8),  # ВИПРАВЛЕНО: передали число напряму
             RegexValidator(
                 regex=r"^[A-Z]{3}\d{5}$",
                 message="License must consist of 3 uppercase letters"
