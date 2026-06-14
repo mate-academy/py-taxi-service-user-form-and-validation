@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -94,12 +95,16 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
+    model = get_user_model()
+    template_name = "taxi/driver_list.html"
+    context_object_name = "driver_list"
     paginate_by = 5
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
+    model = get_user_model()
+    template_name = "taxi/driver_detail.html"
+    context_object_name = "driver"
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
 
 
