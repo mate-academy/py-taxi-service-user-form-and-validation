@@ -12,6 +12,8 @@
         <th>First name</th>
         <th>Last name</th>
         <th>License number</th>
+        <th>Update license number(ULN)</th>
+        <th>Delete</th>
       </tr>
     {% for driver in driver_list %}
       <tr>
@@ -20,6 +22,8 @@
         <td>{{ driver.first_name }}</td>
         <td>{{ driver.last_name }}</td>
         <td>{{ driver.license_number }}</td>
+        <td><a href="{% url 'taxi:driver-update' pk=driver.id%}">ULN</a></td>
+        <td><a href="{% url 'taxi:driver-delete' pk=driver.id%}">DELETE</a></td>
       </tr>
     {% endfor %}
 
@@ -27,4 +31,6 @@
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
+  <a href="{% url 'taxi:driver-create' %}"><input type="submit" value="Add Driver"></a>
+  <hr>
 {% endblock %}
