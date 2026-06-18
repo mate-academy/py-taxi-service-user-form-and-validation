@@ -1,6 +1,10 @@
 from django import forms
-from taxi.models import Car, Driver
+from taxi.models import Car
+from django.contrib.auth import get_user_model
+
 from django.contrib.auth.forms import UserCreationForm
+
+Driver = get_user_model()
 
 
 class DriverCreationForm(UserCreationForm):
@@ -51,7 +55,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             raise forms.ValidationError(
                 "License number must consist of 8 characters"
             )
-
         if (
             not license_number[:3].isalpha()
             or not license_number[:3].isupper()

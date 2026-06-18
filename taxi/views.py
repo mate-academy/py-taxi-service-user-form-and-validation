@@ -5,8 +5,11 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from taxi.forms import CarForm, DriverCreationForm, DriverLicenseUpdateForm
+from django.contrib.auth import get_user_model
 
-from .models import Driver, Car, Manufacturer
+from .models import Car, Manufacturer
+
+Driver = get_user_model()
 
 
 @login_required
