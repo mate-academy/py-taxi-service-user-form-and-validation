@@ -10,9 +10,14 @@
   {% if car_list %}
     <ul>
       {% for car in car_list %}
-        <li>
-          <a href="{% url "taxi:car-detail" pk=car.id %} ">{{ car.id }}</a>
-          {{ car.model }} ({{ car.manufacturer.name }})
+        <li class="d-flex align-items-center">
+          <span style="width: 50px;">{{ car.id }}</span>
+          <span style="width: 250px;">
+        {{ car.model }} ({{ car.manufacturer.name }})
+    </span>
+          <a href="{% url "taxi:car-detail" pk=car.id %}">
+            Details
+          </a>
         </li>
       {% endfor %}
     </ul>
@@ -20,3 +25,4 @@
     <p>There are no cars in taxi</p>
   {% endif %}
 {% endblock %}
+
