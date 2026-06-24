@@ -3,12 +3,12 @@ from django.contrib.auth import get_user_model
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Driver, Car
+from .models import Car
 
 
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model = Driver
+        model = get_user_model()
         fields = UserCreationForm.Meta.fields + (
             "first_name",
             "last_name",
@@ -32,7 +32,7 @@ class DriverCreationForm(UserCreationForm):
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
-        model = Driver
+        model = get_user_model()
         fields = ("license_number",)
 
     def clean_license_number(self) -> str:
