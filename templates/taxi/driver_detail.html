@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <a href="{% url 'taxi:driver-license-update' pk=driver.id %}" class="btn btn-secondary">
+  <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary">
     Update license
   </a>
   <h1>
