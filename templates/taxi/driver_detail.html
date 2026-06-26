@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary">
-    Update license
-  </a>
+  <div class="mb-3">
+    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary">
+      Update license
+    </a>
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger ml-2">
+      Delete driver
+    </a>
+  </div>
+
   <h1>
     Username: {{ driver.username }}
   </h1>
