@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
     <h1>Driver List
@@ -22,9 +23,11 @@
         <td>{{ driver.license_number }}</td>
       </tr>
     {% endfor %}
-
     </table>
     {% else %}
       <p>There are no drivers in the service.</p>
     {% endif %}
+      <a href="{% url 'taxi:driver-create' %}" class="btn mb-3 btn-warning">
+        Add Driver
+      </a>
 {% endblock %}
