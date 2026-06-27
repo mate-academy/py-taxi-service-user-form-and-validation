@@ -43,7 +43,6 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         return validate_license_number(license_number)
 
 
-# Новая форма для Машины (Кастомизация виджета)
 class CarForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),

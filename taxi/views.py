@@ -15,7 +15,6 @@ User = get_user_model()
 def index(request):
     """View function for the home page of the site."""
 
-    # ПСС: Используем User вместо Driver, чтобы соответствовать чек-листу №4
     num_drivers = User.objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
