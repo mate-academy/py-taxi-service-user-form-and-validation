@@ -6,7 +6,7 @@
     {% csrf_token %}
 
     <input type="submit" value="Yes" class="btn btn-danger">
-    <a href="{% url 'taxi:driver-detail' pk=driver.id %}" class="btn btn-secondary">
+    <a href="javascript:history.back()" class="btn btn-secondary">
       Cancel
     </a>
   </form>
