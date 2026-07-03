@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Driver List
-    </h1>
+    <h1>Driver List</h1>
+
+    <div class="mb-3">
+        <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary link-to-page">
+            Create Driver
+        </a>
+    </div>
 
     {% if driver_list %}
     <table class="table">
