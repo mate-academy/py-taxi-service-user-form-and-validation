@@ -1,7 +1,6 @@
 from django.urls import path
 
-from .forms import ToggleAssignToCarView
-from .views import (
+from taxi.views import (
     index,
     CarListView,
     CarDetailView,
@@ -17,6 +16,7 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+    ToggleAssignToCarView,
 )
 
 urlpatterns = [

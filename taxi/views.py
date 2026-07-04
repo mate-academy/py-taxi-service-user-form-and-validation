@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -107,3 +107,16 @@ class DriverUpdateLicenseView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.object.id})
+
+
+class ToggleAssignToCarView(LoginRequiredMixin, generic.View):
+    def post(self, request, pk):
+        car = get_object_or_404(Car, pk=pk)
+        current_user = request.user
+
+        if current_user in car.drivers.all():
+            car.drivers.remove(current_user)
+        else:
+            car.drivers.add(current_user)
+
+        return redirect("taxi:car-detail", pk=pk)
