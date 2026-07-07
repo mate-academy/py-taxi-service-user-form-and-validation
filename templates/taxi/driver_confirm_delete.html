@@ -10,5 +10,5 @@
     <input class="btn btn-danger" type="submit" value="Delete">
   </form>
   <br>
-  <a class="btn btn-primary" href="{% url 'taxi:driver-list' %}">Cancel</a>
+  <a class="btn btn-primary" href="{{ request.GET.next }}">Cancel</a>
 {% endblock %}

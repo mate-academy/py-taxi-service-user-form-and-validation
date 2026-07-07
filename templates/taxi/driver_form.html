@@ -9,5 +9,5 @@
     <input class="btn btn-primary" type="submit" value="Submit">
   </form>
   <br>
-  <a href="{% url 'taxi:driver-list' %}" class="btn btn-primary">Cancel</a>
+    <a href="{{ request.GET.next }}" class="btn btn-primary">Cancel</a>
 {% endblock %}
