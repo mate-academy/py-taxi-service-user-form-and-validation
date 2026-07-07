@@ -5,7 +5,6 @@
     <li class="list-group-item">
       <form action="{% url 'logout'%}" method="POST">
         {% csrf_token %}
-        {{ form|crispy }}
         <input class="list-group-item" type="submit" value="Logout">
       </form>
     </li>
