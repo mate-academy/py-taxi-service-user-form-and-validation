@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import CheckboxSelectMultiple
 from django.forms.models import ModelForm
 
-from taxi.models import Car, Driver
+from taxi.models import Car
 
 
 class DriverCreationForm(UserCreationForm):
