@@ -14,11 +14,13 @@
   </h1>
 
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-TEST
+
   <form action="{% url 'taxi:toggle-car-assign' pk=car.id %}" method="post">
     {% csrf_token %}
 
-    {% if user in car.drivers.all %}
+   А в шаблоне:
+
+    {% if is_driver %}
       <button type="submit" class="btn btn-danger">
         Delete me from this car
       </button>
