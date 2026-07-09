@@ -2,9 +2,10 @@
 
 {% block content %}
   <h1>Delete car?</h1>
+  <p>If you delete a car, it will also be deleted from all drivers.</p>
   <form action="" method="post">
     {% csrf_token %}
-
     <input type="submit" value="Yes" class="btn btn-danger">
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-outline-success">Cancel</a>
   </form>
 {% endblock %}
