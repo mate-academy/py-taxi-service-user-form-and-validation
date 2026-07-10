@@ -4,9 +4,9 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 import re
 
-from django.contrib.auth import get_user_model
+from .models import Car
 
-User = get_user_model()
+User = get_user_model
 
 
 class LicenseValidationMixin:

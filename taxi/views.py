@@ -9,6 +9,9 @@ from django.urls import reverse
 
 from .models import Driver, Car, Manufacturer
 from .forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 @login_required
@@ -108,7 +111,7 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Driver
+    model = User
     success_url = reverse_lazy("taxi:driver-list")
     template_name = "taxi/driver_confirm_delete.html"
 
