@@ -4,9 +4,10 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 import re
 
-from .models import Car
+from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
 
 class LicenseValidationMixin:
     def clean_license_number(self):
