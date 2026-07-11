@@ -16,7 +16,7 @@ from .views import (
     ManufacturerListView,
     ManufacturerUpdateView,
     index,
-    toggle_assign_to_car,
+    toggle_assign_to_car
 )
 
 urlpatterns = [
