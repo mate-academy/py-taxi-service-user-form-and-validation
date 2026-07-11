@@ -1,35 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>
-    Model: {{ car.model }}
-  </h1>
-
-  <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}, ({{ car.manufacturer.country }})</p>
+  <h1>Model: {{ car.model }}</h1>
+  <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }} ({{ car.manufacturer.country }})</p>
 
   <div class="d-flex justify-content-between align-items-center">
     <h2>Drivers</h2>
-
     {% if user in car.drivers.all %}
-      <a href="{% url 'taxi:toggle_assign_to_car' pk=car.id %}" class="btn btn-danger">
+      <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}" class="btn btn-danger">
         Delete me from this car
       </a>
     {% else %}
-      <a href="{% url 'taxi:toggle_assign_to_car' pk=car.id %}" class="btn btn-success">
+      <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}" class="btn btn-success">
         Assign me to this car
       </a>
     {% endif %}
   </div>
+
   <hr>
-  <ul>
-    {% for driver in car.drivers.all %}
-      <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
-  </ul>
-  <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">
-      Update
-  </a>
-  <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">
-      Delete
-  </a>
+
+  {% for driver in car.drivers.all %}
+    <p><strong>Username:</strong> {{ driver.username }}</p>
+    <p><strong>Full name:</strong> {{ driver.first_name }} {{ driver.last_name }}</p>
+    <p><strong>License number:</strong> {{ driver.license_number }}</p>
+    <hr>
+  {% endfor %}
+
+  <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary">Update</a>
+  <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger">Delete</a>
 {% endblock %}
