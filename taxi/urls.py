@@ -8,15 +8,25 @@ from .views import (
     CarUpdateView,
     CarDeleteView,
     DriverListView,
+    DriverCreateView,
     DriverDetailView,
+<<<<<<< HEAD
     DriverCreateView,
     DriverDeleteView,
     DriverLicenseUpdateView,
+=======
+    DriverUpdateView,
+    DriverDeleteView,
+>>>>>>> e5c2855716448c357c0e3c42aeac3e8e33b1fc07
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
+<<<<<<< HEAD
     toggle_assign_to_car
+=======
+    driver_ad_to_car,
+>>>>>>> e5c2855716448c357c0e3c42aeac3e8e33b1fc07
 )
 
 urlpatterns = [
@@ -50,13 +60,25 @@ urlpatterns = [
     path(
         "drivers/<int:pk>/", DriverDetailView.as_view(), name="driver-detail"
     ),
+<<<<<<< HEAD
     path("drivers/create/", DriverCreateView.as_view(), name="driver-create"),
+=======
+    path(
+        "drivers/create/", DriverCreateView.as_view(), name="driver-create"
+    ),
+    path(
+        "drivers/<int:pk>/update/",
+        DriverUpdateView.as_view(),
+        name="driver-update",
+    ),
+>>>>>>> e5c2855716448c357c0e3c42aeac3e8e33b1fc07
     path(
         "drivers/<int:pk>/delete/",
         DriverDeleteView.as_view(),
         name="driver-delete"
     ),
     path(
+<<<<<<< HEAD
         "drivers/<int:pk>/update/",
         DriverLicenseUpdateView.as_view(),
         name="driver-update"
@@ -65,6 +87,11 @@ urlpatterns = [
         "cars/<int:pk>/toggle-assign/",
         toggle_assign_to_car,
         name="toggle-car-assign"
+=======
+        "cars/<int:pk>/assign/",
+        driver_ad_to_car,
+        name="driver-add-to-car",
+>>>>>>> e5c2855716448c357c0e3c42aeac3e8e33b1fc07
     ),
 ]
 

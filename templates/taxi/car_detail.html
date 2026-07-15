@@ -18,6 +18,7 @@
       Update
     </a>
   </h1>
+<<<<<<< HEAD
 
   <p>
     Manufacturer:
@@ -43,6 +44,19 @@
 </form>
 
 <hr>
+=======
+  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+  <h1>Drivers</h1>
+  <hr>
+  <form action="{% url 'taxi:driver-add-to-car' car.id %}" method="POST">
+    {% csrf_token %}
+    {% if car in user.cars.all %}
+    	<input class="btn-right-side btn btn-danger" type="submit" value="Delete me from this car">
+    {% else %}
+      <input class="btn-right-side btn btn-success" type="submit" value="Assign me to this car">
+    {% endif %}
+  </form>
+>>>>>>> e5c2855716448c357c0e3c42aeac3e8e33b1fc07
   <ul>
     {% for driver in car.drivers.all %}
       <li>

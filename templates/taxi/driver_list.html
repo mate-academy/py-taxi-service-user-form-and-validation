@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+<<<<<<< HEAD
 <h1>
   Driver List
+=======
+    <h1>Driver List
+    <a href="{% url 'taxi:driver-create' %}" class="btn btn-primary link-to-page">
+      Create
+    </a>
+    </h1>
+>>>>>>> e5c2855716448c357c0e3c42aeac3e8e33b1fc07
 
   <a
       href="{% url 'taxi:driver-create' %}"
