@@ -1,10 +1,16 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import HttpRequest, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Driver, Car, Manufacturer
+from taxi.forms import (
+    DriverLicenseUpdateForm,
+    DriverUpdateForm,
+    DriverCreateForm
+)
 
 
 @login_required
@@ -87,3 +93,42 @@ class DriverListView(LoginRequiredMixin, generic.ListView):
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
     model = Driver
     queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+
+
+class DriverCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Driver
+    form_class = DriverCreateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Driver
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+class DriverLicenceUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Driver
+    form_class = DriverLicenseUpdateForm
+    success_url = reverse_lazy("taxi:driver-list")
+
+
+@login_required
+def car_assign(request, pk: int):
+    car = get_object_or_404(Car, pk=pk)
+    user = request.user
+    car.drivers.add(user)
+    return redirect("taxi:car-detail", pk=pk)
+
+
+@login_required
+def car_unassign(request, pk: int):
+    car = get_object_or_404(Car, pk=pk)
+    user = request.user
+    car.drivers.remove(user)
+    return redirect("taxi:car-detail", pk=pk)
