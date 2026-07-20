@@ -3,7 +3,7 @@
 {% block content %}
   <h1>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+    <a href="{% url 'taxi:car-delete' pk=car.id %}?next={{ request.path }}" class="btn btn-danger link-to-page">
       Delete
     </a>
 
@@ -12,7 +12,20 @@
     </a>
   </h1>
   <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
-  <h1>Drivers</h1>
+  <h1>
+    Drivers
+    {% if is_your_car %}
+      <form action="{% url 'taxi:car-toggle-assign' pk=car.id%}" method="post" class="link-to-page">
+        {% csrf_token %}
+        <input type="submit" value="Delete me from this car" class="btn btn-danger">
+      </form>
+    {% else %}
+      <form action="{% url 'taxi:car-toggle-assign' pk=car.id%}" method="post" class="link-to-page">
+        {% csrf_token %}
+        <input type="submit" value="Assign me to this car" class="btn btn-success">
+      </form>
+    {% endif %}
+  </h1>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
