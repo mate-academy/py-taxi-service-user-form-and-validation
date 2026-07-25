@@ -32,6 +32,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
         required=True,
         validators=[
             MinLengthValidator(8),
+            MaxLengthValidator(8),
             RegexValidator(regex=r"^[A-Z]{3}[0-9]{5}$")
         ]
     )
