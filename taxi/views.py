@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -60,24 +59,9 @@ class CarListView(LoginRequiredMixin, generic.ListView):
     queryset = Car.objects.all().select_related("manufacturer")
 
 
-def car_detail(request: HttpRequest, pk:int) -> HttpResponse:
-    car = Car.objects.select_related("manufacturer").prefetch_related("drivers").get(pk=pk)
-    if request.method == "POST":
-        new_driver = request.user
-        if new_driver in car.drivers.all():
-            car.drivers.remove(new_driver)
-            car.save()
-        else:
-            car.drivers.add(new_driver)
-            car.save()
-    context = {
-        "car": car,
-    }
-    return render(request, "taxi/car_detail.html", context=context)
-
-
 class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
+
     def post(self, request, *args, **kwargs):
         update_car = self.get_object()
         new_driver = request.user
@@ -88,16 +72,6 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
             update_car.drivers.add(new_driver)
             update_car.save()
         return redirect("taxi:car-detail", pk=update_car.pk)
-        # if self.request.method == "POST":
-        #     update_car = self.get_object()
-        #     new_driver = self.request.user
-        #     if new_driver in update_car.drivers.all():
-        #         update_car.drivers.remove(new_driver)
-        #         update_car.save()
-        #     else:
-        #         update_car.drivers.add(new_driver)
-        #         update_car.save()
-
 
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
