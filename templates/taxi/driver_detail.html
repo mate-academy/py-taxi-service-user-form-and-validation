@@ -17,6 +17,8 @@
         <hr>
         <p><strong>Model:</strong> {{ car.model }}</p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
+      <p><a href={% url 'taxi:driver-update' pk=driver.id %}>Update</a></p>
+      <p><a href={% url 'taxi:driver-delete' pk=driver.id %}>Delete</a></p>
         <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
 
     {% empty %}
