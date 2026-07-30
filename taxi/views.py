@@ -52,6 +52,11 @@ class ManufacturerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Manufacturer
     success_url = reverse_lazy("taxi:manufacturer-list")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["previous_page"] = self.request.META.get("HTTP_REFERER", "/")
+        return context
+
 
 class CarListView(LoginRequiredMixin, generic.ListView):
     model = Car
@@ -78,6 +83,11 @@ class CarUpdateView(LoginRequiredMixin, generic.UpdateView):
 class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Car
     success_url = reverse_lazy("taxi:car-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["previous_page"] = self.request.META.get("HTTP_REFERER", "/")
+        return context
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
@@ -110,6 +120,11 @@ class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Driver
     success_url = reverse_lazy("taxi:driver-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["previous_page"] = self.request.META.get("HTTP_REFERER", "/")
+        return context
 
 
 class ToggleAssignToCarView(LoginRequiredMixin, View):
