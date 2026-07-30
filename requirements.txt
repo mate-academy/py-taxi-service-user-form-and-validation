@@ -6,3 +6,4 @@ pep8-naming
 django-debug-toolbar
 django-crispy-forms
 bootstrap4
+crispy_bootstrap4
