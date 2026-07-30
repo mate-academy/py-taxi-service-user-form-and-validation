@@ -5,6 +5,9 @@
   <form action="" method="post">
     {% csrf_token %}
 
-    <input type="submit" value="Yes" class="btn btn-danger">
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-danger">Delete</button>
+      <a href="{{ previous_page }}" class="btn btn-secondary">Cancel</a>
+    </div>
   </form>
 {% endblock %}
