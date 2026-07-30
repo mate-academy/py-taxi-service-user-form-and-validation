@@ -1,7 +1,4 @@
-from wsgiref.handlers import format_date_time
-
 from django import forms
-from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm
 
