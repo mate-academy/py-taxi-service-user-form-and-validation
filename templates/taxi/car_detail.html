@@ -10,7 +10,7 @@
     <form method="post" action="{% url 'taxi:toggle-car-assign' pk=car.id %}">
     {% csrf_token %}
     {% if user in car.drivers.all %}
-        <button type="submit" class="btn btn-warning">Unassign me</button>
+        <button type="submit" class="btn btn-warning">Delete me from this car</button>
     {% else %}
         <button type="submit" class="btn btn-success">Assign me</button>
     {% endif %}
