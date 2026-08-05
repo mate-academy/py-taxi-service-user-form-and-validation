@@ -3,9 +3,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
+from django.contrib.auth import get_user_model
 
 from .forms import CarForm, DriverCreationForm, DriverLicenseUpdateForm
-from .models import Car, Driver, Manufacturer
+from .models import Car, Manufacturer
+
+Driver = get_user_model()
 
 
 @login_required

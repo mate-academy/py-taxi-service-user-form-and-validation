@@ -11,16 +11,21 @@ LICENSE_PATTERN = re.compile(r"^[A-Z]{3}\d{5}$")
 
 
 class LicenseNumberValidationMixin:
-    def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
+    cleaned_data: dict
 
-        if not LICENSE_PATTERN.match(license_number):
+    def clean_license_number(self):
+        license_number = self.cleaned_data.get("license_number")
+
+        if not license_number:
+            return license_number
+
+        pattern = r"^[A-Z]{3}\d{5}$"
+        if not re.match(pattern, license_number):
             raise forms.ValidationError(
                 "License must consist of 8 characters: "
                 "first 3 characters must be uppercase letters, "
-                "and the last 5 characters must be digits (e.g., ABC12345)."
+                "and the last 5 characters must be digits."
             )
-
         return license_number
 
 
