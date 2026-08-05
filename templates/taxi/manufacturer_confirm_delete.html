@@ -2,9 +2,6 @@
 
 {% block content %}
   <h1>Delete manufacturer?</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-
-    <input type="submit" value="Yes" class="btn btn-danger">
-  </form>
+  {% url "taxi:manufacturer-list" as cancel_url %}
+  {% include "includes/delete_snippet.html" %}
 {% endblock %}
