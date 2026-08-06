@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ object|yesno:"Update,Create" }} driver</h1>
+  {% if object %}
+    {% url "taxi:driver-detail" pk=object.pk as cancel_url %}
+  {% else %}
+    {% url "taxi:driver-list" as cancel_url %}
+  {% endif %}
+  {% include "includes/form_snippet.html" %}
+{% endblock %}
