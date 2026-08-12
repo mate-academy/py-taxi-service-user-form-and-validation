@@ -6,6 +6,12 @@
     <a href="{% url 'taxi:driver-update' pk=driver.pk %}" class="btn btn-primary link-to-page">
       Update
     </a>
+    <a
+      href="{% url 'taxi:driver-delete' pk=driver.pk %}"
+      class="btn btn-danger"
+    >
+      Delete
+    </a>
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
