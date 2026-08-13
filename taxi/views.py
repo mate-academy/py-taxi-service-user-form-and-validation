@@ -5,7 +5,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 
-from .forms import CarForm, DriverLicenseUpdateForm
+from .forms import CarForm, DriverLicenseUpdateForm, DriverCreationForm
 from .models import Driver, Car, Manufacturer
 
 
@@ -93,7 +93,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
     model = Driver
-    fields = "__all__"
+    form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:driver-list")
 
 
@@ -104,8 +104,8 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Driver
-    template_name = "taxi/driver_form.html"
     form_class = DriverLicenseUpdateForm
+    template_name = "taxi/driver_form.html"
 
     def get_success_url(self):
         return reverse("taxi:driver-detail", kwargs={"pk": self.object.pk})

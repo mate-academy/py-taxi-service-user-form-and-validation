@@ -1,22 +1,6 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
-
-
-def validate_license_number(license_number: str) -> None:
-    if not (
-        len(license_number) == 8
-        and license_number[:3].isupper()
-        and license_number[:3].isalpha()
-        and license_number[3:].isdigit()
-    ):
-        raise ValidationError(
-            "The code must consist "
-            "of 3 uppercase letters "
-            "followed by 5 digits "
-            "(e.g., ABC12345)."
-        )
 
 
 class Manufacturer(models.Model):
@@ -31,9 +15,7 @@ class Manufacturer(models.Model):
 
 
 class Driver(AbstractUser):
-    license_number = models.CharField(
-        max_length=8, validators=[validate_license_number]
-    )
+    license_number = models.CharField(max_length=8)
 
     class Meta:
         verbose_name = "driver"
