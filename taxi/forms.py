@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from taxi.models import Driver, Car
 
 
-class DriverLicenseUpdateForm(forms.ModelForm):
+class DriverUpdateForm(forms.ModelForm):
     class Meta:
         model = Driver
         fields = ("license_number",)
