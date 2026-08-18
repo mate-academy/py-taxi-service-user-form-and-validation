@@ -6,7 +6,7 @@ from django.urls import reverse
 
 def validate_license_number(license_number):
     if len(license_number) != 8:
-        raise ValidationError("License_number must be 8 characters long")
+        raise ValidationError("License number must be exactly 8 characters long")
 
     if not license_number[:3].isupper() or not license_number[:3].isalpha():
         raise ValidationError("First 3 characters must be uppercase letters")
