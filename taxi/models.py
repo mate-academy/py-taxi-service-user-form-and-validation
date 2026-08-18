@@ -14,8 +14,6 @@ def validate_license_number(license_number):
     if not license_number[3:].isdigit():
         raise ValidationError("Last 5 characters must be digits")
 
-    return license_number
-
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -30,9 +28,9 @@ class Manufacturer(models.Model):
 
 class Driver(AbstractUser):
     license_number = models.CharField(
-        max_length=255,
+        max_length=8,
         unique=True,
-        validators=[validate_license_number]
+        validators=[validate_license_number],
     )
 
     class Meta:
