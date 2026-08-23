@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (
-    index,
+    IndexView,
     CarListView,
     CarDetailView,
     CarCreateView,
@@ -16,11 +16,11 @@ from .views import (
     ManufacturerCreateView,
     ManufacturerUpdateView,
     ManufacturerDeleteView,
-    toggle_assign_to_car,
+    ToggleAssignToCarView,
 )
 
 urlpatterns = [
-    path("", index, name="index"),
+    path("", IndexView.as_view(), name="index"),
     path(
         "manufacturers/",
         ManufacturerListView.as_view(),
@@ -63,7 +63,7 @@ urlpatterns = [
     ),
     path(
         "cars/<int:pk>/toggle-assign/",
-        toggle_assign_to_car,
+        ToggleAssignToCarView.as_view(),
         name="toggle-car-assign",
     ),
 

@@ -1,6 +1,5 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -8,25 +7,22 @@ from taxi.forms import DriverCreationForm, DriverLicenseUpdateForm, CarForm
 from taxi.models import Driver, Car, Manufacturer
 
 
-@login_required
-def index(request):
-    """View function for the home page of the site."""
+class IndexView(LoginRequiredMixin, generic.TemplateView):
+    template_name = "taxi/index.html"
 
-    num_drivers = Driver.objects.count()
-    num_cars = Car.objects.count()
-    num_manufacturers = Manufacturer.objects.count()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    num_visits = request.session.get("num_visits", 0)
-    request.session["num_visits"] = num_visits + 1
+        num_visits = self.request.session.get("num_visits", 0)
+        self.request.session["num_visits"] = num_visits + 1
 
-    context = {
-        "num_drivers": num_drivers,
-        "num_cars": num_cars,
-        "num_manufacturers": num_manufacturers,
-        "num_visits": num_visits + 1,
-    }
-
-    return render(request, "taxi/index.html", context=context)
+        context.update({
+            "num_drivers": Driver.objects.count(),
+            "num_cars": Car.objects.count(),
+            "num_manufacturers": Manufacturer.objects.count(),
+            "num_visits": num_visits + 1,
+        })
+        return context
 
 
 class ManufacturerListView(LoginRequiredMixin, generic.ListView):
@@ -80,14 +76,17 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("taxi:car-list")
 
 
-@login_required
-def toggle_assign_to_car(request, pk):
-    car = get_object_or_404(Car, id=pk)
-    if request.user in car.drivers.all():
-        car.drivers.remove(request.user)
-    else:
-        car.drivers.add(request.user)
-    return redirect("taxi:car-detail", pk=pk)
+class ToggleAssignToCarView(LoginRequiredMixin, generic.View):
+    def post(self, request, pk, *args, **kwargs):
+        car = get_object_or_404(Car, id=pk)
+        if request.user in car.drivers.all():
+            car.drivers.remove(request.user)
+        else:
+            car.drivers.add(request.user)
+        return redirect("taxi:car-detail", pk=pk)
+
+    def get(self, request, pk, *args, **kwargs):
+        return self.post(request, pk, *args, **kwargs)
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
