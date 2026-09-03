@@ -85,9 +85,6 @@ class ToggleAssignToCarView(LoginRequiredMixin, generic.View):
             car.drivers.add(request.user)
         return redirect("taxi:car-detail", pk=pk)
 
-    def get(self, request, pk, *args, **kwargs):
-        return self.post(request, pk, *args, **kwargs)
-
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
     model = Driver
