@@ -65,7 +65,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
 
 class CarCreateView(LoginRequiredMixin, generic.CreateView):
     model = Car
-    fields = "__all__"
+    form_class = CarForm
     success_url = reverse_lazy("taxi:car-list")
 
 
@@ -113,12 +113,8 @@ class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "taxi:driver-detail",
-            kwargs={"pk": self.object.pk}
+            "taxi:driver-detail", kwargs={"pk": self.object.pk}
         )
-
-    def get_object(self, queryset=None):
-        return self.request.user
 
 
 class ToggleAssignToCarView(LoginRequiredMixin, generic.View):
