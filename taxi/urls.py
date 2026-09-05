@@ -2,6 +2,8 @@ from django.urls import path
 
 from .views import (
     index,
+    assign_driver_to_car,
+    unassign_driver_from_car,
     CarListView,
     CarDetailView,
     CarCreateView,
@@ -15,7 +17,7 @@ from .views import (
     ManufacturerListView,
     ManufacturerCreateView,
     ManufacturerUpdateView,
-    ManufacturerDeleteView, assign_driver_to_car, unassign_driver_from_car,
+    ManufacturerDeleteView,
 )
 
 urlpatterns = [
