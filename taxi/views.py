@@ -6,14 +6,14 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from taxi.forms import CarForm, DriverCreationForm, DriverLicenseUpdateForm
-from taxi.models import Car, Driver, Manufacturer
+from taxi.models import Car, Manufacturer
 
 
 @login_required
 def index(request):
     """View function for the home page of the site."""
 
-    num_drivers = Driver.objects.count()
+    num_drivers = get_user_model().objects.count()
     num_cars = Car.objects.count()
     num_manufacturers = Manufacturer.objects.count()
 
