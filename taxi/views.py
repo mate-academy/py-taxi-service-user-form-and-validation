@@ -1,10 +1,15 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import DriverCreateForm, DriverLicenseUpdateForm, CarForm
+from .forms import (
+    DriverCreateForm,
+    DriverUpdateForm,
+    DriverLicenseUpdateForm,
+    CarForm)
 from .models import Driver, Car, Manufacturer
 
 
@@ -101,33 +106,43 @@ class CarDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class DriverListView(LoginRequiredMixin, generic.ListView):
-    model = Driver
     paginate_by = 5
+
+    def get_queryset(self):
+        return get_user_model().objects.all()
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Driver
     form_class = DriverCreateForm
     success_url = reverse_lazy("taxi:driver-list")
 
+    def get_queryset(self):
+        return get_user_model().objects.all()
+
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
+
+    def get_queryset(self):
+        return get_user_model().objects.all()
 
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Driver
     form_class = DriverLicenseUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 
+    def get_queryset(self):
+        return get_user_model().objects.all()
+
 
 class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
-    model = Driver
     success_url = reverse_lazy("taxi:driver-list")
+
+    def get_queryset(self):
+        return get_user_model().objects.all()
 
 
 class DriverDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Driver
-    queryset = Driver.objects.all().prefetch_related("cars__manufacturer")
+    def get_queryset(self):
+        return get_user_model().objects.prefetch_related("cars__manufacturer")
