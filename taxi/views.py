@@ -121,11 +121,26 @@ class DriverCreateView(LoginRequiredMixin, generic.CreateView):
 
 
 class DriverUpdateView(LoginRequiredMixin, generic.UpdateView):
-    form_class = DriverLicenseUpdateForm
+    form_class = DriverUpdateForm
     success_url = reverse_lazy("taxi:driver-list")
 
     def get_queryset(self):
         return get_user_model().objects.all()
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+
+        if self.request.method in ("POST", "PUT"):
+            data = self.request.POST.copy()
+            driver = self.get_object()
+
+            data.setdefault("username", driver.username)
+            data.setdefault("first_name", driver.first_name)
+            data.setdefault("last_name", driver.last_name)
+
+            kwargs["data"] = data
+
+        return kwargs
 
 
 class DriverLicenseUpdateView(LoginRequiredMixin, generic.UpdateView):
