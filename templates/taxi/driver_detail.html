@@ -3,6 +3,8 @@
 {% block content %}
   <h1>
     Username: {{ driver.username }}
+    <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-secondary link-to-page">Update</a>
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">Delete</a>
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
@@ -12,7 +14,7 @@
 
   <div class="ml-3">
     <h4>Cars</h4>
-
+    <a href="{% url 'taxi:car-create' %}" class="btn btn-primary">Add Car</a>
     {% for car in driver.cars.all %}
         <hr>
         <p><strong>Model:</strong> {{ car.model }}</p>
