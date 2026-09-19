@@ -1,7 +1,11 @@
 <ul class="sidebar-nav list-group">
   {% if user.is_authenticated %}
     <li class="list-group-item">User: <a href="{{ user.get_absolute_url }}">{{ user.get_username }}</a></li>
-    <li class="list-group-item"><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+    <form action="{% url 'logout' %}?next={{request.path}}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-link list-group-item list-group-item-action" style="padding: 0; text-decoration: none;">Logout</button>
+</form>
+
   {% else %}
     <li class="list-group-item"><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
   {% endif %}
