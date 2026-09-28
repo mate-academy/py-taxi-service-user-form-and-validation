@@ -25,7 +25,7 @@ class DriverCreationForm(UserCreationForm):
             )
 
         first_three = license_number[:3]
-        if not first_three.isalpha() or not first_three.upper():
+        if not first_three.isalpha() or not first_three.isupper():
             raise ValidationError(
                 "First 3 characters "
                 "must be uppercase letters."
@@ -53,7 +53,7 @@ class DriverLicenseUpdateForm(forms.ModelForm):
             )
 
         first_three = license_number[:3]
-        if not first_three.isalpha() or not first_three.upper():
+        if not first_three.isalpha() or not first_three.isupper():
             raise ValidationError(
                 "First 3 characters "
                 "must be uppercase letters."
