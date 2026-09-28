@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if object %}
+    <h1>Update license for {{ object.username }}</h1>
+  {% else %}
+    <h1>Create driver</h1>
+  {% endif %}
+
+  <form method="post" action="" novalidate>
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary">
+      {% if object %}
+        Save changes
+      {% else %}
+        Create driver
+      {% endif %}
+    </button>
+
+    {% if object %}
+      <a href="{% url 'taxi:driver-detail' pk=object.pk %}"
+         class="btn btn-secondary">
+        Cancel
+      </a>
+    {% else %}
+      <a href="{% url 'taxi:driver-list' %}"
+         class="btn btn-secondary">
+        Cancel
+      </a>
+    {% endif %}
+  </form>
+{% endblock %}
