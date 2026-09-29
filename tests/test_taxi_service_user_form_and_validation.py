@@ -8,9 +8,7 @@ from taxi.forms import DriverLicenseUpdateForm
 class ValidLicenseNumberFormTests(TestCase):
     @staticmethod
     def create_form(test_license_number):
-        return DriverLicenseUpdateForm(
-            data={"license_number": test_license_number}
-        )
+        return DriverLicenseUpdateForm(data={"license_number": test_license_number})
 
     def test_validation_license_number_with_valid_data(self):
         self.assertTrue(self.create_form("TES12345").is_valid())
@@ -67,6 +65,4 @@ class DriverViewsTest(TestCase):
             reverse("taxi:driver-delete", kwargs={"pk": driver.id})
         )
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(
-            get_user_model().objects.filter(id=driver.id).exists()
-        )
+        self.assertFalse(get_user_model().objects.filter(id=driver.id).exists())
