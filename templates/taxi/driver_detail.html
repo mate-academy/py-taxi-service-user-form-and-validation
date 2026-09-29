@@ -24,6 +24,6 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
-  <p><a href="{% url "taxi:driver-delete" pk=driver.pk %}" class="btn btn-danger">Delete driver</a></p>
+    <p><a href="{% url "taxi:driver-delete" pk=driver.pk %}" class="btn btn-danger">Delete driver</a></p>
   </div>
 {% endblock %}
