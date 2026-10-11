@@ -1,0 +1,11 @@
+{% load crispy_forms_filters %}
+<form action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <input type="submit" value="Submit" class="btn btn-primary">
+    <a href="{{ request.META.HTTP_REFERER|default:'/' }}"
+       class="btn btn-outline-secondary">
+        Cancel
+    </a>
+  </form>

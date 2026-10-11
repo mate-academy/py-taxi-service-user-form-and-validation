@@ -2,7 +2,15 @@
 
 {% block content %}
   <h1>
-    Username: {{ driver.username }}
+    Username: {{ driver.username }} {% if driver == user %} (Me) {% endif %}
+    <a href="{% url 'taxi:driver-list' %}"
+       class="btn btn-secondary link-to-page">
+       Cancel
+    </a>
+    <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
+      Delete
+    </a>
+
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
@@ -23,4 +31,7 @@
       <p>No cars!</p>
     {% endfor %}
   </div>
+<a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-primary">
+      Update License
+    </a>
 {% endblock %}
