@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>Create Driver</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <input type="submit" value="Save" class="btn btn-primary">
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
