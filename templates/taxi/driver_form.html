@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  {% if object %}
+    <h1>Update license: {{ object.username }}</h1>
+    {% url 'taxi:driver-detail' pk=object.pk as fallback_url %}
+  {% else %}
+    <h1>Create driver</h1>
+    {% url 'taxi:driver-list' as fallback_url %}
+  {% endif %}
+  {% firstof request.POST.cancel_url request.META.HTTP_REFERER fallback_url as cancel_url %}
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="cancel_url" value="{{ cancel_url }}">
+    {{ form|crispy }}
+    <input type="submit" value="Submit" class="btn btn-primary">
+    <a href="{{ cancel_url }}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
