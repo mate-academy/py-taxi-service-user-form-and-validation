@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<p>
+  <a href="{% url 'taxi:driver-update' pk=driver.id %}" class="btn btn-primary">
+    Update license
+  </a>
+  <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger">
+    Delete driver
+  </a>
+</p>
+
   <h1>
     Username: {{ driver.username }}
   </h1>
