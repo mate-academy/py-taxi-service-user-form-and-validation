@@ -7,7 +7,7 @@
       Delete
     </a>
 
-    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
+    <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-info link-to-page">
       Update
     </a>
   </h1>
@@ -17,6 +17,16 @@
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
-    {% endfor %}
+    {% endfor %}    
   </ul>
-{% endblock %}
+<div class="mt3">
+  <form action="{% url 'taxi:assign-driver-to-car' pk=car.pk %}" method="post">
+    {% csrf_token %}
+    {% if user in car.drivers.all %}
+      <button type="submit" class="btn btn-danger">Delete me from this car</button>
+    {% else %}
+      <button type="submit" class="btn btn-success">Assign me to this car</button>
+    {% endif %}
+  </form>
+</div>
+  {% endblock %}
