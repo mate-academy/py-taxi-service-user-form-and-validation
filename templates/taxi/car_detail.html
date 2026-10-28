@@ -3,20 +3,32 @@
 {% block content %}
   <h1>
     {{ car.model }}
-    <a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-danger link-to-page">
+    <button><a href="{% url 'taxi:car-delete' pk=car.id %}" class="btn btn-secondary link-to-page">
       Delete
-    </a>
+    </a></button>
 
     <a href="{% url 'taxi:car-update' pk=car.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
   </h1>
-  <p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
+	<p>Manufacturer: ({{ car.manufacturer.name }}, {{ car.manufacturer.country }})</p>
   <h1>Drivers</h1>
   <hr>
   <ul>
     {% for driver in car.drivers.all %}
       <li>{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</li>
     {% endfor %}
-  </ul>
+	</ul>
+	<br>
+	<div class= "d-flex justify-content-between">
+		{% if request.user in car.drivers.all %}
+			<a href="{% url 'taxi:remove-car' pk=car.id %}" lass="btn btn-danger btn-sm">
+				Delete me from this car
+			</a>
+	{% else %}
+    <a href="{% url 'taxi:car-assign' pk=car.id %}" class="btn btn-primary btn-sm">
+	    Assign me to this car
+    </a>
+	{% endif %}
+	</div>
 {% endblock %}
