@@ -2,7 +2,12 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from taxi.forms import DriverLicenseUpdateForm
+from taxi.forms import (
+    CarForm,
+    DriverCreationForm,
+    DriverLicenseUpdateForm,
+)
+from taxi.models import Car, Manufacturer
 
 
 class ValidLicenseNumberFormTests(TestCase):
@@ -70,3 +75,93 @@ class DriverViewsTest(TestCase):
         self.assertFalse(
             get_user_model().objects.filter(id=driver.id).exists()
         )
+
+    def test_create_driver_with_valid_license(self):
+        response = self.client.post(
+            reverse("taxi:driver-create"),
+            data={
+                "username": "new.driver",
+                "first_name": "New",
+                "last_name": "Driver",
+                "license_number": "NEW12345",
+                "password1": "Y7!vPz$1QmT",
+                "password2": "Y7!vPz$1QmT",
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            get_user_model().objects.filter(username="new.driver").exists()
+        )
+
+    def test_create_driver_with_invalid_license_is_rejected(self):
+        response = self.client.post(
+            reverse("taxi:driver-create"),
+            data={
+                "username": "invalid.driver",
+                "license_number": "abc12345",
+                "password1": "Y7!vPz$1QmT",
+                "password2": "Y7!vPz$1QmT",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
+            get_user_model().objects.filter(username="invalid.driver").exists()
+        )
+
+
+class CarFormAndAssignmentTests(TestCase):
+    def setUp(self):
+        self.driver = get_user_model().objects.create_user(
+            username="test.driver",
+            license_number="TST12345",
+            password="1qazcde3",
+        )
+        self.manufacturer = Manufacturer.objects.create(
+            name="Toyota",
+            country="Japan",
+        )
+        self.car = Car.objects.create(
+            model="Camry",
+            manufacturer=self.manufacturer,
+        )
+        self.client.force_login(self.driver)
+
+    def test_car_driver_picker_uses_checkboxes(self):
+        self.assertEqual(
+            CarForm.base_fields["drivers"].widget.__class__.__name__,
+            "CheckboxSelectMultiple",
+        )
+
+    def test_assign_and_remove_current_driver(self):
+        assign_url = reverse(
+            "taxi:car-assign-me",
+            kwargs={"pk": self.car.pk},
+        )
+        remove_url = reverse(
+            "taxi:car-remove-me",
+            kwargs={"pk": self.car.pk},
+        )
+
+        assign_response = self.client.post(assign_url)
+        self.assertEqual(assign_response.status_code, 302)
+        self.assertTrue(self.car.drivers.filter(pk=self.driver.pk).exists())
+
+        remove_response = self.client.post(remove_url)
+        self.assertEqual(remove_response.status_code, 302)
+        self.assertFalse(self.car.drivers.filter(pk=self.driver.pk).exists())
+
+    def test_car_creation_saves_selected_drivers(self):
+        response = self.client.post(
+            reverse("taxi:car-create"),
+            data={
+                "model": "Prius",
+                "manufacturer": self.manufacturer.pk,
+                "drivers": [self.driver.pk],
+            },
+        )
+
+        self.assertEqual(response.status_code, 302)
+        car = Car.objects.get(model="Prius")
+        self.assertTrue(car.drivers.filter(pk=self.driver.pk).exists())
