@@ -36,7 +36,7 @@
             </td>
             <td>
               <a style="color: red"
-                href="{% url 'taxi:manufacturer-delete' pk=manufacturer.id %}">
+                href="{% url 'taxi:manufacturer-delete' pk=manufacturer.id %}?next={{ request.path }}">
                 Delete
               </a>
             </td>
