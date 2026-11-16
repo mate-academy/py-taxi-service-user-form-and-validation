@@ -68,6 +68,7 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     context_object_name = "car"
 
 
+@login_required
 def assign_me_to_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
     if request.method == "POST":
@@ -75,6 +76,7 @@ def assign_me_to_car(request, pk):
     return redirect("taxi:car-detail", pk=car.pk)
 
 
+@login_required
 def remove_me_from_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
     if request.method == "POST":
@@ -110,7 +112,7 @@ class DriverDetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class DriverCreateView(LoginRequiredMixin, generic.CreateView):
-    model = Driver
+    model = get_user_model()
     form_class = DriverCreationForm
     success_url = reverse_lazy("taxi:driver-list")
 
