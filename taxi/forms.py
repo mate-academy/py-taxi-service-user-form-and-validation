@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import RegexValidator
 
 from taxi.models import Driver, Car
@@ -9,13 +11,13 @@ license_validator = RegexValidator(
 )
 
 
-class DriverCreationForm(forms.ModelForm):
+class DriverCreationForm(UserCreationForm):
     license_number = forms.CharField(
         validators=[license_validator]
     )
 
     class Meta:
-        model = Driver
+        model = get_user_model()
         fields = "__all__"
 
 
