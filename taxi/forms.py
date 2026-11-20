@@ -3,6 +3,9 @@ from django.contrib.auth import get_user_model
 
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
+from django.forms import CheckboxSelectMultiple
+
+from taxi.models import Car
 
 
 class CleanLicenseMixin:
@@ -37,3 +40,15 @@ class DriverCreationForm(CleanLicenseMixin, UserCreationForm):
         fields = UserCreationForm.Meta.fields + (
             "first_name", "last_name" , "license_number",
         )
+
+
+class CarForms(forms.ModelForm):
+    drivers = forms.ModelMultipleChoiceField(
+        queryset=get_user_model().objects.all(),
+        widget=CheckboxSelectMultiple,
+        required=False,
+    )
+
+    class Meta:
+        model = Car
+        fields = ("model", "manufacturer", "drivers")
