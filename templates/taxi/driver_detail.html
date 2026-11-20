@@ -22,5 +22,24 @@
     {% empty %}
       <p>No cars!</p>
     {% endfor %}
+  <a href="{% url 'taxi:driver-license-update' driver.pk %}">
+  Atualizar carteira
+</a>
+<a href="{% url 'taxi:driver-delete' driver.pk %}">
+  Excluir motorista
+</a>
+
   </div>
+  {% if user in car.drivers.all %}
+  <form method="post" action="{% url 'taxi:car-remove' car.pk %}">
+    {% csrf_token %}
+    <button type="submit">Delete me from this car</button>
+  </form>
+{% else %}
+  <form method="post" action="{% url 'taxi:car-assign' car.pk %}">
+    {% csrf_token %}
+    <button type="submit">Assign me to this car</button>
+  </form>
+{% endif %}
+
 {% endblock %}

@@ -1,0 +1,9 @@
+<h1>Atualizar carteira de motorista</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Salvar</button>
+</form>
+<a href="{% url 'taxi:driver-detail' object.pk %}">
+  Cancelar
+</a>
