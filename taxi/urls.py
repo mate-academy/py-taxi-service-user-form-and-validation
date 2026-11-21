@@ -55,7 +55,7 @@ urlpatterns = [
     path(
         "drivers/create/",
         DriverCreateView.as_view(),
-        name="driver-create",
+        name="taxi:driver-create",
     ),
     path(
         "drivers/<int:pk>/delete/",
@@ -65,7 +65,7 @@ urlpatterns = [
     path(
         "drivers/<int:pk>/license/",
         DriverLicenseUpdateView.as_view(),
-        name="driver-license-update",
+        name="driver-update",
     ),
     path(
         "cars/<int:pk>/assign/",
@@ -76,7 +76,7 @@ urlpatterns = [
         "cars/<int:pk>/remove/",
         remove_me_from_car,
         name="car-remove",
-),
+    ),
 
 ]
 

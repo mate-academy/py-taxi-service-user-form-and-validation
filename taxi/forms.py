@@ -1,61 +1,55 @@
 from django import forms
-from .models import Driver, Car
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 
-def validate_license_number(value):
-    if len(value) != 8:
-        raise forms.ValidationError("A licença deve conter 8 caracteres.")
-    if not value[:3].isalpha() or not value[:3].isupper():
-        raise forms.ValidationError("Os 3 primeiros caracteres devem ser letras maiúsculas."
+from taxi.models import Car
+
+
+def validate_license_number(license_number):
+    if len(license_number) != 8:
+        raise forms.ValidationError(
+            "License number must be exactly 8 characters long."
         )
-    if not value[3:].isdigit():
-        raise forms.ValidationError("Os 5 últimos caracteres devem ser números."
+    if not license_number[:3].isalpha() or not license_number[:3].isupper():
+        raise forms.ValidationError(
+            "First 3 characters must be uppercase letters."
         )
-    return value
+    if not license_number[3:].isdigit():
+        raise forms.ValidationError(
+            "Last 5 characters must be digits."
+        )
+    return license_number
 
-class DriverLicenseUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Driver
-        fields = ("license_number",)
-    def clean_license_number(self):
-        license_number = self.cleaned_data["license_number"]
-        if len(license_number) != 8:
-            raise forms.ValidationError(
-            )
-        if not license_number[:3].isupper():
-            raise forms.ValidationError(
-            )
-        if not license_number[:3].isalpha():
-            raise forms.ValidationError(
-            )
-        if not license_number[3:].isdigit():
-            raise forms.ValidationError(
-            )
-        return validate_license_number(self.cleaned_data['license_number'])
 
-class DriverCreationForm(forms.ModelForm):
-    class Meta:
-        model = Driver
-        fields = (
-            "username",
+class DriverCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = get_user_model()
+        fields = UserCreationForm.Meta.fields + (
             "first_name",
             "last_name",
             "license_number",
         )
+
     def clean_license_number(self):
-        return validate_license_number(
-            self.cleaned_data["license_number"]
-        )
+        return validate_license_number(self.cleaned_data["license_number"])
+
+
+class DriverLicenseUpdateForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ("license_number",)
+
+    def clean_license_number(self):
+        return validate_license_number(self.cleaned_data["license_number"])
+
 
 class CarCreationForm(forms.ModelForm):
     drivers = forms.ModelMultipleChoiceField(
-        queryset=Driver.objects.all(),
+        queryset=get_user_model().objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False,
     )
+
     class Meta:
         model = Car
-        fields = (
-            "model",
-            "manufacturer",
-            "drivers",
-        )
+        fields = "__all__"
