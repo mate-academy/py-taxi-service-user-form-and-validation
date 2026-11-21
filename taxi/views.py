@@ -34,7 +34,6 @@ class DriverLicenseUpdateView(LoginRequiredMixin, UpdateView):
         )
 
 
-@login_required
 def index(request):
     """View function for the home page of the site."""
 
@@ -55,12 +54,14 @@ def index(request):
     return render(request, "taxi/index.html", context=context)
 
 
+@login_required
 def assign_me_to_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
     car.drivers.add(request.user)
     return redirect("taxi:car-detail", pk=pk)
 
 
+@login_required
 def remove_me_from_car(request, pk):
     car = get_object_or_404(Car, pk=pk)
     car.drivers.remove(request.user)

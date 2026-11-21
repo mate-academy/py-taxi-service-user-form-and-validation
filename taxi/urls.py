@@ -55,7 +55,7 @@ urlpatterns = [
     path(
         "drivers/create/",
         DriverCreateView.as_view(),
-        name="taxi:driver-create",
+        name="driver-create",
     ),
     path(
         "drivers/<int:pk>/delete/",
