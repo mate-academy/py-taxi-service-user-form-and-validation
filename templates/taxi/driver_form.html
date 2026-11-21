@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Criar motorista</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Criar motorista</button>
+  </form>
+  <a href="{% url 'taxi:driver-list' %}">
+    Cancelar
+  </a>
+{% endblock %}

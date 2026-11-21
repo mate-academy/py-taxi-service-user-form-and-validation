@@ -1,0 +1,7 @@
+<h1>Atualizar carteira de motorista</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Salvar</button>
+</form>
+<a href="javascript:history.back()" class="btn btn-secondary">Cancel</a>
