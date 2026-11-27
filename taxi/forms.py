@@ -1,8 +1,12 @@
 from django import forms
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from taxi.models import Car, Driver
+from taxi.models import Car
+
+
+User = get_user_model()
 
 
 def validate_license_number(license_number):
@@ -29,7 +33,7 @@ def validate_license_number(license_number):
 
 class DriverCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
-        model = Driver
+        model = User
         fields = (
             "username",
             "first_name",
@@ -44,7 +48,7 @@ class DriverCreationForm(UserCreationForm):
 
 class DriverLicenseUpdateForm(forms.ModelForm):
     class Meta:
-        model = Driver
+        model = User
         fields = ["license_number"]
 
     def clean_license_number(self):
